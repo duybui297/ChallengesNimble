@@ -25,7 +25,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
                                 userTokenType: userTokenType,
                                 userAccessToken: userAccessToken)
     
-    sut.load()
+    sut.load { _ in }
     XCTAssertEqual(client.requestedInfo, [HTTPClientSpy.RequestContext(requestedURL: url,
                                                                        userTokenType: userTokenType,
                                                                        userAccessToken: userAccessToken)])
@@ -39,13 +39,27 @@ class RemoteSurveyLoaderTests: XCTestCase {
     let (sut, client) = makeSUT(url: url,
                                 userTokenType: userTokenType,
                                 userAccessToken: userAccessToken)
-    sut.load()
-    sut.load()
+    sut.load { _ in }
+    sut.load { _ in }
     
     let expectedRequestContext = HTTPClientSpy.RequestContext(requestedURL: url,
                                                               userTokenType: userTokenType,
                                                               userAccessToken: userAccessToken)
     XCTAssertEqual(client.requestedInfo, [expectedRequestContext, expectedRequestContext])
+  }
+  
+  func test_load_deliversErrorOnClientError() {
+    let (sut, client) = makeSUT()
+    
+    var capturedErrors = [RemoteSurveyLoader.Error]()
+    sut.load { error in
+      capturedErrors.append(error)
+    }
+    
+    let clientError = NSError(domain: "any error", code: 0)
+    client.complete(with: clientError)
+    
+    XCTAssertEqual(capturedErrors, [.connectivity])
   }
 }
 
@@ -75,11 +89,20 @@ extension RemoteSurveyLoaderTests {
     }
     
     var requestedInfo = [RequestContext]()
+    var completions = [(Error) -> Void]()
     
-    func get(from url: URL, userTokenType: String, userAccessToken: String) {
+    func get(from url: URL,
+             userTokenType: String,
+             userAccessToken: String,
+             completion: @escaping (Error) -> Void) {
       self.requestedInfo.append(RequestContext(requestedURL: url,
                                                userTokenType: userTokenType,
                                                userAccessToken: userAccessToken))
+      self.completions.append(completion)
+    }
+    
+    func complete(with error: Error, at index: Int = 0) {
+      self.completions[index](error)
     }
   }
 }

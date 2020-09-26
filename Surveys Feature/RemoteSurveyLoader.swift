@@ -14,6 +14,10 @@ public class RemoteSurveyLoader {
   private let userTokenType: String
   private let userAccessToken: String
   
+  public enum Error: Swift.Error {
+    case connectivity
+  }
+  
   public init(httpClient: HTTPClient,
        url: URL,
        userTokenType: String,
@@ -24,10 +28,12 @@ public class RemoteSurveyLoader {
     self.userAccessToken = userAccessToken
   }
   
-  public func load() {
+  public func load(completion: @escaping (Error) -> Void) {
     httpClient.get(from: url,
                    userTokenType: userTokenType,
-                   userAccessToken: userAccessToken)
+                   userAccessToken: userAccessToken) { _ in
+                    completion(.connectivity)
+    }
   }
 }
 
