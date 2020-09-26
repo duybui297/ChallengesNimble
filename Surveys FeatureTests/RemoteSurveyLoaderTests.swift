@@ -88,21 +88,24 @@ extension RemoteSurveyLoaderTests {
       var userAccessToken: String
     }
     
-    var requestedInfo = [RequestContext]()
-    var completions = [(Error) -> Void]()
+    var messages = [(requestedInfo: RequestContext, completion: ((Error) -> Void))]()
+    
+    var requestedInfo: [RequestContext] {
+      messages.map(\.requestedInfo)
+    }
     
     func get(from url: URL,
              userTokenType: String,
              userAccessToken: String,
              completion: @escaping (Error) -> Void) {
-      self.requestedInfo.append(RequestContext(requestedURL: url,
-                                               userTokenType: userTokenType,
-                                               userAccessToken: userAccessToken))
-      self.completions.append(completion)
+      let requestedInfo = RequestContext(requestedURL: url,
+                                         userTokenType: userTokenType,
+                                         userAccessToken: userAccessToken)
+      self.messages.append((requestedInfo, completion))
     }
     
     func complete(with error: Error, at index: Int = 0) {
-      self.completions[index](error)
+      self.messages[index].completion(error)
     }
   }
 }
