@@ -61,6 +61,19 @@ class RemoteSurveyLoaderTests: XCTestCase {
     
     XCTAssertEqual(capturedErrors, [.connectivity])
   }
+  
+  func test_load_deliversInvalidErrorOnNon200HTTPResponse() {
+    let (sut, client) = makeSUT()
+    
+    var capturedErrors = [RemoteSurveyLoader.Error]()
+    sut.load { error in
+      capturedErrors.append(error)
+    }
+    
+    client.complete(with: 400)
+    
+    XCTAssertEqual(capturedErrors, [.invalidData])
+  }
 }
 
 // MARK: - Helper functions
@@ -88,7 +101,7 @@ extension RemoteSurveyLoaderTests {
       var userAccessToken: String
     }
     
-    var messages = [(requestedInfo: RequestContext, completion: ((Error) -> Void))]()
+    var messages = [(requestedInfo: RequestContext, completion: ((Error?, HTTPURLResponse?) -> Void))]()
     
     var requestedInfo: [RequestContext] {
       messages.map(\.requestedInfo)
@@ -97,7 +110,7 @@ extension RemoteSurveyLoaderTests {
     func get(from url: URL,
              userTokenType: String,
              userAccessToken: String,
-             completion: @escaping (Error) -> Void) {
+             completion: @escaping (Error?, HTTPURLResponse?) -> Void) {
       let requestedInfo = RequestContext(requestedURL: url,
                                          userTokenType: userTokenType,
                                          userAccessToken: userAccessToken)
@@ -105,7 +118,16 @@ extension RemoteSurveyLoaderTests {
     }
     
     func complete(with error: Error, at index: Int = 0) {
-      self.messages[index].completion(error)
+      self.messages[index].completion(error, nil)
+    }
+    
+    func complete(with statusCode: Int, at index: Int = 0) {
+      let response = HTTPURLResponse(url: requestedInfo[index].requestedURL,
+                                     statusCode: statusCode,
+                                     httpVersion: nil,
+                                     headerFields: nil
+      )
+      self.messages[index].completion(nil, response)
     }
   }
 }

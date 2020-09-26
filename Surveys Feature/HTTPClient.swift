@@ -12,5 +12,5 @@ public protocol HTTPClient {
   func get(from url: URL,
            userTokenType: String,
            userAccessToken: String,
-           completion: @escaping (Error) -> Void)
+           completion: @escaping (Error?, HTTPURLResponse?) -> Void)
 }

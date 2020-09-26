@@ -16,6 +16,7 @@ public class RemoteSurveyLoader {
   
   public enum Error: Swift.Error {
     case connectivity
+    case invalidData
   }
   
   public init(httpClient: HTTPClient,
@@ -31,8 +32,12 @@ public class RemoteSurveyLoader {
   public func load(completion: @escaping (Error) -> Void) {
     httpClient.get(from: url,
                    userTokenType: userTokenType,
-                   userAccessToken: userAccessToken) { _ in
-                    completion(.connectivity)
+                   userAccessToken: userAccessToken) { error, _ in
+                    if error != nil {
+                      completion(.connectivity)
+                    } else {
+                      completion(.invalidData)
+                    }
     }
   }
 }
