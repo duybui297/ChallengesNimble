@@ -62,7 +62,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
     XCTAssertEqual(capturedErrors, [.connectivity])
   }
   
-  func test_load_deliversInvalidErrorOnNon200HTTPResponse() {
+  func test_load_deliversInvalidDataErrorOnNon200HTTPResponse() {
     let (sut, client) = makeSUT()
     let non200StatusCodes = [199, 201, 300, 400, 401, 404, 403]
     
@@ -77,14 +77,25 @@ class RemoteSurveyLoaderTests: XCTestCase {
       XCTAssertEqual(capturedErrors, [.invalidData])
     }
   }
+  
+  func test_load_deliversInvalidDataErrorOn200HTTPResponseWithInvalidJSON() {
+    let (sut, client) = makeSUT()
+
+    var capturedErrors = [RemoteSurveyLoader.Error]()
+    sut.load { capturedErrors.append($0) }
+
+    let invalidJSON = Data("invalid json".utf8)
+    client.complete(with: 200, data: invalidJSON)
+
+    XCTAssertEqual(capturedErrors, [.invalidData])
+  }
 }
 
 // MARK: - Helper functions
 extension RemoteSurveyLoaderTests {
   private func makeSUT(url: URL = URL(string: "https://any-url.com")!,
                        userTokenType: String = "Any User Token Type",
-                       userAccessToken: String = "Any User Access Token") -> (sut: RemoteSurveyLoader,
-    client: HTTPClientSpy) {
+                       userAccessToken: String = "Any User Access Token") -> (sut: RemoteSurveyLoader, client: HTTPClientSpy) {
       let client = HTTPClientSpy()
       let sut = RemoteSurveyLoader(httpClient: client,
                                    url: url,
@@ -124,12 +135,12 @@ extension RemoteSurveyLoaderTests {
       self.messages[index].completion(.failure(error))
     }
     
-    func complete(with statusCode: Int, at index: Int = 0) {
+    func complete(with statusCode: Int, data: Data = Data(), at index: Int = 0) {
       let response = HTTPURLResponse(url: requestedInfo[index].requestedURL,
                                      statusCode: statusCode,
                                      httpVersion: nil,
                                      headerFields: nil)!
-      self.messages[index].completion(.success(response))
+      self.messages[index].completion(.success(data, response))
     }
   }
 }
