@@ -10,6 +10,7 @@
 		3019A092251F21B2003351C7 /* Surveys_Feature.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3019A088251F21B2003351C7 /* Surveys_Feature.framework */; };
 		3019A097251F21B2003351C7 /* Surveys_FeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019A096251F21B2003351C7 /* Surveys_FeatureTests.swift */; };
 		3019A099251F21B2003351C7 /* Surveys_Feature.h in Headers */ = {isa = PBXBuildFile; fileRef = 3019A08B251F21B2003351C7 /* Surveys_Feature.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3019A0A3251F249D003351C7 /* SurveyItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019A0A2251F249D003351C7 /* SurveyItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		3019A091251F21B2003351C7 /* Surveys FeatureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Surveys FeatureTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3019A096251F21B2003351C7 /* Surveys_FeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surveys_FeatureTests.swift; sourceTree = "<group>"; };
 		3019A098251F21B2003351C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3019A0A2251F249D003351C7 /* SurveyItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			children = (
 				3019A08B251F21B2003351C7 /* Surveys_Feature.h */,
 				3019A08C251F21B2003351C7 /* Info.plist */,
+				3019A0A2251F249D003351C7 /* SurveyItem.swift */,
 			);
 			path = "Surveys Feature";
 			sourceTree = "<group>";
@@ -148,6 +151,7 @@
 				TargetAttributes = {
 					3019A087251F21B2003351C7 = {
 						CreatedOnToolsVersion = 11.5;
+						LastSwiftMigration = 1150;
 					};
 					3019A090251F21B2003351C7 = {
 						CreatedOnToolsVersion = 11.5;
@@ -195,6 +199,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3019A0A3251F249D003351C7 /* SurveyItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +345,7 @@
 		3019A09D251F21B2003351C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -355,6 +361,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "duybui.iosDeveloper.Surveys-Feature";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -363,6 +370,7 @@
 		3019A09E251F21B2003351C7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -386,6 +394,7 @@
 		3019A0A0251F21B2003351C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Surveys FeatureTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -403,6 +412,7 @@
 		3019A0A1251F21B2003351C7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Surveys FeatureTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
