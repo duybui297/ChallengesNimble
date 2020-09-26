@@ -32,10 +32,11 @@ public class RemoteSurveyLoader {
   public func load(completion: @escaping (Error) -> Void) {
     httpClient.get(from: url,
                    userTokenType: userTokenType,
-                   userAccessToken: userAccessToken) { error, _ in
-                    if error != nil {
+                   userAccessToken: userAccessToken) { result in
+                    switch result {
+                    case .failure:
                       completion(.connectivity)
-                    } else {
+                    case .success:
                       completion(.invalidData)
                     }
     }

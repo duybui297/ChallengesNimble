@@ -104,7 +104,7 @@ extension RemoteSurveyLoaderTests {
       var userAccessToken: String
     }
     
-    var messages = [(requestedInfo: RequestContext, completion: ((Error?, HTTPURLResponse?) -> Void))]()
+    var messages = [(requestedInfo: RequestContext, completion: ((HTTPClientResult) -> Void))]()
     
     var requestedInfo: [RequestContext] {
       messages.map(\.requestedInfo)
@@ -113,7 +113,7 @@ extension RemoteSurveyLoaderTests {
     func get(from url: URL,
              userTokenType: String,
              userAccessToken: String,
-             completion: @escaping (Error?, HTTPURLResponse?) -> Void) {
+             completion: @escaping (HTTPClientResult) -> Void) {
       let requestedInfo = RequestContext(requestedURL: url,
                                          userTokenType: userTokenType,
                                          userAccessToken: userAccessToken)
@@ -121,16 +121,15 @@ extension RemoteSurveyLoaderTests {
     }
     
     func complete(with error: Error, at index: Int = 0) {
-      self.messages[index].completion(error, nil)
+      self.messages[index].completion(.failure(error))
     }
     
     func complete(with statusCode: Int, at index: Int = 0) {
       let response = HTTPURLResponse(url: requestedInfo[index].requestedURL,
                                      statusCode: statusCode,
                                      httpVersion: nil,
-                                     headerFields: nil
-      )
-      self.messages[index].completion(nil, response)
+                                     headerFields: nil)!
+      self.messages[index].completion(.success(response))
     }
   }
 }
