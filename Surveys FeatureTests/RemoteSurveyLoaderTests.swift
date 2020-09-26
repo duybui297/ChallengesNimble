@@ -7,36 +7,10 @@
 //
 
 import XCTest
-
-protocol HTTPClient {
-  func get(from url: URL, userTokenType: String, userAccessToken: String)
-}
-
-class RemoteSurveyLoader {
-  private let httpClient: HTTPClient
-  private let url: URL
-  private let userTokenType: String
-  private let userAccessToken: String
-  
-  init(httpClient: HTTPClient,
-       url: URL,
-       userTokenType: String,
-       userAccessToken: String) {
-    self.httpClient = httpClient
-    self.url = url
-    self.userTokenType = userTokenType
-    self.userAccessToken = userAccessToken
-  }
-  
-  func load() {
-    httpClient.get(from: url,
-                   userTokenType: userTokenType,
-                   userAccessToken: userAccessToken)
-  }
-}
+import Surveys_Feature
 
 class RemoteSurveyLoaderTests: XCTestCase {
-
+  
   func test_init_doesNotRequestDataFromURLAndParameters() {
     let url = URL(string: "https://any-url.com")!
     let userTokenType = "Any User Token Type"
@@ -60,8 +34,26 @@ class RemoteSurveyLoaderTests: XCTestCase {
                                  userAccessToken: userAccessToken)
     sut.load()
     XCTAssertEqual(client.requestedInfo, [HTTPClientSpy.RequestContext(requestedURL: url,
-                                                         userTokenType: userTokenType,
-                                                         userAccessToken: userAccessToken)])
+                                                                       userTokenType: userTokenType,
+                                                                       userAccessToken: userAccessToken)])
+  }
+  
+  func test_loadTwice_requestDataFromURLAndParametersTwice() {
+    let url = URL(string: "https://a-specific-url.com")!
+    let userTokenType = "A Specific User Token Type"
+    let userAccessToken = "A Specific User Access Token"
+    let client = HTTPClientSpy()
+    let sut = RemoteSurveyLoader(httpClient: client,
+                                 url: url,
+                                 userTokenType: userTokenType,
+                                 userAccessToken: userAccessToken)
+    sut.load()
+    sut.load()
+    
+    let expectedRequestContext = HTTPClientSpy.RequestContext(requestedURL: url,
+                                                              userTokenType: userTokenType,
+                                                              userAccessToken: userAccessToken)
+    XCTAssertEqual(client.requestedInfo, [expectedRequestContext, expectedRequestContext])
   }
   
   private class HTTPClientSpy: HTTPClient {
