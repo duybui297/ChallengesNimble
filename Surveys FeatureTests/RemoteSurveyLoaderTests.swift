@@ -64,15 +64,18 @@ class RemoteSurveyLoaderTests: XCTestCase {
   
   func test_load_deliversInvalidErrorOnNon200HTTPResponse() {
     let (sut, client) = makeSUT()
+    let non200StatusCodes = [199, 201, 300, 400, 401, 404, 403]
     
-    var capturedErrors = [RemoteSurveyLoader.Error]()
-    sut.load { error in
-      capturedErrors.append(error)
+    non200StatusCodes.enumerated().forEach { index, code in
+      var capturedErrors = [RemoteSurveyLoader.Error]()
+      sut.load { error in
+        capturedErrors.append(error)
+      }
+      
+      client.complete(with: code, at: index)
+      
+      XCTAssertEqual(capturedErrors, [.invalidData])
     }
-    
-    client.complete(with: 400)
-    
-    XCTAssertEqual(capturedErrors, [.invalidData])
   }
 }
 
