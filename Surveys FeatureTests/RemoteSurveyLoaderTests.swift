@@ -48,7 +48,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
     XCTAssertEqual(client.requestedInfo, [expectedRequestContext, expectedRequestContext])
   }
   
-  func test_load_deliversErrorOnClientError() {
+  func test_load_deliversConnectivityErrorOnClientError() {
     let (sut, client) = makeSUT()
     
     var capturedErrors = [RemoteSurveyLoader.Error]()
