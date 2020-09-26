@@ -1,0 +1,18 @@
+//
+//  SurveyLoader.swift
+//  Surveys Feature
+//
+//  Created by Duy Bui on 9/26/20.
+//  Copyright © 2020 Duy Bui. All rights reserved.
+//
+
+import Foundation
+
+enum SurveyLoaderResult {
+  case success([SurveyItem])
+  case failure(Error)
+}
+
+protocol SurveyLoader {
+  func load(completion: @escaping (SurveyLoaderResult) -> Void)
+}
