@@ -51,15 +51,10 @@ class RemoteSurveyLoaderTests: XCTestCase {
   func test_load_deliversConnectivityErrorOnClientError() {
     let (sut, client) = makeSUT()
     
-    var capturedErrors = [RemoteSurveyLoader.Error]()
-    sut.load { error in
-      capturedErrors.append(error)
-    }
-    
-    let clientError = NSError(domain: "any error", code: 0)
-    client.complete(with: clientError)
-    
-    XCTAssertEqual(capturedErrors, [.connectivity])
+    expect(sut, toCompleteWithError: .connectivity, when: {
+      let clientError = NSError(domain: "any error", code: 0)
+      client.complete(with: clientError)
+    })
   }
   
   func test_load_deliversInvalidDataErrorOnNon200HTTPResponse() {
@@ -67,27 +62,19 @@ class RemoteSurveyLoaderTests: XCTestCase {
     let non200StatusCodes = [199, 201, 300, 400, 401, 404, 403]
     
     non200StatusCodes.enumerated().forEach { index, code in
-      var capturedErrors = [RemoteSurveyLoader.Error]()
-      sut.load { error in
-        capturedErrors.append(error)
-      }
-      
-      client.complete(with: code, at: index)
-      
-      XCTAssertEqual(capturedErrors, [.invalidData])
+      expect(sut, toCompleteWithError: .invalidData, when: {
+        client.complete(with: code, at: index)
+      })
     }
   }
   
   func test_load_deliversInvalidDataErrorOn200HTTPResponseWithInvalidJSON() {
     let (sut, client) = makeSUT()
-
-    var capturedErrors = [RemoteSurveyLoader.Error]()
-    sut.load { capturedErrors.append($0) }
-
-    let invalidJSON = Data("invalid json".utf8)
-    client.complete(with: 200, data: invalidJSON)
-
-    XCTAssertEqual(capturedErrors, [.invalidData])
+    
+    expect(sut, toCompleteWithError: .invalidData, when: {
+      let invalidJSON = Data("invalid json".utf8)
+      client.complete(with: 200, data: invalidJSON)
+    })
   }
 }
 
@@ -102,6 +89,19 @@ extension RemoteSurveyLoaderTests {
                                    userTokenType: userTokenType,
                                    userAccessToken: userAccessToken)
       return (sut, client)
+  }
+  
+  private func expect(_ sut: RemoteSurveyLoader,
+                      toCompleteWithError error: RemoteSurveyLoader.Error,
+                      when action: () -> Void,
+                      file: StaticString = #file,
+                      line: UInt = #line) {
+    var capturedErrors = [RemoteSurveyLoader.Error]()
+    sut.load { capturedErrors.append($0) }
+    
+    action()
+    
+    XCTAssertEqual(capturedErrors, [error], file: file, line: line)
   }
 }
 
