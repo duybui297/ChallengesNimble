@@ -45,10 +45,12 @@ public struct SurveyAttribute: Equatable {
 
 public struct SurveyItem: Equatable {
   public let id: String
+  public let type: String
   public let attributes: SurveyAttribute
   
-  public init(id: String, attributes: SurveyAttribute) {
+  public init(id: String, type: String, attributes: SurveyAttribute) {
     self.id = id
+    self.type = type
     self.attributes = attributes
   }
 }
