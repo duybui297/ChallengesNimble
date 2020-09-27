@@ -18,12 +18,21 @@ class URLSessionHTTPClient {
   func get(from url: URL,
            userTokenType: String,
            userAccessToken: String) {
+    let urlRequest = makeURLRequestFrom(from: url,
+                                        userTokenType: userTokenType,
+                                        userAccessToken: userAccessToken)
+    session.dataTask(with: urlRequest) { _, _, _ in }
+  }
+  
+  private func makeURLRequestFrom(from url: URL,
+                                  userTokenType: String,
+                                  userAccessToken: String) -> URLRequest {
     let authorizationValue = "\(userTokenType) \(userAccessToken)"
     var urlRequest = URLRequest(url: url)
     urlRequest.httpMethod = "GET"
     urlRequest.setValue(authorizationValue, forHTTPHeaderField: "Authorization")
-     urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    session.dataTask(with: urlRequest) { _, _, _ in }
+    urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    return urlRequest
   }
 }
 
