@@ -51,7 +51,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
   func test_load_deliversConnectivityErrorOnClientError() {
     let (sut, client) = makeSUT()
     
-    expect(sut, toCompleteWithResult: .failure(.connectivity), when: {
+    expect(sut, toCompleteWith: .failure(RemoteSurveyLoader.Error.connectivity), when: {
       let clientError = NSError(domain: "any error", code: 0)
       client.complete(with: clientError)
     })
@@ -62,7 +62,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
     let non200StatusCodes = [199, 201, 300, 400, 401, 404, 403]
     
     non200StatusCodes.enumerated().forEach { index, code in
-      expect(sut, toCompleteWithResult: .failure(.invalidData), when: {
+      expect(sut, toCompleteWith: .failure(RemoteSurveyLoader.Error.invalidData), when: {
         let json = makeItemsJSON([])
         client.complete(with: code, data: json, at: index)
       })
@@ -72,7 +72,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
   func test_load_deliversInvalidDataErrorOn200HTTPResponseWithInvalidJSON() {
     let (sut, client) = makeSUT()
     
-    expect(sut, toCompleteWithResult: .failure(.invalidData), when: {
+    expect(sut, toCompleteWith: .failure(RemoteSurveyLoader.Error.invalidData), when: {
       let invalidJSON = Data("invalid json".utf8)
       client.complete(with: 200, data: invalidJSON)
     })
@@ -81,13 +81,10 @@ class RemoteSurveyLoaderTests: XCTestCase {
   func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
     let (sut, client) = makeSUT()
     
-    var capturedResults = [RemoteSurveyLoader.Result]()
-    sut.load { capturedResults.append($0) }
-    
-    let emptyListJSON = makeItemsJSON([])
-    client.complete(with: 200, data: emptyListJSON)
-    
-    XCTAssertEqual(capturedResults, [.success([])])
+    expect(sut, toCompleteWith: .success([]), when: {
+      let json = makeItemsJSON([])
+      client.complete(with: 200, data: json)
+    })
   }
   
   func test_load_deliversSurveyItemsOn200HTTPResponseWithJSONItems() {
@@ -118,7 +115,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
     let surveyItemsJSON = makeItemsJSON([firstItem.json, secondItem.json])
     
     expect(sut,
-           toCompleteWithResult: .success([firstItem.model, secondItem.model]), when: {
+           toCompleteWith: .success([firstItem.model, secondItem.model]), when: {
             client.complete(with: 200, data: surveyItemsJSON)
     })
   }
@@ -159,16 +156,31 @@ extension RemoteSurveyLoaderTests {
   }
   
   private func expect(_ sut: RemoteSurveyLoader,
-                      toCompleteWithResult result: RemoteSurveyLoader.Result,
+                      toCompleteWith expectedResult: RemoteSurveyLoader.Result,
                       when action: () -> Void,
                       file: StaticString = #file,
                       line: UInt = #line) {
-    var capturedErrors = [RemoteSurveyLoader.Result]()
-    sut.load { capturedErrors.append($0) }
     
+    let exp = expectation(description: "Wait for load completion")
+
+    sut.load { receivedResult in
+      switch (receivedResult, expectedResult) {
+      case let (.success(receivedItems), .success(expectedItems)):
+        XCTAssertEqual(receivedItems, expectedItems, file: file, line: line)
+
+      case let (.failure(receivedError as RemoteSurveyLoader.Error), .failure(expectedError as RemoteSurveyLoader.Error)):
+        XCTAssertEqual(receivedError, expectedError, file: file, line: line)
+
+      default:
+        XCTFail("Expected result \(expectedResult) got \(receivedResult) instead", file: file, line: line)
+      }
+
+      exp.fulfill()
+    }
+
     action()
-    
-    XCTAssertEqual(capturedErrors, [result], file: file, line: line)
+
+    wait(for: [exp], timeout: 1.0)
   }
   
   private func trackForMemoryLeaks(_ instance: AnyObject,

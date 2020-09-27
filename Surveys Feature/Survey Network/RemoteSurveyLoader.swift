@@ -19,10 +19,7 @@ public class RemoteSurveyLoader {
     case invalidData
   }
   
-  public enum Result: Equatable {
-    case success([SurveyItem])
-    case failure(Error)
-  }
+  public typealias Result = SurveyLoaderResult
   
   public init(httpClient: HTTPClient,
               url: URL,
@@ -41,13 +38,13 @@ public class RemoteSurveyLoader {
                     guard self != nil else { return }
                     switch result {
                     case .failure:
-                      completion(.failure(.connectivity))
+                      completion(.failure(Error.connectivity))
                     case let .success(data, response):
                       do {
                         let items = try RemoteSurveyMapper.map(data, response)
                         completion(.success(items))
                       } catch {
-                        completion(.failure(.invalidData))
+                        completion(.failure(Error.invalidData))
                       }
                     }
     }
