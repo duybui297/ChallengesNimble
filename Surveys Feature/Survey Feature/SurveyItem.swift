@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct SurveyAttribute {
+public struct SurveyAttribute: Equatable {
   let title: String
   let description: String
   let thankEmailAboveThreshold: String?
@@ -21,7 +21,7 @@ struct SurveyAttribute {
   let surveyType: String
 }
 
-struct SurveyItem {
+public struct SurveyItem: Equatable {
   let id: String
   let attributes: SurveyAttribute
 }

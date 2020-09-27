@@ -51,7 +51,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
   func test_load_deliversConnectivityErrorOnClientError() {
     let (sut, client) = makeSUT()
     
-    expect(sut, toCompleteWithError: .connectivity, when: {
+    expect(sut, toCompleteWithResult: .failure(.connectivity), when: {
       let clientError = NSError(domain: "any error", code: 0)
       client.complete(with: clientError)
     })
@@ -62,7 +62,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
     let non200StatusCodes = [199, 201, 300, 400, 401, 404, 403]
     
     non200StatusCodes.enumerated().forEach { index, code in
-      expect(sut, toCompleteWithError: .invalidData, when: {
+      expect(sut, toCompleteWithResult: .failure(.invalidData), when: {
         client.complete(with: code, at: index)
       })
     }
@@ -71,10 +71,22 @@ class RemoteSurveyLoaderTests: XCTestCase {
   func test_load_deliversInvalidDataErrorOn200HTTPResponseWithInvalidJSON() {
     let (sut, client) = makeSUT()
     
-    expect(sut, toCompleteWithError: .invalidData, when: {
+    expect(sut, toCompleteWithResult: .failure(.invalidData), when: {
       let invalidJSON = Data("invalid json".utf8)
       client.complete(with: 200, data: invalidJSON)
     })
+  }
+  
+  func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
+    let (sut, client) = makeSUT()
+
+    var capturedResults = [RemoteSurveyLoader.Result]()
+    sut.load { capturedResults.append($0) }
+
+    let emptyListJSON = Data("{\"data\": []}".utf8)
+    client.complete(with: 200, data: emptyListJSON)
+
+    XCTAssertEqual(capturedResults, [.success([])])
   }
 }
 
@@ -92,16 +104,16 @@ extension RemoteSurveyLoaderTests {
   }
   
   private func expect(_ sut: RemoteSurveyLoader,
-                      toCompleteWithError error: RemoteSurveyLoader.Error,
+                      toCompleteWithResult result: RemoteSurveyLoader.Result,
                       when action: () -> Void,
                       file: StaticString = #file,
                       line: UInt = #line) {
-    var capturedErrors = [RemoteSurveyLoader.Error]()
+    var capturedErrors = [RemoteSurveyLoader.Result]()
     sut.load { capturedErrors.append($0) }
     
     action()
     
-    XCTAssertEqual(capturedErrors, [error], file: file, line: line)
+    XCTAssertEqual(capturedErrors, [result], file: file, line: line)
   }
 }
 
