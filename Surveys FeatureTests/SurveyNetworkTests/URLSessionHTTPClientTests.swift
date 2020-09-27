@@ -7,21 +7,27 @@
 //
 
 import XCTest
+import Surveys_Feature
 
 class URLSessionHTTPClient {
   private let session: URLSession
-
+  
   init(session: URLSession) {
     self.session = session
   }
-
+  
   func get(from url: URL,
            userTokenType: String,
-           userAccessToken: String) {
+           userAccessToken: String,
+           completion: @escaping (HTTPClientResult) -> Void) {
     let urlRequest = makeURLRequestFrom(from: url,
                                         userTokenType: userTokenType,
                                         userAccessToken: userAccessToken)
-    session.dataTask(with: urlRequest) { _, _, _ in }.resume()
+    session.dataTask(with: urlRequest) { _, _, error in
+      if let error = error {
+        completion(.failure(error))
+      }
+    }.resume()
   }
   
   private func makeURLRequestFrom(from url: URL,
@@ -37,7 +43,7 @@ class URLSessionHTTPClient {
 }
 
 class URLSessionHTTPClientTests: XCTestCase {
-
+  
   func test_getFromURLRequest_createsDataTaskWithURLRequest() {
     let url = URL(string: "http://any-url.com")!
     let userTokenType = "Any User Token Type"
@@ -45,14 +51,14 @@ class URLSessionHTTPClientTests: XCTestCase {
     
     let session = URLSessionSpy()
     let sut = URLSessionHTTPClient(session: session)
-
+    session.stub(url: url)
     sut.get(from: url,
             userTokenType: userTokenType,
-            userAccessToken: userAccessToken)
+            userAccessToken: userAccessToken) { _ in }
     
     let expectedHttpHeaderFields = ["Content-Type": "application/json",
-                                   "Authorization": "\(userTokenType) \(userAccessToken)"]
-
+                                    "Authorization": "\(userTokenType) \(userAccessToken)"]
+    
     XCTAssertEqual(session.receivedURLRequests.map(\.url), [url])
     XCTAssertEqual(session.receivedURLRequests.map(\.httpMethod), ["GET"])
     XCTAssertEqual(session.receivedURLRequests.map(\.allHTTPHeaderFields), [expectedHttpHeaderFields])
@@ -69,9 +75,38 @@ class URLSessionHTTPClientTests: XCTestCase {
     let userAccessToken = "Any User Access Token"
     sut.get(from: url,
             userTokenType: userTokenType,
-            userAccessToken: userAccessToken)
+            userAccessToken: userAccessToken) { _ in }
     
     XCTAssertEqual(task.resumeCallCount, 1)
+  }
+  
+  func test_getFromURLRequest_failsOnRequestError() {
+    let url = URL(string: "http://any-url.com")!
+    let session = URLSessionSpy()
+    let task = URLSessionDataTaskSpy()
+    let error = NSError(domain: "any error", code: 1)
+    session.stub(url: url, error: error)
+    
+    let sut = URLSessionHTTPClient(session: session)
+    let userTokenType = "Any User Token Type"
+    let userAccessToken = "Any User Access Token"
+    
+    let exp = expectation(description: "Wait for completion")
+    
+    sut.get(from: url,
+            userTokenType: userTokenType,
+            userAccessToken: userAccessToken) { result in
+              switch result {
+              case let .failure(receivedError as NSError):
+                XCTAssertEqual(receivedError, error)
+              default:
+                XCTFail("Expected failure with error \(error), got \(result) instead")
+              }
+              
+              exp.fulfill()
+    }
+    
+    wait(for: [exp], timeout: 1.0)
   }
 }
 
@@ -79,27 +114,34 @@ class URLSessionHTTPClientTests: XCTestCase {
 extension URLSessionHTTPClientTests {
   private class URLSessionSpy: URLSession {
     var receivedURLRequests = [URLRequest]()
-
-    private var stubs = [URL: URLSessionDataTask]()
-
-    func stub(url: URL, task: URLSessionDataTask) {
-      stubs[url] = task
+    private struct Stub {
+      let task: URLSessionDataTask
+      let error: Error?
+    }
+    private var stubs = [URL: Stub]()
+    
+    func stub(url: URL, task: URLSessionDataTask = FakeURLSessionDataTask(), error: Error? = nil) {
+      stubs[url] = Stub(task: task, error: error)
     }
     
     override func dataTask(with urlRequest: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-      urlRequest.allHTTPHeaderFields
+      
       receivedURLRequests.append(urlRequest)
-      return stubs[urlRequest.url!] ?? FakeURLSessionDataTask()
+      guard let stub = stubs[urlRequest.url!] else {
+        fatalError("Couln't find stub for \(urlRequest.url)")
+      }
+      completionHandler(nil, nil, stub.error)
+      return stub.task
     }
   }
   
   private class FakeURLSessionDataTask: URLSessionDataTask {
     override func resume() {}
   }
-
+  
   private class URLSessionDataTaskSpy: URLSessionDataTask {
     var resumeCallCount = 0
-
+    
     override func resume() {
       resumeCallCount += 1
     }
