@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class RemoteSurveyLoader {
+public class RemoteSurveyLoader: SurveyLoader {
   private let httpClient: HTTPClient
   private let url: URL
   private let userTokenType: String
