@@ -37,7 +37,8 @@ public class RemoteSurveyLoader {
   public func load(completion: @escaping (Result) -> Void) {
     httpClient.get(from: url,
                    userTokenType: userTokenType,
-                   userAccessToken: userAccessToken) { result in
+                   userAccessToken: userAccessToken) { [weak self] result in
+                    guard self != nil else { return }
                     switch result {
                     case .failure:
                       completion(.failure(.connectivity))

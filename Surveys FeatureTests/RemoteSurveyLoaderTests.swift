@@ -123,6 +123,22 @@ class RemoteSurveyLoaderTests: XCTestCase {
     })
   }
   
+  func test_load_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
+    let url = URL(string: "http://any-url.com")!
+    let client = HTTPClientSpy()
+    var sut: RemoteSurveyLoader? = RemoteSurveyLoader(httpClient: client,
+                                                      url: url,
+                                                      userTokenType: "Any User Token Type",
+                                                      userAccessToken: "Any User Access Token")
+    
+    var capturedResults = [RemoteSurveyLoader.Result]()
+    sut?.load { capturedResults.append($0) }
+    
+    sut = nil
+    client.complete(with: 200, data: makeItemsJSON([]))
+    
+    XCTAssertTrue(capturedResults.isEmpty)
+  }
 }
 
 // MARK: - Important helper functions
