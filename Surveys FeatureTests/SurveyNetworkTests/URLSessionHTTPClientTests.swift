@@ -21,7 +21,7 @@ class URLSessionHTTPClient {
     let urlRequest = makeURLRequestFrom(from: url,
                                         userTokenType: userTokenType,
                                         userAccessToken: userAccessToken)
-    session.dataTask(with: urlRequest) { _, _, _ in }
+    session.dataTask(with: urlRequest) { _, _, _ in }.resume()
   }
   
   private func makeURLRequestFrom(from url: URL,
@@ -38,7 +38,7 @@ class URLSessionHTTPClient {
 
 class URLSessionHTTPClientTests: XCTestCase {
 
-  func test_getFromURL_createsDataTaskWithURL() {
+  func test_getFromURLRequest_createsDataTaskWithURLRequest() {
     let url = URL(string: "http://any-url.com")!
     let userTokenType = "Any User Token Type"
     let userAccessToken = "Any User Access Token"
@@ -57,6 +57,22 @@ class URLSessionHTTPClientTests: XCTestCase {
     XCTAssertEqual(session.receivedURLRequests.map(\.httpMethod), ["GET"])
     XCTAssertEqual(session.receivedURLRequests.map(\.allHTTPHeaderFields), [expectedHttpHeaderFields])
   }
+  
+  func test_getFromURLRequest_resumesDataTaskWithURLRequest() {
+    let url = URL(string: "http://any-url.com")!
+    let session = URLSessionSpy()
+    let task = URLSessionDataTaskSpy()
+    session.stub(url: url, task: task)
+    
+    let sut = URLSessionHTTPClient(session: session)
+    let userTokenType = "Any User Token Type"
+    let userAccessToken = "Any User Access Token"
+    sut.get(from: url,
+            userTokenType: userTokenType,
+            userAccessToken: userAccessToken)
+    
+    XCTAssertEqual(task.resumeCallCount, 1)
+  }
 }
 
 // MARK: - Spy - stub classes
@@ -64,12 +80,28 @@ extension URLSessionHTTPClientTests {
   private class URLSessionSpy: URLSession {
     var receivedURLRequests = [URLRequest]()
 
+    private var stubs = [URL: URLSessionDataTask]()
+
+    func stub(url: URL, task: URLSessionDataTask) {
+      stubs[url] = task
+    }
+    
     override func dataTask(with urlRequest: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
       urlRequest.allHTTPHeaderFields
       receivedURLRequests.append(urlRequest)
-      return FakeURLSessionDataTask()
+      return stubs[urlRequest.url!] ?? FakeURLSessionDataTask()
     }
   }
+  
+  private class FakeURLSessionDataTask: URLSessionDataTask {
+    override func resume() {}
+  }
 
-  private class FakeURLSessionDataTask: URLSessionDataTask {}
+  private class URLSessionDataTaskSpy: URLSessionDataTask {
+    var resumeCallCount = 0
+
+    override func resume() {
+      resumeCallCount += 1
+    }
+  }
 }
