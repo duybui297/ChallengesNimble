@@ -51,7 +51,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
   func test_load_deliversConnectivityErrorOnClientError() {
     let (sut, client) = makeSUT()
     
-    expect(sut, toCompleteWith: .failure(RemoteSurveyLoader.Error.connectivity), when: {
+    expect(sut, toCompleteWith: failure(.connectivity), when: {
       let clientError = NSError(domain: "any error", code: 0)
       client.complete(with: clientError)
     })
@@ -62,7 +62,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
     let non200StatusCodes = [199, 201, 300, 400, 401, 404, 403]
     
     non200StatusCodes.enumerated().forEach { index, code in
-      expect(sut, toCompleteWith: .failure(RemoteSurveyLoader.Error.invalidData), when: {
+      expect(sut, toCompleteWith: failure(.invalidData), when: {
         let json = makeItemsJSON([])
         client.complete(with: code, data: json, at: index)
       })
@@ -72,7 +72,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
   func test_load_deliversInvalidDataErrorOn200HTTPResponseWithInvalidJSON() {
     let (sut, client) = makeSUT()
     
-    expect(sut, toCompleteWith: .failure(RemoteSurveyLoader.Error.invalidData), when: {
+    expect(sut, toCompleteWith: failure(.invalidData), when: {
       let invalidJSON = Data("invalid json".utf8)
       client.complete(with: 200, data: invalidJSON)
     })
@@ -286,5 +286,9 @@ extension RemoteSurveyLoaderTests {
   private func makeItemsJSON(_ items: [[String: Any]]) -> Data {
     let json = ["data": items]
     return try! JSONSerialization.data(withJSONObject: json)
+  }
+  
+  private func failure(_ error: RemoteSurveyLoader.Error) -> RemoteSurveyLoader.Result {
+    return .failure(error)
   }
 }
