@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SurveyAttribute: Equatable, Decodable {
+public struct SurveyAttribute: Equatable {
   public let title: String
   public let description: String
   public let thankEmailAboveThreshold: String?
@@ -41,21 +41,9 @@ public struct SurveyAttribute: Equatable, Decodable {
     self.inactiveAt = inactiveAt
     self.surveyType = surveyType
   }
-  
-  private enum CodingKeys: String, CodingKey {
-    case title, description
-    case thankEmailAboveThreshold = "thank_email_above_threshold"
-    case thankEmailBelowThreshold = "thank_email_below_threshold"
-    case isActive = "is_active"
-    case coverImageURL = "cover_image_url"
-    case createdAt = "created_at"
-    case activeAt = "active_at"
-    case inactiveAt = "inactive_at"
-    case surveyType = "survey_type"
-  }
 }
 
-public struct SurveyItem: Equatable, Decodable {
+public struct SurveyItem: Equatable {
   public let id: String
   public let type: String
   public let attributes: SurveyAttribute
@@ -64,9 +52,5 @@ public struct SurveyItem: Equatable, Decodable {
     self.id = id
     self.type = type
     self.attributes = attributes
-  }
-  
-  private enum CodingKeys: String, CodingKey {
-    case id, type, attributes
   }
 }

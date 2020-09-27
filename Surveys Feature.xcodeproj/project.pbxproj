@@ -13,6 +13,7 @@
 		3019A0AB251F2988003351C7 /* RemoteSurveyLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019A0AA251F2988003351C7 /* RemoteSurveyLoaderTests.swift */; };
 		3019A0AE251F39C0003351C7 /* RemoteSurveyLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019A0AD251F39C0003351C7 /* RemoteSurveyLoader.swift */; };
 		3019A0B0251F39D4003351C7 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019A0AF251F39D4003351C7 /* HTTPClient.swift */; };
+		307EDF4F25202DA200F9D788 /* RemoteSurveyItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307EDF4E25202DA200F9D788 /* RemoteSurveyItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		3019A0AC251F2ADA003351C7 /* Surveys FeatureTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Surveys FeatureTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		3019A0AD251F39C0003351C7 /* RemoteSurveyLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSurveyLoader.swift; sourceTree = "<group>"; };
 		3019A0AF251F39D4003351C7 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		307EDF4E25202DA200F9D788 /* RemoteSurveyItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSurveyItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				3019A0A6251F28D4003351C7 /* Survey Feature */,
 				3019A0AD251F39C0003351C7 /* RemoteSurveyLoader.swift */,
 				3019A0AF251F39D4003351C7 /* HTTPClient.swift */,
+				307EDF4E25202DA200F9D788 /* RemoteSurveyItem.swift */,
 			);
 			path = "Surveys Feature";
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				3019A0A5251F269E003351C7 /* SurveyLoader.swift in Sources */,
 				3019A0A3251F249D003351C7 /* SurveyItem.swift in Sources */,
 				3019A0B0251F39D4003351C7 /* HTTPClient.swift in Sources */,
+				307EDF4F25202DA200F9D788 /* RemoteSurveyItem.swift in Sources */,
 				3019A0AE251F39C0003351C7 /* RemoteSurveyLoader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

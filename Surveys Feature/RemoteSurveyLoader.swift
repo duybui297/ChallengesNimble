@@ -42,20 +42,12 @@ public class RemoteSurveyLoader {
                     case .failure:
                       completion(.failure(.connectivity))
                     case let .success(data, response):
-                      if response.statusCode == 200, let root = try? JSONDecoder().decode(Root.self, from: data) {
-                        completion(.success(root.data))
+                      if response.statusCode == 200, let root = try? JSONDecoder().decode(RemoteSurveyLoader.Root.self, from: data) {
+                        completion(.success(root.surveyItems))
                       } else {
                         completion(.failure(.invalidData))
                       }
                     }
-    }
-  }
-  
-  private struct Root: Decodable {
-    let data: [SurveyItem]
-    
-    private enum CodingKeys: String, CodingKey {
-      case data
     }
   }
 }
