@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum SurveyLoaderResult {
+public enum SurveyLoaderResult {
   case success([SurveyItem])
   case failure(Error)
 }
