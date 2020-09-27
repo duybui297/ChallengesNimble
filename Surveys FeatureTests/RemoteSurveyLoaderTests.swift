@@ -80,62 +80,66 @@ class RemoteSurveyLoaderTests: XCTestCase {
   
   func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
     let (sut, client) = makeSUT()
-
+    
     var capturedResults = [RemoteSurveyLoader.Result]()
     sut.load { capturedResults.append($0) }
-
+    
     let emptyListJSON = makeItemsJSON([])
     client.complete(with: 200, data: emptyListJSON)
-
+    
     XCTAssertEqual(capturedResults, [.success([])])
   }
   
   func test_load_deliversSurveyItemsOn200HTTPResponseWithJSONItems() {
     let (sut, client) = makeSUT()
-
+    
     let firstItem = makeSurveyItem(id: UUID(),
-                               type: "the first type",
-                               title: "the first title",
-                               description: "the first description",
-                               isActive: true,
-                               coverImageURL: URL(string: "http://the-first.com")!,
-                               createdAt: "the first day",
-                               activeAt: "the first created day",
-                               surveyType: "the first survey day")
+                                   type: "the first type",
+                                   title: "the first title",
+                                   description: "the first description",
+                                   isActive: true,
+                                   coverImageURL: URL(string: "http://the-first.com")!,
+                                   createdAt: "the first day",
+                                   activeAt: "the first created day",
+                                   surveyType: "the first survey day")
     
     let secondItem = makeSurveyItem(id: UUID(),
-                               type: "the second type",
-                               title: "the second title",
-                               description: "the second description",
-                               thankEmailAboveThreshold: "the second thank email above",
-                               thankEmailBelowThreshold: "the second thank email below",
-                               isActive: false,
-                               coverImageURL: URL(string: "http://the-second.com")!,
-                               createdAt: "the second day",
-                               activeAt: "the second created day",
-                               surveyType: "the second survey day")
-
+                                    type: "the second type",
+                                    title: "the second title",
+                                    description: "the second description",
+                                    thankEmailAboveThreshold: "the second thank email above",
+                                    thankEmailBelowThreshold: "the second thank email below",
+                                    isActive: false,
+                                    coverImageURL: URL(string: "http://the-second.com")!,
+                                    createdAt: "the second day",
+                                    activeAt: "the second created day",
+                                    surveyType: "the second survey day")
+    
     let surveyItemsJSON = makeItemsJSON([firstItem.json, secondItem.json])
     
     expect(sut,
            toCompleteWithResult: .success([firstItem.model, secondItem.model]), when: {
-      client.complete(with: 200, data: surveyItemsJSON)
+            client.complete(with: 200, data: surveyItemsJSON)
     })
   }
-
+  
 }
 
 // MARK: - Important helper functions
 extension RemoteSurveyLoaderTests {
   private func makeSUT(url: URL = URL(string: "https://any-url.com")!,
                        userTokenType: String = "Any User Token Type",
-                       userAccessToken: String = "Any User Access Token") -> (sut: RemoteSurveyLoader, client: HTTPClientSpy) {
-      let client = HTTPClientSpy()
-      let sut = RemoteSurveyLoader(httpClient: client,
-                                   url: url,
-                                   userTokenType: userTokenType,
-                                   userAccessToken: userAccessToken)
-      return (sut, client)
+                       userAccessToken: String = "Any User Access Token",
+                       file: StaticString = #file,
+                       line: UInt = #line) -> (sut: RemoteSurveyLoader, client: HTTPClientSpy) {
+    let client = HTTPClientSpy()
+    let sut = RemoteSurveyLoader(httpClient: client,
+                                 url: url,
+                                 userTokenType: userTokenType,
+                                 userAccessToken: userAccessToken)
+    trackForMemoryLeaks(sut, file: file, line: line)
+    trackForMemoryLeaks(client, file: file, line: line)
+    return (sut, client)
   }
   
   private func expect(_ sut: RemoteSurveyLoader,
@@ -149,6 +153,14 @@ extension RemoteSurveyLoaderTests {
     action()
     
     XCTAssertEqual(capturedErrors, [result], file: file, line: line)
+  }
+  
+  private func trackForMemoryLeaks(_ instance: AnyObject,
+                                   file: StaticString = #file,
+                                   line: UInt = #line) {
+    addTeardownBlock { [weak instance] in
+      XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
+    }
   }
 }
 
@@ -218,16 +230,16 @@ extension RemoteSurveyLoaderTests {
                                            surveyType: surveyType)
     
     let jsonSurveyAttributes: [String: Any] = ["title": title,
-                                "description": description,
-                                "thank_email_above_threshold": thankEmailAboveThreshold,
-                                "thank_email_below_threshold": thankEmailBelowThreshold,
-                                "is_active": isActive,
-                                "cover_image_url": coverImageURL.absoluteString,
-                                "created_at": createdAt,
-                                "active_at": activeAt,
-                                "inactive_at": inactiveAt,
-                                "survey_type": surveyType
-                              ].compactMapValues { $0 }
+                                               "description": description,
+                                               "thank_email_above_threshold": thankEmailAboveThreshold,
+                                               "thank_email_below_threshold": thankEmailBelowThreshold,
+                                               "is_active": isActive,
+                                               "cover_image_url": coverImageURL.absoluteString,
+                                               "created_at": createdAt,
+                                               "active_at": activeAt,
+                                               "inactive_at": inactiveAt,
+                                               "survey_type": surveyType
+      ].compactMapValues { $0 }
     
     let uuidString = id.uuidString
     let surveyItem = SurveyItem(id: uuidString,
@@ -235,14 +247,14 @@ extension RemoteSurveyLoaderTests {
                                 attributes: surveyAttributes)
     
     let jsonSurveyItem: [String: Any] = ["id": uuidString,
-                          "type": type,
-                          "attributes": jsonSurveyAttributes
-                          ]
+                                         "type": type,
+                                         "attributes": jsonSurveyAttributes
+    ]
     
     
     return (surveyItem, jsonSurveyItem)
   }
-
+  
   private func makeItemsJSON(_ items: [[String: Any]]) -> Data {
     let json = ["data": items]
     return try! JSONSerialization.data(withJSONObject: json)
