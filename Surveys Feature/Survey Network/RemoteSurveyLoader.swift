@@ -17,6 +17,7 @@ public class RemoteSurveyLoader: SurveyLoader {
   public enum Error: Swift.Error {
     case connectivity
     case invalidData
+    case invalidJSON
   }
   
   public typealias Result = SurveyLoaderResult
@@ -44,7 +45,7 @@ public class RemoteSurveyLoader: SurveyLoader {
                         let items = try RemoteSurveyMapper.map(data, response)
                         completion(.success(items))
                       } catch {
-                        completion(.failure(Error.invalidData))
+                        completion(.failure(error))
                       }
                     }
     }

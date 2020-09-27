@@ -110,7 +110,10 @@ class RemoteSurveyMapper {
       throw RemoteSurveyLoader.Error.invalidData
     }
     
-    let root = try JSONDecoder().decode(Root.self, from: data)
+    guard let root = try? JSONDecoder().decode(Root.self, from: data) else {
+       throw RemoteSurveyLoader.Error.invalidJSON
+    }
+    
     return root.surveyItems
   }
 }
