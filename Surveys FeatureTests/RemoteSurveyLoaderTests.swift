@@ -92,37 +92,36 @@ class RemoteSurveyLoaderTests: XCTestCase {
   func test_load_deliversSurveyItemsOn200HTTPResponseWithJSONItems() {
     let (sut, client) = makeSUT()
 
-    let item1 = FeedItem(
-      id: UUID(),
-      description: nil,
-      location: nil,
-      imageURL: URL(string: "http://a-url.com")!)
+    let firstItem = makeSurveyItem(id: UUID(),
+                               type: "the first type",
+                               title: "the first title",
+                               description: "the first description",
+                               isActive: true,
+                               coverImageURL: URL(string: "http://the-first.com")!,
+                               createdAt: "the first day",
+                               activeAt: "the first created day",
+                               surveyType: "the first survey day")
+    
+    let secondItem = makeSurveyItem(id: UUID(),
+                               type: "the second type",
+                               title: "the second title",
+                               description: "the second description",
+                               thankEmailAboveThreshold: "thank email above",
+                               thankEmailBelowThreshold: "thank email below",
+                               isActive: false,
+                               coverImageURL: URL(string: "http://the-second.com")!,
+                               createdAt: "the second day",
+                               activeAt: "the second created day",
+                               surveyType: "the second survey day")
 
-    let item1JSON = [
-      "id": item1.id.uuidString,
-      "image": item1.imageURL.absoluteString
+    let surveyItemsJSON = [
+      "items": [firstItem.json, secondItem.json]
     ]
 
-    let item2 = FeedItem(
-      id: UUID(),
-      description: "a description",
-      location: "a location",
-      imageURL: URL(string: "http://another-url.com")!)
-
-    let item2JSON = [
-      "id": item2.id.uuidString,
-      "description": item2.description,
-      "location": item2.location,
-      "image": item2.imageURL.absoluteString
-    ]
-
-    let itemsJSON = [
-      "items": [item1JSON, item2JSON]
-    ]
-
-    expect(sut, toCompleteWith: .success([item1, item2]), when: {
-      let json = try! JSONSerialization.data(withJSONObject: itemsJSON)
-      client.complete(withStatusCode: 200, data: json)
+    expect(sut,
+           toCompleteWithResult: .success([firstItem.model, secondItem.model]), when: {
+      let json = try! JSONSerialization.data(withJSONObject: surveyItemsJSON)
+      client.complete(with: 200, data: json)
     })
   }
 
@@ -220,7 +219,7 @@ extension RemoteSurveyLoaderTests {
                                            inactiveAt: inactiveAt,
                                            surveyType: surveyType)
     
-    let jsonSurveyAttributes = ["title": title,
+    let jsonSurveyAttributes: [String: Any] = ["title": title,
                                 "description": description,
                                 "thank_email_above_threshold": thankEmailAboveThreshold,
                                 "thank_email_below_threshold": thankEmailBelowThreshold,
