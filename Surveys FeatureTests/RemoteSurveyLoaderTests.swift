@@ -84,7 +84,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
     var capturedResults = [RemoteSurveyLoader.Result]()
     sut.load { capturedResults.append($0) }
 
-    let emptyListJSON = Data("{\"data\": []}".utf8)
+    let emptyListJSON = makeItemsJSON([])
     client.complete(with: 200, data: emptyListJSON)
 
     XCTAssertEqual(capturedResults, [.success([])])

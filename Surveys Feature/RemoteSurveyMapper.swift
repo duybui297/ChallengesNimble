@@ -87,6 +87,7 @@ class RemoteSurveyMapper {
     let type: String
     let attributes: RemoteSurveyAttribute
     
+    static let successfulStatusCode = 200
     var surveyItem: SurveyItem {
       SurveyItem(id: id,
                  type: type,
@@ -105,7 +106,7 @@ class RemoteSurveyMapper {
   }
   
   static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [SurveyItem] {
-    guard response.statusCode == 200 else {
+    guard response.statusCode == RemoteSurveyItem.successfulStatusCode else {
       throw RemoteSurveyLoader.Error.invalidData
     }
     
