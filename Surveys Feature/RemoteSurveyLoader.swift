@@ -41,8 +41,8 @@ public class RemoteSurveyLoader {
                     switch result {
                     case .failure:
                       completion(.failure(.connectivity))
-                    case let .success(data, _):
-                      if let root = try? JSONDecoder().decode(Root.self, from: data) {
+                    case let .success(data, response):
+                      if response.statusCode == 200, let root = try? JSONDecoder().decode(Root.self, from: data) {
                         completion(.success(root.data))
                       } else {
                         completion(.failure(.invalidData))
