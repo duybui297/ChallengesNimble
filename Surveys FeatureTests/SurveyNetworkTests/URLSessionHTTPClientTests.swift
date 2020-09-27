@@ -44,24 +44,31 @@ class URLSessionHTTPClient {
 
 class URLSessionHTTPClientTests: XCTestCase {
   
-  func test_getFromURLRequest_createsDataTaskWithURLRequest() {
+  func test_getFromURLRequest_perfomrsGETRequestWithURLRequest() {
+    URLProtocolStub.startInterceptingRequests()
     let url = URL(string: "http://any-url.com")!
     let userTokenType = "Any User Token Type"
     let userAccessToken = "Any User Access Token"
     
-    let session = URLSessionSpy()
-    let sut = URLSessionHTTPClient(session: session)
+    let sut = URLSessionHTTPClient()
 
+    let exp = expectation(description: "Wait for request")
+
+    URLProtocolStub.observeRequests { request in
+      let expectedHttpHeaderFields = ["Content-Type": "application/json",
+                                      "Authorization": "\(userTokenType) \(userAccessToken)"]
+      XCTAssertEqual(request.url, url)
+      XCTAssertEqual(request.httpMethod, "GET")
+      XCTAssertEqual(request.allHTTPHeaderFields, expectedHttpHeaderFields)
+      exp.fulfill()
+    }
+    
     sut.get(from: url,
             userTokenType: userTokenType,
             userAccessToken: userAccessToken) { _ in }
     
-    let expectedHttpHeaderFields = ["Content-Type": "application/json",
-                                    "Authorization": "\(userTokenType) \(userAccessToken)"]
-    
-    XCTAssertEqual(session.receivedURLRequests.map(\.url), [url])
-    XCTAssertEqual(session.receivedURLRequests.map(\.httpMethod), ["GET"])
-    XCTAssertEqual(session.receivedURLRequests.map(\.allHTTPHeaderFields), [expectedHttpHeaderFields])
+    wait(for: [exp], timeout: 1.0)
+    URLProtocolStub.stopInterceptingRequests()
   }
   
   func test_getFromURLRequest_failsOnRequestError() {
@@ -97,20 +104,10 @@ class URLSessionHTTPClientTests: XCTestCase {
 
 // MARK: - Spy - stub classes
 extension URLSessionHTTPClientTests {
-  
-  private class URLSessionSpy: URLSession {
-    private class FakeURLSessionDataTask: URLSessionDataTask {}
-    
-    var receivedURLRequests = [URLRequest]()
-
-    override func dataTask(with urlRequest: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-      receivedURLRequests.append(urlRequest)
-      return FakeURLSessionDataTask()
-    }
-  }
-  
+ 
   private class URLProtocolStub: URLProtocol {
     private static var stub: Stub?
+    private static var requestObserver: ((URLRequest) -> Void)?
     
     private struct Stub {
       let error: Error?
@@ -122,6 +119,12 @@ extension URLSessionHTTPClientTests {
       stub = Stub(error: error, data: data, response: response)
     }
     
+    static func observeRequests(observer: @escaping (URLRequest) -> Void) {
+      requestObserver = observer
+    }
+    
+    // MARK: - URLProtocol class
+    
     static func startInterceptingRequests() {
       URLProtocol.registerClass(URLProtocolStub.self)
     }
@@ -129,9 +132,11 @@ extension URLSessionHTTPClientTests {
     static func stopInterceptingRequests() {
       URLProtocol.unregisterClass(URLProtocolStub.self)
       stub = nil
+      requestObserver = nil
     }
     
     override class func canInit(with request: URLRequest) -> Bool {
+      requestObserver?(request)
       return true
     }
     
