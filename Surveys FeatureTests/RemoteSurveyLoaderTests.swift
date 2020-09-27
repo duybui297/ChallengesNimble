@@ -106,22 +106,19 @@ class RemoteSurveyLoaderTests: XCTestCase {
                                type: "the second type",
                                title: "the second title",
                                description: "the second description",
-                               thankEmailAboveThreshold: "thank email above",
-                               thankEmailBelowThreshold: "thank email below",
+                               thankEmailAboveThreshold: "the second thank email above",
+                               thankEmailBelowThreshold: "the second thank email below",
                                isActive: false,
                                coverImageURL: URL(string: "http://the-second.com")!,
                                createdAt: "the second day",
                                activeAt: "the second created day",
                                surveyType: "the second survey day")
 
-    let surveyItemsJSON = [
-      "items": [firstItem.json, secondItem.json]
-    ]
-
+    let surveyItemsJSON = makeItemsJSON([firstItem.json, secondItem.json])
+    
     expect(sut,
            toCompleteWithResult: .success([firstItem.model, secondItem.model]), when: {
-      let json = try! JSONSerialization.data(withJSONObject: surveyItemsJSON)
-      client.complete(with: 200, data: json)
+      client.complete(with: 200, data: surveyItemsJSON)
     })
   }
 
@@ -224,7 +221,7 @@ extension RemoteSurveyLoaderTests {
                                 "thank_email_above_threshold": thankEmailAboveThreshold,
                                 "thank_email_below_threshold": thankEmailBelowThreshold,
                                 "is_active": isActive,
-                                "cover_image_url": coverImageURL,
+                                "cover_image_url": coverImageURL.absoluteString,
                                 "created_at": createdAt,
                                 "active_at": activeAt,
                                 "inactive_at": inactiveAt,
@@ -236,10 +233,10 @@ extension RemoteSurveyLoaderTests {
                                 type: type,
                                 attributes: surveyAttributes)
     
-    let jsonSurveyItem = ["id": uuidString,
+    let jsonSurveyItem: [String: Any] = ["id": uuidString,
                           "type": type,
                           "attributes": jsonSurveyAttributes
-                          ].compactMapValues { $0 }
+                          ]
     
     
     return (surveyItem, jsonSurveyItem)
