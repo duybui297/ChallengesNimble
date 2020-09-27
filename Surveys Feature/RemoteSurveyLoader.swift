@@ -42,9 +42,10 @@ public class RemoteSurveyLoader {
                     case .failure:
                       completion(.failure(.connectivity))
                     case let .success(data, response):
-                      if response.statusCode == 200, let root = try? JSONDecoder().decode(RemoteSurveyLoader.Root.self, from: data) {
-                        completion(.success(root.surveyItems))
-                      } else {
+                      do {
+                        let items = try RemoteSurveyMapper.map(data, response)
+                        completion(.success(items))
+                      } catch {
                         completion(.failure(.invalidData))
                       }
                     }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension RemoteSurveyLoader {
+class RemoteSurveyMapper {
   
   struct Root: Decodable {
     let remoteData: [RemoteSurveyItem]
@@ -102,5 +102,14 @@ extension RemoteSurveyLoader {
     private enum CodingKeys: String, CodingKey {
       case id, type, attributes
     }
+  }
+  
+  static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [SurveyItem] {
+    guard response.statusCode == 200 else {
+      throw RemoteSurveyLoader.Error.invalidData
+    }
+    
+    let root = try JSONDecoder().decode(Root.self, from: data)
+    return root.surveyItems
   }
 }
