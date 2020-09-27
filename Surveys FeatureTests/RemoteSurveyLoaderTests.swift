@@ -197,16 +197,17 @@ extension RemoteSurveyLoaderTests {
 
 // MARK: - Generating mocking helper functions
 extension RemoteSurveyLoaderTests {
-  private func makeSurveyItem(id: String,
+  private func makeSurveyItem(id: UUID,
+                              type: String,
                               title: String,
                               description: String,
-                              thankEmailAboveThreshold: String?,
-                              thankEmailBelowThreshold: String?,
+                              thankEmailAboveThreshold: String? = nil,
+                              thankEmailBelowThreshold: String? = nil,
                               isActive: Bool,
-                              coverImageURL: String,
+                              coverImageURL: URL,
                               createdAt: String,
                               activeAt: String,
-                              inactiveAt: String?,
+                              inactiveAt: String? = nil,
                               surveyType: String) -> (model: SurveyItem, json: [String: Any]) {
     let surveyAttributes = SurveyAttribute(title: title,
                                            description: description,
@@ -219,24 +220,34 @@ extension RemoteSurveyLoaderTests {
                                            inactiveAt: inactiveAt,
                                            surveyType: surveyType)
     
-    let json = [
-      "title": id.uuidString,
-      "description": description,
-      "thank_email_above_threshold": location,
-      "image": imageURL.absoluteString
-      "title": id.uuidString,
-      "description": description,
-      "thank_email_above_threshold": location,
-      "image": imageURL.absoluteString
-      ].reduce(into: [String: Any]()) { (acc, e) in
-      if let value = e.value { acc[e.key] = value }
-    }
-
-    return (item, json)
+    let jsonSurveyAttributes = ["title": title,
+                                "description": description,
+                                "thank_email_above_threshold": thankEmailAboveThreshold,
+                                "thank_email_below_threshold": thankEmailBelowThreshold,
+                                "is_active": isActive,
+                                "cover_image_url": coverImageURL,
+                                "created_at": createdAt,
+                                "active_at": activeAt,
+                                "inactive_at": inactiveAt,
+                                "survey_type": surveyType
+                              ].compactMapValues { $0 }
+    
+    let uuidString = id.uuidString
+    let surveyItem = SurveyItem(id: uuidString,
+                                type: type,
+                                attributes: surveyAttributes)
+    
+    let jsonSurveyItem = ["id": uuidString,
+                          "type": type,
+                          "attributes": jsonSurveyAttributes
+                          ].compactMapValues { $0 }
+    
+    
+    return (surveyItem, jsonSurveyItem)
   }
 
   private func makeItemsJSON(_ items: [[String: Any]]) -> Data {
-    let json = ["items": items]
+    let json = ["data": items]
     return try! JSONSerialization.data(withJSONObject: json)
   }
 }
