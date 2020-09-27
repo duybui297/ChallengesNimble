@@ -81,49 +81,15 @@ class URLSessionHTTPClientTests: XCTestCase {
   }
   
   func test_getFromURLRequest_failsOnRequestError() {
-    let urlRequestInfo = anyURLRequestInfo()
+    let requestError = NSError(domain: "any error", code: 1)
     
-    let error = NSError(domain: "any error", code: 1)
-    URLProtocolStub.stub(data: nil, response: nil, error: error)
+    let receivedError = receivedErrorWhen(data: nil, response: nil, error: requestError)
     
-    let exp = expectation(description: "Wait for completion")
-    
-    makeSUT().get(from: urlRequestInfo.url,
-                  userTokenType: urlRequestInfo.userTokenType,
-                  userAccessToken: urlRequestInfo.userAccessToken) { result in
-                    switch result {
-                    case let .failure(receivedError as NSError):
-                      XCTAssertEqual(receivedError, error)
-                    default:
-                      XCTFail("Expected failure with error \(error), got \(result) instead")
-                    }
-                    
-                    exp.fulfill()
-    }
-    
-    wait(for: [exp], timeout: 1.0)
+    XCTAssertEqual(receivedError as NSError?, requestError)
   }
   
   func test_getFromURLRequest_failsOnAllNilValues() {
-    let urlRequestInfo = anyURLRequestInfo()
-    
-    URLProtocolStub.stub(data: nil, response: nil, error: nil)
-    
-    let exp = expectation(description: "Wait for completion")
-    
-    makeSUT().get(from: urlRequestInfo.url,
-                  userTokenType: urlRequestInfo.userTokenType,
-                  userAccessToken: urlRequestInfo.userAccessToken) { result in
-                    switch result {
-                    case .failure:
-                      break
-                    default:
-                      XCTFail("Expected failure, got \(result) instead")
-                    }
-                    exp.fulfill()
-    }
-    
-    wait(for: [exp], timeout: 1.0)
+    XCTAssertNotNil(receivedErrorWhen(data: nil, response: nil, error: nil))
   }
 }
 
@@ -134,6 +100,34 @@ extension URLSessionHTTPClientTests {
     let sut = URLSessionHTTPClient()
     trackForMemoryLeaks(sut, file: file, line: line)
     return sut
+  }
+  
+  private func receivedErrorWhen(data: Data?,
+                                 response: URLResponse?,
+                                 error: Error?,
+                                 file: StaticString = #file,
+                                 line: UInt = #line) -> Error? {
+    URLProtocolStub.stub(data: data, response: response, error: error)
+    let urlRequestInfo = anyURLRequestInfo()
+    let sut = makeSUT(file: file, line: line)
+    let exp = expectation(description: "Wait for completion")
+    
+    var receivedError: Error?
+    sut.get(from: urlRequestInfo.url,
+                  userTokenType: urlRequestInfo.userTokenType,
+                  userAccessToken: urlRequestInfo.userAccessToken) { result in
+                    switch result {
+                    case let .failure(error):
+                      receivedError = error
+                    default:
+                      XCTFail("Expected failure, got \(result) instead", file: file, line: line)
+                    }
+                    
+                    exp.fulfill()
+    }
+    
+    wait(for: [exp], timeout: 1.0)
+    return receivedError
   }
   
   private func anyURLRequestInfo() -> (url: URL, userTokenType: String, userAccessToken: String) {
