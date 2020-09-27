@@ -54,15 +54,14 @@ class URLSessionHTTPClientTests: XCTestCase {
     
     URLProtocolStub.stopInterceptingRequests()
   }
+  
   func test_getFromURLRequest_perfomrsGETRequestWithURLRequest() {
     let url = URL(string: "http://any-url.com")!
     let userTokenType = "Any User Token Type"
     let userAccessToken = "Any User Access Token"
     
-    let sut = URLSessionHTTPClient()
-
     let exp = expectation(description: "Wait for request")
-
+    
     URLProtocolStub.observeRequests { request in
       let expectedHttpHeaderFields = ["Content-Type": "application/json",
                                       "Authorization": "\(userTokenType) \(userAccessToken)"]
@@ -72,7 +71,7 @@ class URLSessionHTTPClientTests: XCTestCase {
       exp.fulfill()
     }
     
-    sut.get(from: url,
+    makeSUT().get(from: url,
             userTokenType: userTokenType,
             userAccessToken: userAccessToken) { _ in }
     
@@ -87,11 +86,9 @@ class URLSessionHTTPClientTests: XCTestCase {
     let error = NSError(domain: "any error", code: 1)
     URLProtocolStub.stub(data: nil, response: nil, error: error)
     
-    let sut = URLSessionHTTPClient()
-    
     let exp = expectation(description: "Wait for completion")
     
-    sut.get(from: url,
+    makeSUT().get(from: url,
             userTokenType: userTokenType,
             userAccessToken: userAccessToken) { result in
               switch result {
@@ -108,9 +105,15 @@ class URLSessionHTTPClientTests: XCTestCase {
   }
 }
 
-// MARK: - Spy - stub classes
+// MARK: - Important helper functions
 extension URLSessionHTTPClientTests {
- 
+  private func makeSUT() -> URLSessionHTTPClient {
+    return URLSessionHTTPClient()
+  }
+}
+
+// MARK: - Spy - stub functions
+extension URLSessionHTTPClientTests {
   private class URLProtocolStub: URLProtocol {
     private static var stub: Stub?
     private static var requestObserver: ((URLRequest) -> Void)?
@@ -151,7 +154,6 @@ extension URLSessionHTTPClientTests {
     }
     
     override func startLoading() {
-      
       if let error = URLProtocolStub.stub?.error {
         client?.urlProtocol(self, didFailWithError: error)
       }
@@ -159,7 +161,7 @@ extension URLSessionHTTPClientTests {
       if let data = URLProtocolStub.stub?.data {
         client?.urlProtocol(self, didLoad: data)
       }
-
+      
       if let response = URLProtocolStub.stub?.response {
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
       }
