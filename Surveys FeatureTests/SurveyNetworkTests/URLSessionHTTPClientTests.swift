@@ -56,49 +56,45 @@ class URLSessionHTTPClientTests: XCTestCase {
   }
   
   func test_getFromURLRequest_perfomrsGETRequestWithURLRequest() {
-    let url = URL(string: "http://any-url.com")!
-    let userTokenType = "Any User Token Type"
-    let userAccessToken = "Any User Access Token"
+    let urlRequestInfo = anyURLRequestInfo()
     
     let exp = expectation(description: "Wait for request")
     
     URLProtocolStub.observeRequests { request in
       let expectedHttpHeaderFields = ["Content-Type": "application/json",
-                                      "Authorization": "\(userTokenType) \(userAccessToken)"]
-      XCTAssertEqual(request.url, url)
+                                      "Authorization": "\(urlRequestInfo.userTokenType) \(urlRequestInfo.userAccessToken)"]
+      XCTAssertEqual(request.url, urlRequestInfo.url)
       XCTAssertEqual(request.httpMethod, "GET")
       XCTAssertEqual(request.allHTTPHeaderFields, expectedHttpHeaderFields)
       exp.fulfill()
     }
     
-    makeSUT().get(from: url,
-            userTokenType: userTokenType,
-            userAccessToken: userAccessToken) { _ in }
+    makeSUT().get(from: urlRequestInfo.url,
+                  userTokenType: urlRequestInfo.userTokenType,
+                  userAccessToken: urlRequestInfo.userAccessToken) { _ in }
     
     wait(for: [exp], timeout: 1.0)
   }
   
   func test_getFromURLRequest_failsOnRequestError() {
-    let url = URL(string: "http://any-url.com")!
-    let userTokenType = "Any User Token Type"
-    let userAccessToken = "Any User Access Token"
+    let urlRequestInfo = anyURLRequestInfo()
     
     let error = NSError(domain: "any error", code: 1)
     URLProtocolStub.stub(data: nil, response: nil, error: error)
     
     let exp = expectation(description: "Wait for completion")
     
-    makeSUT().get(from: url,
-            userTokenType: userTokenType,
-            userAccessToken: userAccessToken) { result in
-              switch result {
-              case let .failure(receivedError as NSError):
-                XCTAssertEqual(receivedError, error)
-              default:
-                XCTFail("Expected failure with error \(error), got \(result) instead")
-              }
-              
-              exp.fulfill()
+    makeSUT().get(from: urlRequestInfo.url,
+                  userTokenType: urlRequestInfo.userTokenType,
+                  userAccessToken: urlRequestInfo.userAccessToken) { result in
+                    switch result {
+                    case let .failure(receivedError as NSError):
+                      XCTAssertEqual(receivedError, error)
+                    default:
+                      XCTFail("Expected failure with error \(error), got \(result) instead")
+                    }
+                    
+                    exp.fulfill()
     }
     
     wait(for: [exp], timeout: 1.0)
@@ -112,6 +108,10 @@ extension URLSessionHTTPClientTests {
     let sut = URLSessionHTTPClient()
     trackForMemoryLeaks(sut, file: file, line: line)
     return sut
+  }
+  
+  private func anyURLRequestInfo() -> (url: URL, userTokenType: String, userAccessToken: String) {
+    return (URL(string: "http://any-url.com")!, "Any User Token Type", "Any User Access Token")
   }
 }
 
