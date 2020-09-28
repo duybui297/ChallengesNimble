@@ -18,6 +18,7 @@ public class RemoteSurveyLoader: SurveyLoader {
     case connectivity
     case invalidData
     case invalidJSON
+    case unauthorized
   }
   
   public typealias Result = SurveyLoaderResult

@@ -59,7 +59,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
   
   func test_load_deliversInvalidDataErrorOnNon200HTTPResponse() {
     let (sut, client) = makeSUT()
-    let non200StatusCodes = [199, 201, 300, 400, 401, 404, 403]
+    let non200StatusCodes = [199, 201, 300, 400, 404, 403]
     
     non200StatusCodes.enumerated().forEach { index, code in
       expect(sut, toCompleteWith: failure(.invalidData), when: {
@@ -67,6 +67,15 @@ class RemoteSurveyLoaderTests: XCTestCase {
         client.complete(with: code, data: json, at: index)
       })
     }
+  }
+  
+  func test_load_deliversUnauthorizedErrorOn401StatusCode() {
+    let (sut, client) = makeSUT()
+    
+    expect(sut, toCompleteWith: failure(.unauthorized), when: {
+      let json = makeItemsJSON([])
+      client.complete(with: 401, data: json)
+    })
   }
   
   func test_load_deliversInvalidJSONErrorOn200HTTPResponseWithInvalidJSON() {
