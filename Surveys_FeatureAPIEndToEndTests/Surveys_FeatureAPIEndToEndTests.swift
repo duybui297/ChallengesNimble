@@ -30,14 +30,16 @@ class Surveys_FeatureAPIEndToEndTests: XCTestCase {
   }
   
   // MARK: - Helpers
-  private func getSurveyResult() -> SurveyLoaderResult? {
+  private func getSurveyResult(file: StaticString = #file, line: UInt = #line) -> SurveyLoaderResult? {
     let testServerURL = URL(string: "https://nimble-survey-web-staging.herokuapp.com/api/v1/surveys")!
     let client = URLSessionHTTPClient()
     let loader = RemoteSurveyLoader(httpClient: client,
                                     url: testServerURL,
                                     userTokenType: "Bearer",
                                     userAccessToken: "kE0u81-XycmWA5JLOWfgYQVMsfgKP5zKLpcr54_-At4")
-
+    trackForMemoryLeaks(client, file: file, line: line)
+    trackForMemoryLeaks(loader, file: file, line: line)
+    
     let exp = expectation(description: "Wait for load completion")
 
     var receivedResult: SurveyLoaderResult?
