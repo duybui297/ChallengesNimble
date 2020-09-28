@@ -9,7 +9,7 @@
 import XCTest
 import Surveys_Feature
 
-class URLSessionHTTPClient {
+class URLSessionHTTPClient: HTTPClient {
   private let session: URLSession
   
   struct UnexpectedValuesRepresentation: Error {}
@@ -133,7 +133,7 @@ class URLSessionHTTPClientTests: XCTestCase {
 // MARK: - Important helper functions
 extension URLSessionHTTPClientTests {
   private func makeSUT(file: StaticString = #file,
-                       line: UInt = #line) -> URLSessionHTTPClient {
+                       line: UInt = #line) -> HTTPClient {
     let sut = URLSessionHTTPClient()
     trackForMemoryLeaks(sut, file: file, line: line)
     return sut
