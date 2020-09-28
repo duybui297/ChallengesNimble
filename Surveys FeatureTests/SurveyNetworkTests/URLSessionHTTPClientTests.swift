@@ -25,9 +25,11 @@ class URLSessionHTTPClient {
     let urlRequest = makeURLRequestFrom(from: url,
                                         userTokenType: userTokenType,
                                         userAccessToken: userAccessToken)
-    session.dataTask(with: urlRequest) { _, _, error in
+    session.dataTask(with: urlRequest) { data, response, error in
       if let error = error {
         completion(.failure(error))
+      } else if let data = data, data.count > 0, let response = response as? HTTPURLResponse {
+        completion(.success(data, response))
       } else {
         completion(.failure(UnexpectedValuesRepresentation()))
       }
@@ -93,7 +95,7 @@ class URLSessionHTTPClientTests: XCTestCase {
     let error = anyNSError()
     let response = anyHTTPURLResponse()
     let nonhttpURLResponse = nonHTTPURLResponse()
-
+    
     XCTAssertNotNil(receivedErrorWhen(data: nil, response: nil, error: nil))
     XCTAssertNotNil(receivedErrorWhen(data: nil, response: nonhttpURLResponse, error: nil))
     XCTAssertNotNil(receivedErrorWhen(data: nil, response: response, error: nil))
@@ -104,6 +106,33 @@ class URLSessionHTTPClientTests: XCTestCase {
     XCTAssertNotNil(receivedErrorWhen(data: data, response: nonhttpURLResponse, error: error))
     XCTAssertNotNil(receivedErrorWhen(data: data, response: response, error: error))
     XCTAssertNotNil(receivedErrorWhen(data: data, response: nonhttpURLResponse, error: nil))
+  }
+  
+  func test_getFromURLRequest_succeedsOnHTTPURLResponseWithData() {
+    let data = anyData()
+    let response = anyHTTPURLResponse()
+    let urlRequestInfo = anyURLRequestInfo()
+    
+    URLProtocolStub.stub(data: data, response: response, error: nil)
+    
+    let exp = expectation(description: "Wait for completion")
+    
+    makeSUT().get(from: urlRequestInfo.url,
+                  userTokenType: urlRequestInfo.userTokenType,
+                  userAccessToken: urlRequestInfo.userAccessToken)  { result in
+                    switch result {
+                    case let .success(receivedData, receivedResponse):
+                      XCTAssertEqual(receivedData, data)
+                      XCTAssertEqual(receivedResponse.url, response.url)
+                      XCTAssertEqual(receivedResponse.statusCode, response.statusCode)
+                    default:
+                      XCTFail("Expected success, got \(result) instead")
+                    }
+                    
+                    exp.fulfill()
+    }
+    
+    wait(for: [exp], timeout: 1.0)
   }
 }
 
@@ -128,16 +157,16 @@ extension URLSessionHTTPClientTests {
     
     var receivedError: Error?
     sut.get(from: urlRequestInfo.url,
-                  userTokenType: urlRequestInfo.userTokenType,
-                  userAccessToken: urlRequestInfo.userAccessToken) { result in
-                    switch result {
-                    case let .failure(error):
-                      receivedError = error
-                    default:
-                      XCTFail("Expected failure, got \(result) instead", file: file, line: line)
-                    }
-                    
-                    exp.fulfill()
+            userTokenType: urlRequestInfo.userTokenType,
+            userAccessToken: urlRequestInfo.userAccessToken) { result in
+              switch result {
+              case let .failure(error):
+                receivedError = error
+              default:
+                XCTFail("Expected failure, got \(result) instead", file: file, line: line)
+              }
+              
+              exp.fulfill()
     }
     
     wait(for: [exp], timeout: 1.0)
@@ -151,18 +180,18 @@ extension URLSessionHTTPClientTests {
   private func anyData() -> Data {
     return Data("any data".utf8)
   }
-
+  
   private func anyNSError() -> NSError {
     return NSError(domain: "any error", code: 0)
   }
-
+  
   private func anyHTTPURLResponse() -> HTTPURLResponse {
     return HTTPURLResponse(url: anyURLRequestInfo().url,
                            statusCode: 200,
                            httpVersion: nil,
                            headerFields: nil)!
   }
-
+  
   private func nonHTTPURLResponse() -> URLResponse {
     return URLResponse(url: anyURLRequestInfo().url,
                        mimeType: nil,
