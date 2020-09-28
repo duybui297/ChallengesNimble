@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import Surveys_Feature
+import SurveysFeature
 
 class RemoteSurveyLoaderTests: XCTestCase {
   

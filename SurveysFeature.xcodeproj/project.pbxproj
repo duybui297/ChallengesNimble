@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3019A092251F21B2003351C7 /* Surveys_Feature.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3019A088251F21B2003351C7 /* Surveys_Feature.framework */; };
+		3019A092251F21B2003351C7 /* SurveysFeature.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3019A088251F21B2003351C7 /* SurveysFeature.framework */; };
 		3019A0A3251F249D003351C7 /* SurveyItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019A0A2251F249D003351C7 /* SurveyItem.swift */; };
 		3019A0A5251F269E003351C7 /* SurveyLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019A0A4251F269E003351C7 /* SurveyLoader.swift */; };
 		3019A0AB251F2988003351C7 /* RemoteSurveyLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019A0AA251F2988003351C7 /* RemoteSurveyLoaderTests.swift */; };
@@ -18,7 +18,7 @@
 		307EDF58252153E800F9D788 /* XCTestcase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307EDF57252153E800F9D788 /* XCTestcase+MemoryLeakTracking.swift */; };
 		307EDF5A2521687300F9D788 /* URLSessionHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307EDF592521687200F9D788 /* URLSessionHTTPClient.swift */; };
 		307EDF622522249500F9D788 /* Surveys_FeatureAPIEndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307EDF612522249500F9D788 /* Surveys_FeatureAPIEndToEndTests.swift */; };
-		307EDF642522249500F9D788 /* Surveys_Feature.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3019A088251F21B2003351C7 /* Surveys_Feature.framework */; };
+		307EDF642522249500F9D788 /* SurveysFeature.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3019A088251F21B2003351C7 /* SurveysFeature.framework */; };
 		307EDF6A2522315000F9D788 /* XCTestcase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307EDF57252153E800F9D788 /* XCTestcase+MemoryLeakTracking.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,9 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3019A088251F21B2003351C7 /* Surveys_Feature.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Surveys_Feature.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3019A088251F21B2003351C7 /* SurveysFeature.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SurveysFeature.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3019A08C251F21B2003351C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3019A091251F21B2003351C7 /* Surveys FeatureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Surveys FeatureTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3019A091251F21B2003351C7 /* SurveysFeatureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurveysFeatureTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3019A098251F21B2003351C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3019A0A2251F249D003351C7 /* SurveyItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyItem.swift; sourceTree = "<group>"; };
 		3019A0A4251F269E003351C7 /* SurveyLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyLoader.swift; sourceTree = "<group>"; };
@@ -71,7 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3019A092251F21B2003351C7 /* Surveys_Feature.framework in Frameworks */,
+				3019A092251F21B2003351C7 /* SurveysFeature.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,7 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				307EDF642522249500F9D788 /* Surveys_Feature.framework in Frameworks */,
+				307EDF642522249500F9D788 /* SurveysFeature.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,8 +99,8 @@
 		3019A089251F21B2003351C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3019A088251F21B2003351C7 /* Surveys_Feature.framework */,
-				3019A091251F21B2003351C7 /* Surveys FeatureTests.xctest */,
+				3019A088251F21B2003351C7 /* SurveysFeature.framework */,
+				3019A091251F21B2003351C7 /* SurveysFeatureTests.xctest */,
 				307EDF5F2522249500F9D788 /* Surveys_FeatureAPIEndToEndTests.xctest */,
 			);
 			name = Products;
@@ -186,9 +186,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		3019A087251F21B2003351C7 /* Surveys Feature */ = {
+		3019A087251F21B2003351C7 /* SurveysFeature */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3019A09C251F21B2003351C7 /* Build configuration list for PBXNativeTarget "Surveys Feature" */;
+			buildConfigurationList = 3019A09C251F21B2003351C7 /* Build configuration list for PBXNativeTarget "SurveysFeature" */;
 			buildPhases = (
 				3019A083251F21B2003351C7 /* Headers */,
 				3019A084251F21B2003351C7 /* Sources */,
@@ -199,14 +199,14 @@
 			);
 			dependencies = (
 			);
-			name = "Surveys Feature";
+			name = SurveysFeature;
 			productName = "Surveys Feature";
-			productReference = 3019A088251F21B2003351C7 /* Surveys_Feature.framework */;
+			productReference = 3019A088251F21B2003351C7 /* SurveysFeature.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		3019A090251F21B2003351C7 /* Surveys FeatureTests */ = {
+		3019A090251F21B2003351C7 /* SurveysFeatureTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3019A09F251F21B2003351C7 /* Build configuration list for PBXNativeTarget "Surveys FeatureTests" */;
+			buildConfigurationList = 3019A09F251F21B2003351C7 /* Build configuration list for PBXNativeTarget "SurveysFeatureTests" */;
 			buildPhases = (
 				3019A08D251F21B2003351C7 /* Sources */,
 				3019A08E251F21B2003351C7 /* Frameworks */,
@@ -217,9 +217,9 @@
 			dependencies = (
 				3019A094251F21B2003351C7 /* PBXTargetDependency */,
 			);
-			name = "Surveys FeatureTests";
+			name = SurveysFeatureTests;
 			productName = "Surveys FeatureTests";
-			productReference = 3019A091251F21B2003351C7 /* Surveys FeatureTests.xctest */;
+			productReference = 3019A091251F21B2003351C7 /* SurveysFeatureTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		307EDF5E2522249500F9D788 /* Surveys_FeatureAPIEndToEndTests */ = {
@@ -263,7 +263,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3019A082251F21B2003351C7 /* Build configuration list for PBXProject "Surveys Feature" */;
+			buildConfigurationList = 3019A082251F21B2003351C7 /* Build configuration list for PBXProject "SurveysFeature" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -276,8 +276,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3019A087251F21B2003351C7 /* Surveys Feature */,
-				3019A090251F21B2003351C7 /* Surveys FeatureTests */,
+				3019A087251F21B2003351C7 /* SurveysFeature */,
+				3019A090251F21B2003351C7 /* SurveysFeatureTests */,
 				307EDF5E2522249500F9D788 /* Surveys_FeatureAPIEndToEndTests */,
 			);
 		};
@@ -345,12 +345,12 @@
 /* Begin PBXTargetDependency section */
 		3019A094251F21B2003351C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3019A087251F21B2003351C7 /* Surveys Feature */;
+			target = 3019A087251F21B2003351C7 /* SurveysFeature */;
 			targetProxy = 3019A093251F21B2003351C7 /* PBXContainerItemProxy */;
 		};
 		307EDF662522249500F9D788 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3019A087251F21B2003351C7 /* Surveys Feature */;
+			target = 3019A087251F21B2003351C7 /* SurveysFeature */;
 			targetProxy = 307EDF652522249500F9D788 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -611,7 +611,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3019A082251F21B2003351C7 /* Build configuration list for PBXProject "Surveys Feature" */ = {
+		3019A082251F21B2003351C7 /* Build configuration list for PBXProject "SurveysFeature" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3019A09A251F21B2003351C7 /* Debug */,
@@ -620,7 +620,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3019A09C251F21B2003351C7 /* Build configuration list for PBXNativeTarget "Surveys Feature" */ = {
+		3019A09C251F21B2003351C7 /* Build configuration list for PBXNativeTarget "SurveysFeature" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3019A09D251F21B2003351C7 /* Debug */,
@@ -629,7 +629,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3019A09F251F21B2003351C7 /* Build configuration list for PBXNativeTarget "Surveys FeatureTests" */ = {
+		3019A09F251F21B2003351C7 /* Build configuration list for PBXNativeTarget "SurveysFeatureTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3019A0A0251F21B2003351C7 /* Debug */,

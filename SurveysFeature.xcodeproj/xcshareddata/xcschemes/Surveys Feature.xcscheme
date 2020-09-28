@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3019A087251F21B2003351C7"
-               BuildableName = "Surveys_Feature.framework"
-               BlueprintName = "Surveys Feature"
-               ReferencedContainer = "container:Surveys Feature.xcodeproj">
+               BuildableName = "SurveysFeature.framework"
+               BlueprintName = "SurveysFeature"
+               ReferencedContainer = "container:SurveysFeature.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3019A087251F21B2003351C7"
-            BuildableName = "Surveys_Feature.framework"
-            BlueprintName = "Surveys Feature"
-            ReferencedContainer = "container:Surveys Feature.xcodeproj">
+            BuildableName = "SurveysFeature.framework"
+            BlueprintName = "SurveysFeature"
+            ReferencedContainer = "container:SurveysFeature.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
       <Testables>
@@ -45,9 +45,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3019A090251F21B2003351C7"
-               BuildableName = "Surveys FeatureTests.xctest"
-               BlueprintName = "Surveys FeatureTests"
-               ReferencedContainer = "container:Surveys Feature.xcodeproj">
+               BuildableName = "SurveysFeatureTests.xctest"
+               BlueprintName = "SurveysFeatureTests"
+               ReferencedContainer = "container:SurveysFeature.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -73,9 +73,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3019A087251F21B2003351C7"
-            BuildableName = "Surveys_Feature.framework"
-            BlueprintName = "Surveys Feature"
-            ReferencedContainer = "container:Surveys Feature.xcodeproj">
+            BuildableName = "SurveysFeature.framework"
+            BlueprintName = "SurveysFeature"
+            ReferencedContainer = "container:SurveysFeature.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
