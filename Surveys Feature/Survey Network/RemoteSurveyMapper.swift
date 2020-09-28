@@ -47,28 +47,6 @@ class RemoteSurveyMapper {
                       surveyType: surveyType)
     }
     
-    init(title: String,
-         description: String,
-         thankEmailAboveThreshold: String?,
-         thankEmailBelowThreshold: String?,
-         isActive: Bool,
-         coverImageURL: URL,
-         createdAt: String,
-         activeAt: String,
-         inactiveAt: String?,
-         surveyType: String) {
-      self.title = title
-      self.description = description
-      self.thankEmailAboveThreshold = thankEmailAboveThreshold
-      self.thankEmailBelowThreshold = thankEmailBelowThreshold
-      self.isActive = isActive
-      self.coverImageURL = coverImageURL
-      self.createdAt = createdAt
-      self.activeAt = activeAt
-      self.inactiveAt = inactiveAt
-      self.surveyType = surveyType
-    }
-    
     private enum CodingKeys: String, CodingKey {
       case title, description
       case thankEmailAboveThreshold = "thank_email_above_threshold"
@@ -94,12 +72,6 @@ class RemoteSurveyMapper {
       SurveyItem(id: id,
                  type: type,
                  attributes: attributes.surveyAttribute)
-    }
-    
-    init(id: String, type: String, attributes: RemoteSurveyAttribute) {
-      self.id = id
-      self.type = type
-      self.attributes = attributes
     }
     
     private enum CodingKeys: String, CodingKey {
