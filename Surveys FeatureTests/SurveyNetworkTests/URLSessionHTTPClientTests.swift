@@ -9,45 +9,6 @@
 import XCTest
 import Surveys_Feature
 
-class URLSessionHTTPClient: HTTPClient {
-  private let session: URLSession
-  
-  struct UnexpectedValuesRepresentation: Error {}
-  
-  init(session: URLSession = .shared) {
-    self.session = session
-  }
-  
-  func get(from url: URL,
-           userTokenType: String,
-           userAccessToken: String,
-           completion: @escaping (HTTPClientResult) -> Void) {
-    let urlRequest = makeURLRequestFrom(from: url,
-                                        userTokenType: userTokenType,
-                                        userAccessToken: userAccessToken)
-    session.dataTask(with: urlRequest) { data, response, error in
-      if let error = error {
-        completion(.failure(error))
-      } else if let data = data, let response = response as? HTTPURLResponse {
-        completion(.success(data, response))
-      } else {
-        completion(.failure(UnexpectedValuesRepresentation()))
-      }
-    }.resume()
-  }
-  
-  private func makeURLRequestFrom(from url: URL,
-                                  userTokenType: String,
-                                  userAccessToken: String) -> URLRequest {
-    let authorizationValue = "\(userTokenType) \(userAccessToken)"
-    var urlRequest = URLRequest(url: url)
-    urlRequest.httpMethod = "GET"
-    urlRequest.setValue(authorizationValue, forHTTPHeaderField: "Authorization")
-    urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    return urlRequest
-  }
-}
-
 class URLSessionHTTPClientTests: XCTestCase {
   override func setUp() {
     super.setUp()
