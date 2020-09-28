@@ -69,10 +69,10 @@ class RemoteSurveyLoaderTests: XCTestCase {
     }
   }
   
-  func test_load_deliversInvalidDataErrorOn200HTTPResponseWithInvalidJSON() {
+  func test_load_deliversInvalidJSONErrorOn200HTTPResponseWithInvalidJSON() {
     let (sut, client) = makeSUT()
     
-    expect(sut, toCompleteWith: failure(.invalidData), when: {
+    expect(sut, toCompleteWith: failure(.invalidJSON), when: {
       let invalidJSON = Data("invalid json".utf8)
       client.complete(with: 200, data: invalidJSON)
     })
@@ -181,14 +181,6 @@ extension RemoteSurveyLoaderTests {
     action()
 
     wait(for: [exp], timeout: 1.0)
-  }
-  
-  private func trackForMemoryLeaks(_ instance: AnyObject,
-                                   file: StaticString = #file,
-                                   line: UInt = #line) {
-    addTeardownBlock { [weak instance] in
-      XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
-    }
   }
 }
 
