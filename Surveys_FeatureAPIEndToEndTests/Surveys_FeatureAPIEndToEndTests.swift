@@ -12,25 +12,9 @@ import Surveys_Feature
 class Surveys_FeatureAPIEndToEndTests: XCTestCase {
   
   func test_endToEndTestServerGETSurveyResult_matchesFixedTestAccountData() {
-    let testServerURL = URL(string: "https://nimble-survey-web-staging.herokuapp.com/api/v1/surveys")!
-    let client = URLSessionHTTPClient()
-    let loader = RemoteSurveyLoader(httpClient: client,
-                                    url: testServerURL,
-                                    userTokenType: "Bearer",
-                                    userAccessToken: "kE0u81-XycmWA5JLOWfgYQVMsfgKP5zKLpcr54_-At4")
-    
-    let exp = expectation(description: "Wait for load completion")
-    
-    var receivedResult: SurveyLoaderResult?
-    loader.load { result in
-      receivedResult = result
-      exp.fulfill()
-    }
-    wait(for: [exp], timeout: 5.0)
-    
-    switch receivedResult {
+    switch getSurveyResult() {
     case let .success(items)?:
-      XCTAssertEqual(items.count, 5, "Expected 8 items in the test account feed")
+      XCTAssertEqual(items.count, 5, "Expected 5 items in the test account survey")
       XCTAssertEqual(items[0], expectedItem(at: 0))
       XCTAssertEqual(items[1], expectedItem(at: 1))
       XCTAssertEqual(items[2], expectedItem(at: 2))
@@ -38,14 +22,33 @@ class Surveys_FeatureAPIEndToEndTests: XCTestCase {
       XCTAssertEqual(items[4], expectedItem(at: 4))
       
     case let .failure(error)?:
-      XCTFail("Expected successful feed result, got \(error) instead")
+      XCTFail("Expected successful survey result, got \(error) instead")
       
     default:
-      XCTFail("Expected successful feed result, got no result instead")
+      XCTFail("Expected successful survey result, got no result instead")
     }
   }
   
   // MARK: - Helpers
+  private func getSurveyResult() -> SurveyLoaderResult? {
+    let testServerURL = URL(string: "https://nimble-survey-web-staging.herokuapp.com/api/v1/surveys")!
+    let client = URLSessionHTTPClient()
+    let loader = RemoteSurveyLoader(httpClient: client,
+                                    url: testServerURL,
+                                    userTokenType: "Bearer",
+                                    userAccessToken: "kE0u81-XycmWA5JLOWfgYQVMsfgKP5zKLpcr54_-At4")
+
+    let exp = expectation(description: "Wait for load completion")
+
+    var receivedResult: SurveyLoaderResult?
+    loader.load { result in
+      receivedResult = result
+      exp.fulfill()
+    }
+    wait(for: [exp], timeout: 5.0)
+
+    return receivedResult
+  }
   
   private func expectedItem(at index: Int) -> SurveyItem {
     let surveyAttribute = SurveyAttribute(title: title(at: index),
