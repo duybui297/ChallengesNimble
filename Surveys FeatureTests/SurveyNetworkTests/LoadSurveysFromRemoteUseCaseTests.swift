@@ -1,5 +1,5 @@
 //
-//  RemoteSurveyLoaderTests.swift
+//  LoadSurveysFromRemoteUseCaseTests.swift
 //  Surveys FeatureTests
 //
 //  Created by Duy Bui on 9/26/20.
@@ -9,7 +9,7 @@
 import XCTest
 import SurveysFeature
 
-class RemoteSurveyLoaderTests: XCTestCase {
+class LoadSurveysFromRemoteUseCaseTests: XCTestCase {
   
   func test_init_doesNotRequestDataFromURLAndParameters() {
     let (_, client) = makeSUT()
@@ -148,7 +148,7 @@ class RemoteSurveyLoaderTests: XCTestCase {
 }
 
 // MARK: - Important helper functions
-extension RemoteSurveyLoaderTests {
+extension LoadSurveysFromRemoteUseCaseTests {
   private func makeSUT(url: URL = URL(string: "https://any-url.com")!,
                        userTokenType: String = "Any User Token Type",
                        userAccessToken: String = "Any User Access Token",
@@ -194,7 +194,7 @@ extension RemoteSurveyLoaderTests {
 }
 
 // MARK: - Spy - Stub objects
-extension RemoteSurveyLoaderTests {
+extension LoadSurveysFromRemoteUseCaseTests {
   private class HTTPClientSpy: HTTPClient {
     
     struct RequestContext: Equatable {
@@ -234,7 +234,7 @@ extension RemoteSurveyLoaderTests {
 }
 
 // MARK: - Generating mocking helper functions
-extension RemoteSurveyLoaderTests {
+extension LoadSurveysFromRemoteUseCaseTests {
   private func makeSurveyItem(id: UUID,
                               type: String,
                               title: String,
