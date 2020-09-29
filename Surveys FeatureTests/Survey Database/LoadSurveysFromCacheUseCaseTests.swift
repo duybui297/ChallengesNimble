@@ -115,6 +115,20 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
 
     XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
   }
+  
+  func test_load_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
+    let store = SurveyStoreSpy()
+    var sut: LocalSurveysLoader? = LocalSurveysLoader(store: store, currentDate: Date.init)
+
+    var receivedResults = [LocalSurveysLoader.LoadResult]()
+    sut?.load { receivedResults.append($0) }
+
+    sut = nil
+    store.completeRetrievalWithEmptyCache()
+
+    XCTAssertTrue(receivedResults.isEmpty)
+  }
+
 }
 
 // MARK: - Important helper functions
