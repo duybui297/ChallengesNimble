@@ -17,6 +17,8 @@
 		3035D5BA2523588E0033E2B5 /* SurveysStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3035D5B92523588E0033E2B5 /* SurveysStore.swift */; };
 		3035D5BC252360090033E2B5 /* LocalSurvey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3035D5BB252360090033E2B5 /* LocalSurvey.swift */; };
 		3035D5BE252379620033E2B5 /* RemoteSurvey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3035D5BD252379620033E2B5 /* RemoteSurvey.swift */; };
+		3035D5C3252383480033E2B5 /* SurveysStoreSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3035D5C2252383480033E2B5 /* SurveysStoreSpy.swift */; };
+		3035D5C5252383DE0033E2B5 /* LoadSurveysFromCacheUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3035D5C4252383DE0033E2B5 /* LoadSurveysFromCacheUseCaseTests.swift */; };
 		305A4CED2522BBB60061FD61 /* CacheSurveysUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305A4CEC2522BBB60061FD61 /* CacheSurveysUseCaseTests.swift */; };
 		307EDF4F25202DA200F9D788 /* RemoteSurveyMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307EDF4E25202DA200F9D788 /* RemoteSurveyMapper.swift */; };
 		307EDF55252079F600F9D788 /* URLSessionHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307EDF54252079F600F9D788 /* URLSessionHTTPClientTests.swift */; };
@@ -59,6 +61,8 @@
 		3035D5B92523588E0033E2B5 /* SurveysStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveysStore.swift; sourceTree = "<group>"; };
 		3035D5BB252360090033E2B5 /* LocalSurvey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSurvey.swift; sourceTree = "<group>"; };
 		3035D5BD252379620033E2B5 /* RemoteSurvey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSurvey.swift; sourceTree = "<group>"; };
+		3035D5C2252383480033E2B5 /* SurveysStoreSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveysStoreSpy.swift; sourceTree = "<group>"; };
+		3035D5C4252383DE0033E2B5 /* LoadSurveysFromCacheUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadSurveysFromCacheUseCaseTests.swift; sourceTree = "<group>"; };
 		305A4CEC2522BBB60061FD61 /* CacheSurveysUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheSurveysUseCaseTests.swift; sourceTree = "<group>"; };
 		307EDF4E25202DA200F9D788 /* RemoteSurveyMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSurveyMapper.swift; sourceTree = "<group>"; };
 		307EDF54252079F600F9D788 /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
@@ -162,6 +166,8 @@
 			isa = PBXGroup;
 			children = (
 				305A4CEC2522BBB60061FD61 /* CacheSurveysUseCaseTests.swift */,
+				3035D5C2252383480033E2B5 /* SurveysStoreSpy.swift */,
+				3035D5C4252383DE0033E2B5 /* LoadSurveysFromCacheUseCaseTests.swift */,
 			);
 			path = "Survey Database";
 			sourceTree = "<group>";
@@ -362,7 +368,9 @@
 			files = (
 				3019A0AB251F2988003351C7 /* LoadSurveysFromRemoteUseCaseTests.swift in Sources */,
 				307EDF55252079F600F9D788 /* URLSessionHTTPClientTests.swift in Sources */,
+				3035D5C3252383480033E2B5 /* SurveysStoreSpy.swift in Sources */,
 				305A4CED2522BBB60061FD61 /* CacheSurveysUseCaseTests.swift in Sources */,
+				3035D5C5252383DE0033E2B5 /* LoadSurveysFromCacheUseCaseTests.swift in Sources */,
 				307EDF58252153E800F9D788 /* XCTestcase+MemoryLeakTracking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

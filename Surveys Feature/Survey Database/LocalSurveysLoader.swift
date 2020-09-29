@@ -11,8 +11,14 @@ import Foundation
 public final class LocalSurveysLoader {
   private let store: SurveysStore
   private let currentDate: () -> Date
+  private let calendar = Calendar(identifier: .gregorian)
   
   public typealias SaveResult = Error?
+  public typealias LoadResult = SurveyLoaderResult
+  
+  private var maxCacheAgeInDays: Int {
+    return 7
+  }
   
   public init(store: SurveysStore, currentDate: @escaping () -> Date) {
     self.store = store
@@ -36,6 +42,27 @@ public final class LocalSurveysLoader {
       completion(error)
     }
   }
+  
+  public func load(completion: @escaping (LoadResult) -> Void) {
+    store.retrieve { [unowned self] result in
+      switch result {
+      case let .failure(error):
+        completion(.failure(error))
+      case let .found(surveys, timestamp) where self.validate(timestamp):
+        completion(.success(surveys.toModels()))
+      case .found, .empty:
+        completion(.success([]))
+      }
+    }
+  }
+  
+  private func validate(_ timestamp: Date) -> Bool {
+    let calendar = Calendar(identifier: .gregorian)
+    guard let maxCacheAge = calendar.date(byAdding: .day, value: maxCacheAgeInDays, to: timestamp) else {
+      return false
+    }
+    return currentDate() < maxCacheAge
+  }
 }
 
 private extension Array where Element == Survey {
@@ -55,6 +82,27 @@ private extension Array where Element == Survey {
       return LocalSurvey(id: survey.id,
                          type: survey.type,
                          attributes: localAttributes)
+    }
+  }
+}
+
+private extension Array where Element == LocalSurvey {
+  func toModels() -> [Survey] {
+    return map { localSurvey in
+      let localSurveyAttributes = localSurvey.attributes
+      let attributes = SurveyAttribute(title: localSurveyAttributes.title,
+                                       description: localSurveyAttributes.description,
+                                       thankEmailAboveThreshold: localSurveyAttributes.thankEmailAboveThreshold,
+                                       thankEmailBelowThreshold: localSurveyAttributes.thankEmailBelowThreshold,
+                                       isActive: localSurveyAttributes.isActive,
+                                       coverImageURL: localSurveyAttributes.coverImageURL,
+                                       createdAt: localSurveyAttributes.createdAt,
+                                       activeAt: localSurveyAttributes.activeAt,
+                                       inactiveAt: localSurveyAttributes.inactiveAt,
+                                       surveyType: localSurveyAttributes.surveyType)
+      return Survey(id: localSurvey.id,
+                    type: localSurvey.type,
+                    attributes: attributes)
     }
   }
 }
