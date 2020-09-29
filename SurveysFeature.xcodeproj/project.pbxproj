@@ -121,6 +121,7 @@
 		3019A095251F21B2003351C7 /* Surveys FeatureTests */ = {
 			isa = PBXGroup;
 			children = (
+				307EDF56252153BC00F9D788 /* Helpers */,
 				305A4CEB2522BB250061FD61 /* Survey Database */,
 				307EDF5125203D4200F9D788 /* Survey Network */,
 				3019A098251F21B2003351C7 /* Info.plist */,
@@ -160,7 +161,6 @@
 		307EDF5125203D4200F9D788 /* Survey Network */ = {
 			isa = PBXGroup;
 			children = (
-				307EDF56252153BC00F9D788 /* Helpers */,
 				3019A0AA251F2988003351C7 /* LoadSurveysFromRemoteUseCaseTests.swift */,
 				307EDF54252079F600F9D788 /* URLSessionHTTPClientTests.swift */,
 			);
