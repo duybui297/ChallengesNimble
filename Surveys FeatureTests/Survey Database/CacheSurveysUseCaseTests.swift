@@ -99,6 +99,15 @@ class CacheSurveysUseCaseTests: XCTestCase {
     
     XCTAssertTrue(receivedResults.isEmpty)
   }
+  
+  func test_load_deletesCacheOnRetrievalError() {
+    let (sut, store) = makeSUT()
+
+    sut.load { _ in }
+    store.completeRetrieval(with: anyNSError())
+
+    XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
+  }
 }
 
 // MARK: - Important helper functions

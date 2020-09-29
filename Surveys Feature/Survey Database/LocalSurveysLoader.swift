@@ -47,6 +47,7 @@ public final class LocalSurveysLoader {
     store.retrieve { [unowned self] result in
       switch result {
       case let .failure(error):
+        self.store.deleteCachedSurveys { _ in }
         completion(.failure(error))
       case let .found(surveys, timestamp) where self.validate(timestamp):
         completion(.success(surveys.toModels()))
