@@ -49,9 +49,12 @@ class CacheSurveysUseCaseTests: XCTestCase {
 
 // MARK: - Important helper functions
 extension CacheSurveysUseCaseTests {
-  private func makeSUT() -> (sut: LocalSurveysLoader, store: SurveyStore) {
+  private func makeSUT(file: StaticString = #file,
+                       line: UInt = #line) -> (sut: LocalSurveysLoader, store: SurveyStore) {
     let store = SurveyStore()
     let sut = LocalSurveysLoader(store: store)
+    trackForMemoryLeaks(store, file: file, line: line)
+    trackForMemoryLeaks(sut, file: file, line: line)
     return (sut, store)
   }
 }
