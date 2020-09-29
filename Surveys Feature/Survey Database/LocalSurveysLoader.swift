@@ -9,10 +9,10 @@
 import Foundation
 
 public final class LocalSurveysLoader {
-  private let store: SurveyStore
+  private let store: SurveysStore
   private let currentDate: () -> Date
   
-  public init(store: SurveyStore, currentDate: @escaping () -> Date) {
+  public init(store: SurveysStore, currentDate: @escaping () -> Date) {
     self.store = store
     self.currentDate = currentDate
   }
@@ -34,12 +34,4 @@ public final class LocalSurveysLoader {
       completion(error)
     }
   }
-}
-
-public protocol SurveyStore {
-  typealias DeletionCompletion = (Error?) -> Void
-  typealias InsertionCompletion = (Error?) -> Void
-
-  func deleteCachedSurveys(completion: @escaping DeletionCompletion)
-  func insert(_ items: [SurveyItem], timestamp: Date, completion: @escaping InsertionCompletion)
 }

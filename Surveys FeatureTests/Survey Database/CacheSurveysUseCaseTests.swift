@@ -131,7 +131,7 @@ extension CacheSurveysUseCaseTests {
 
 // MARK: - Spy - Stub classes
 extension CacheSurveysUseCaseTests {
-  private class SurveyStoreSpy: SurveyStore {
+  private class SurveyStoreSpy: SurveysStore {
     typealias DeletionCompletion = (Error?) -> Void
     typealias InsertionCompletion = (Error?) -> Void
 
