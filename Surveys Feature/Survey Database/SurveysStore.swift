@@ -10,7 +10,7 @@ import Foundation
 
 public enum RetrieveCachedSurveysResult {
   case empty
-  case found(feed: [LocalSurvey], timestamp: Date)
+  case found(surveys: [LocalSurvey], timestamp: Date)
   case failure(Error)
 }
 

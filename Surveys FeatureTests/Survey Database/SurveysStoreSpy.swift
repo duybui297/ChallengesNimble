@@ -60,7 +60,7 @@ class SurveyStoreSpy: SurveysStore {
     retrievalCompletions[index](.empty)
   }
   
-  func completeRetrieval(with feed: [LocalSurvey], timestamp: Date, at index: Int = 0) {
-    retrievalCompletions[index](.found(feed: feed, timestamp: timestamp))
+  func completeRetrieval(with surveys: [LocalSurvey], timestamp: Date, at index: Int = 0) {
+    retrievalCompletions[index](.found(surveys: surveys, timestamp: timestamp))
   }
 }

@@ -9,7 +9,7 @@
 import XCTest
 import SurveysFeature
 
-class LoadFeedFromCacheUseCaseTests: XCTestCase {
+class LoadSurveysFromCacheUseCaseTests: XCTestCase {
   
   func test_init_doesNotMessageStoreUponCreation() {
     let (_, store) = makeSUT()
@@ -65,7 +65,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
 }
 
 // MARK: - Important helper functions
-extension LoadFeedFromCacheUseCaseTests {
+extension LoadSurveysFromCacheUseCaseTests {
   private func makeSUT(currentDate: @escaping () -> Date = Date.init,
                        file: StaticString = #file,
                        line: UInt = #line) -> (sut: LocalSurveysLoader, store: SurveyStoreSpy) {
@@ -104,7 +104,7 @@ extension LoadFeedFromCacheUseCaseTests {
 }
 
 // MARK: - Generating mocking helper functions
-extension LoadFeedFromCacheUseCaseTests {
+extension LoadSurveysFromCacheUseCaseTests {
   private func anyNSError() -> NSError {
     return NSError(domain: "any error", code: 0)
   }

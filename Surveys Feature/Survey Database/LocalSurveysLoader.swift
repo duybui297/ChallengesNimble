@@ -43,8 +43,8 @@ public final class LocalSurveysLoader {
       switch result {
       case let .failure(error):
         completion(.failure(error))
-      case let .found(feed, timestamp) where self.validate(timestamp):
-        completion(.success(feed.toModels()))
+      case let .found(surveys, timestamp) where self.validate(timestamp):
+        completion(.success(surveys.toModels()))
       case .found, .empty:
         completion(.success([]))
       }
