@@ -19,7 +19,8 @@ class LocalSurveysLoader {
   }
   
   func saveWith(_ items: [SurveyItem], completion: @escaping (Error?) -> Void) {
-    store.deleteCachedSurveys { [unowned self] error in
+    store.deleteCachedSurveys { [weak self] error in
+      guard let self = self else { return }
       if error == nil {
         self.store.insert(items, timestamp: self.currentDate(), completion: completion)
       } else {
@@ -99,6 +100,19 @@ class CacheSurveysUseCaseTests: XCTestCase {
       store.completeDeletionSuccessfully()
       store.completeInsertionSuccessfully()
     })
+  }
+  
+  func test_save_doesNotDeliverDeletionErrorAfterSUTInstanceHasBeenDeallocated() {
+    let store = SurveyStoreSpy()
+    var sut: LocalSurveysLoader? = LocalSurveysLoader(store: store, currentDate: Date.init)
+
+    var receivedResults = [Error?]()
+    sut?.saveWith([uniqueItem()]) { receivedResults.append($0) }
+
+    sut = nil
+    store.completeDeletion(with: anyNSError())
+
+    XCTAssertTrue(receivedResults.isEmpty)
   }
 }
 
