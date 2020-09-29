@@ -54,7 +54,7 @@ struct RemoteSurvey: Equatable, Decodable {
   static let successfulStatusCode = 200
   static let unauthorizedStatusCode = 401
   
-  var surveyItem: Survey {
+  var survey: Survey {
     Survey(id: id,
                type: type,
                attributes: attributes.surveyAttribute)

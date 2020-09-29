@@ -19,29 +19,29 @@ public final class LocalSurveysLoader {
     self.currentDate = currentDate
   }
   
-  public func save(_ items: [SurveyItem], completion: @escaping (SaveResult) -> Void) {
+  public func save(_ surveys: [Survey], completion: @escaping (SaveResult) -> Void) {
     store.deleteCachedSurveys { [weak self] error in
       guard let self = self else { return }
       if error == nil {
-        self.cache(items, with: completion)
+        self.cache(surveys, with: completion)
       } else {
         completion(error)
       }
     }
   }
   
-  private func cache(_ items: [SurveyItem], with completion: @escaping (SaveResult) -> Void) {
-    store.insert(items.toLocal(), timestamp: currentDate()) { [weak self] error in
+  private func cache(_ surveys: [Survey], with completion: @escaping (SaveResult) -> Void) {
+    store.insert(surveys.toLocal(), timestamp: currentDate()) { [weak self] error in
       guard self != nil else { return }
       completion(error)
     }
   }
 }
 
-private extension Array where Element == SurveyItem {
-  func toLocal() -> [LocalSurveyItem] {
-    return map { surveyItem in
-      let attributes = surveyItem.attributes
+private extension Array where Element == Survey {
+  func toLocal() -> [LocalSurvey] {
+    return map { survey in
+      let attributes = survey.attributes
       let localAttributes = LocalSurveyAttribute(title: attributes.title,
                                                  description: attributes.description,
                                                  thankEmailAboveThreshold: attributes.thankEmailAboveThreshold,
@@ -52,9 +52,9 @@ private extension Array where Element == SurveyItem {
                                                  activeAt: attributes.activeAt,
                                                  inactiveAt: attributes.inactiveAt,
                                                  surveyType: attributes.surveyType)
-      return LocalSurveyItem(id: surveyItem.id,
-                                 type: surveyItem.type,
-                                 attributes: localAttributes)
+      return LocalSurvey(id: survey.id,
+                         type: survey.type,
+                         attributes: localAttributes)
     }
   }
 }

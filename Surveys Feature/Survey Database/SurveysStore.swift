@@ -13,5 +13,5 @@ public protocol SurveysStore {
   typealias InsertionCompletion = (Error?) -> Void
 
   func deleteCachedSurveys(completion: @escaping DeletionCompletion)
-  func insert(_ items: [LocalSurveyItem], timestamp: Date, completion: @escaping InsertionCompletion)
+  func insert(_ surveys: [LocalSurvey], timestamp: Date, completion: @escaping InsertionCompletion)
 }

@@ -1,5 +1,5 @@
 //
-//  RemoteSurveyItem.swift
+//  RemoteSurveyMapper.swift
 //  Surveys Feature
 //
 //  Created by Duy Bui on 9/27/20.
@@ -11,10 +11,10 @@ import Foundation
 class RemoteSurveyMapper {
   
   struct Root: Decodable {
-    let remoteData: [RemoteSurveyItem]
+    let remoteData: [RemoteSurvey]
     
-    var surveyItems: [SurveyItem] {
-      remoteData.map(\.surveyItem)
+    var surveys: [Survey] {
+      remoteData.map(\.survey)
     }
     
     enum CodingKeys: String, CodingKey {
@@ -22,9 +22,9 @@ class RemoteSurveyMapper {
     }
   }
   
-  static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [SurveyItem] {
-    guard response.statusCode == RemoteSurveyItem.successfulStatusCode else {
-      if response.statusCode == RemoteSurveyItem.unauthorizedStatusCode {
+  static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [Survey] {
+    guard response.statusCode == RemoteSurvey.successfulStatusCode else {
+      if response.statusCode == RemoteSurvey.unauthorizedStatusCode {
         throw RemoteSurveyLoader.Error.unauthorized
       }
       throw RemoteSurveyLoader.Error.invalidData
@@ -34,6 +34,6 @@ class RemoteSurveyMapper {
        throw RemoteSurveyLoader.Error.invalidJSON
     }
     
-    return root.surveyItems
+    return root.surveys
   }
 }

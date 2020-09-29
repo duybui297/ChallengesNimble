@@ -9,7 +9,7 @@
 import Foundation
 
 public enum SurveyLoaderResult {
-  case success([SurveyItem])
+  case success([Survey])
   case failure(Error)
 }
 

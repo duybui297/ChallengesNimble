@@ -13,13 +13,13 @@ class Surveys_FeatureAPIEndToEndTests: XCTestCase {
   
   func test_endToEndTestServerGETSurveyResult_matchesFixedTestAccountData() {
     switch getSurveyResult() {
-    case let .success(items)?:
-      XCTAssertEqual(items.count, 5, "Expected 5 items in the test account survey")
-      XCTAssertEqual(items[0], expectedItem(at: 0))
-      XCTAssertEqual(items[1], expectedItem(at: 1))
-      XCTAssertEqual(items[2], expectedItem(at: 2))
-      XCTAssertEqual(items[3], expectedItem(at: 3))
-      XCTAssertEqual(items[4], expectedItem(at: 4))
+    case let .success(surveys)?:
+      XCTAssertEqual(surveys.count, 5, "Expected 5 surveys in the test account survey")
+      XCTAssertEqual(surveys[0], expectedSurvey(at: 0))
+      XCTAssertEqual(surveys[1], expectedSurvey(at: 1))
+      XCTAssertEqual(surveys[2], expectedSurvey(at: 2))
+      XCTAssertEqual(surveys[3], expectedSurvey(at: 3))
+      XCTAssertEqual(surveys[4], expectedSurvey(at: 4))
       
     case let .failure(error)?:
       XCTFail("Expected successful survey result, got \(error) instead")
@@ -52,7 +52,7 @@ class Surveys_FeatureAPIEndToEndTests: XCTestCase {
     return receivedResult
   }
   
-  private func expectedItem(at index: Int) -> SurveyItem {
+  private func expectedSurvey(at index: Int) -> Survey {
     let surveyAttribute = SurveyAttribute(title: title(at: index),
                                           description: description(at: index),
                                           thankEmailAboveThreshold: thankEmailAbove(at: index),
@@ -63,7 +63,7 @@ class Surveys_FeatureAPIEndToEndTests: XCTestCase {
                                           activeAt: activeAt(at: index),
                                           inactiveAt: nil,
                                           surveyType: surveyType(at: index))
-    return SurveyItem(id: id(at: index),
+    return Survey(id: id(at: index),
                       type: "survey",
                       attributes: surveyAttribute)
   }
