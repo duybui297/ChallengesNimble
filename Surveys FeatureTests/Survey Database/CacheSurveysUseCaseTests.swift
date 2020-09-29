@@ -32,15 +32,13 @@ class SurveyStore {
 class CacheSurveysUseCaseTests: XCTestCase {
 
   func test_init_doesNotDeleteCacheUponCreation() {
-    let store = SurveyStore()
-    _ = LocalSurveysLoader(store: store)
+    let (_, store) = makeSUT()
 
     XCTAssertEqual(store.deleteCachedSurveysCallCount, 0)
   }
 
   func test_save_requestsCacheDeletion() {
-    let store = SurveyStore()
-    let sut = LocalSurveysLoader(store: store)
+    let (sut, store) = makeSUT()
     let items = [uniqueItem(), uniqueItem()]
 
     sut.saveWith(items)
@@ -49,7 +47,16 @@ class CacheSurveysUseCaseTests: XCTestCase {
   }
 }
 
-// MARK: - Helper functions
+// MARK: - Important helper functions
+extension CacheSurveysUseCaseTests {
+  private func makeSUT() -> (sut: LocalSurveysLoader, store: SurveyStore) {
+    let store = SurveyStore()
+    let sut = LocalSurveysLoader(store: store)
+    return (sut, store)
+  }
+}
+
+// MARK: - Generating mocking helper functions
 extension CacheSurveysUseCaseTests {
   private func uniqueItem() -> SurveyItem {
     let surveyAttribute = SurveyAttribute(title: "any title",
