@@ -11,15 +11,17 @@ import SurveysFeature
 
 class LocalSurveysLoader {
   private let store: SurveyStore
+  private let currentDate: () -> Date
   
-  init(store: SurveyStore) {
+  init(store: SurveyStore, currentDate: @escaping () -> Date) {
     self.store = store
+    self.currentDate = currentDate
   }
   
   func saveWith(_ items: [SurveyItem]) {
     store.deleteCachedSurveys { [unowned self] error in
       if error == nil {
-        self.store.insert(items)
+        self.store.insert(items, timestamp: self.currentDate())
       }
     }
   }
@@ -30,6 +32,8 @@ class SurveyStore {
   
   var deleteCachedSurveysCallCount = 0
   var insertCallCount = 0
+  
+  var insertions = [(items: [SurveyItem], timestamp: Date)]()
   private var deletionCompletions = [DeletionCompletion]()
   
   func deleteCachedSurveys(completion: @escaping DeletionCompletion) {
@@ -45,8 +49,9 @@ class SurveyStore {
     deletionCompletions[index](nil)
   }
 
-  func insert(_ items: [SurveyItem]) {
+  func insert(_ items: [SurveyItem], timestamp: Date) {
     insertCallCount += 1
+    insertions.append((items, timestamp))
   }
 }
 
@@ -87,14 +92,28 @@ class CacheSurveysUseCaseTests: XCTestCase {
 
     XCTAssertEqual(store.insertCallCount, 1)
   }
+  
+  func test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion() {
+    let timestamp = Date()
+    let items = [uniqueItem(), uniqueItem()]
+    let (sut, store) = makeSUT(currentDate: { timestamp })
+
+    sut.saveWith(items)
+    store.completeDeletionSuccessfully()
+
+    XCTAssertEqual(store.insertions.count, 1)
+    XCTAssertEqual(store.insertions.first?.items, items)
+    XCTAssertEqual(store.insertions.first?.timestamp, timestamp)
+  }
 }
 
 // MARK: - Important helper functions
 extension CacheSurveysUseCaseTests {
-  private func makeSUT(file: StaticString = #file,
+  private func makeSUT(currentDate: @escaping () -> Date = Date.init,
+                       file: StaticString = #file,
                        line: UInt = #line) -> (sut: LocalSurveysLoader, store: SurveyStore) {
     let store = SurveyStore()
-    let sut = LocalSurveysLoader(store: store)
+    let sut = LocalSurveysLoader(store: store, currentDate: currentDate)
     trackForMemoryLeaks(store, file: file, line: line)
     trackForMemoryLeaks(sut, file: file, line: line)
     return (sut, store)
