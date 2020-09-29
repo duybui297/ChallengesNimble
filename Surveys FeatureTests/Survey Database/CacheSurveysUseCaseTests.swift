@@ -31,7 +31,6 @@ class SurveyStore {
   typealias DeletionCompletion = (Error?) -> Void
   
   var deleteCachedSurveysCallCount = 0
-  var insertCallCount = 0
   
   var insertions = [(items: [SurveyItem], timestamp: Date)]()
   private var deletionCompletions = [DeletionCompletion]()
@@ -50,7 +49,6 @@ class SurveyStore {
   }
 
   func insert(_ items: [SurveyItem], timestamp: Date) {
-    insertCallCount += 1
     insertions.append((items, timestamp))
   }
 }
@@ -80,17 +78,7 @@ class CacheSurveysUseCaseTests: XCTestCase {
     sut.saveWith(items)
     store.completeDeletion(with: deletionError)
 
-    XCTAssertEqual(store.insertCallCount, 0)
-  }
-  
-  func test_save_requestsNewCacheInsertionOnSuccessfulDeletion() {
-    let items = [uniqueItem(), uniqueItem()]
-    let (sut, store) = makeSUT()
-
-    sut.saveWith(items)
-    store.completeDeletionSuccessfully()
-
-    XCTAssertEqual(store.insertCallCount, 1)
+    XCTAssertEqual(store.insertions.count, 0)
   }
   
   func test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion() {
