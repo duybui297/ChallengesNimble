@@ -23,9 +23,14 @@ class LocalSurveysLoader {
 
 class SurveyStore {
   var deleteCachedSurveysCallCount = 0
+  var insertCallCount = 0
   
   func deleteCachedSurveys() {
     deleteCachedSurveysCallCount += 1
+  }
+  
+  func completeDeletion(with error: Error, at index: Int = 0) {
+
   }
 }
 
@@ -44,6 +49,17 @@ class CacheSurveysUseCaseTests: XCTestCase {
     sut.saveWith(items)
 
     XCTAssertEqual(store.deleteCachedSurveysCallCount, 1)
+  }
+  
+  func test_save_doesNotRequestCacheInsertionOnDeletionError() {
+    let items = [uniqueItem(), uniqueItem()]
+    let (sut, store) = makeSUT()
+    let deletionError = anyNSError()
+
+    sut.saveWith(items)
+    store.completeDeletion(with: deletionError)
+
+    XCTAssertEqual(store.insertCallCount, 0)
   }
 }
 
@@ -79,5 +95,9 @@ extension CacheSurveysUseCaseTests {
   
   private func anyURL() -> URL {
     return URL(string: "http://any-url.com")!
+  }
+  
+  private func anyNSError() -> NSError {
+    return NSError(domain: "any error", code: 0)
   }
 }
