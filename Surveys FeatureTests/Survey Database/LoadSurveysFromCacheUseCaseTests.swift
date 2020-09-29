@@ -41,7 +41,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
     })
   }
   
-  func test_load_deliversCachedImagesOnLessThanSevenDaysOldCache() {
+  func test_load_deliversCachedSurveysOnLessThanSevenDaysOldCache() {
     let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
     let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: 1)
@@ -49,6 +49,17 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
 
     expect(sut, toCompleteWith: .success(surveys.models), when: {
       store.completeRetrieval(with: surveys.local, timestamp: lessThanSevenDaysOldTimestamp)
+    })
+  }
+  
+  func test_load_deliversNoSurveysOnSevenDaysOldCache() {
+    let surveys = uniqueSurveyItem()
+    let fixedCurrentDate = Date()
+    let sevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7)
+    let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
+
+    expect(sut, toCompleteWith: .success([]), when: {
+      store.completeRetrieval(with: surveys.local, timestamp: sevenDaysOldTimestamp)
     })
   }
 }
