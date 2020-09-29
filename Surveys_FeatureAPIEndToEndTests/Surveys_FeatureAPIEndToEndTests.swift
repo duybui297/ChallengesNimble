@@ -32,7 +32,7 @@ class Surveys_FeatureAPIEndToEndTests: XCTestCase {
   // MARK: - Helpers
   private func getSurveyResult(file: StaticString = #file, line: UInt = #line) -> SurveyLoaderResult? {
     let testServerURL = URL(string: "https://nimble-survey-web-staging.herokuapp.com/api/v1/surveys")!
-    let client = URLSessionHTTPClient()
+    let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
     let loader = RemoteSurveyLoader(httpClient: client,
                                     url: testServerURL,
                                     userTokenType: "Bearer",
