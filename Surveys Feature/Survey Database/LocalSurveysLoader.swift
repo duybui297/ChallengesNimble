@@ -36,6 +36,10 @@ public final class LocalSurveysLoader {
       completion(error)
     }
   }
+  
+  public func load() {
+    store.retrieve()
+  }
 }
 
 private extension Array where Element == Survey {

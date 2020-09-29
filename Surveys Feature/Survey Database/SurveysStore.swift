@@ -14,4 +14,5 @@ public protocol SurveysStore {
 
   func deleteCachedSurveys(completion: @escaping DeletionCompletion)
   func insert(_ surveys: [LocalSurvey], timestamp: Date, completion: @escaping InsertionCompletion)
+  func retrieve()
 }

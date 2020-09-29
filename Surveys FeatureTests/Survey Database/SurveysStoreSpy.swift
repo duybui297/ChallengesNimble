@@ -16,6 +16,7 @@ class SurveyStoreSpy: SurveysStore {
   enum ReceivedMessage: Equatable {
     case deleteCachedSurvey
     case insert([LocalSurvey], Date)
+    case retrieve
   }
   
   private(set) var receivedMessages = [ReceivedMessage]()
@@ -46,5 +47,9 @@ class SurveyStoreSpy: SurveysStore {
   func insert(_ surveys: [LocalSurvey], timestamp: Date, completion: @escaping InsertionCompletion) {
     insertionCompletions.append(completion)
     receivedMessages.append(.insert(surveys, timestamp))
+  }
+  
+  func retrieve() {
+    receivedMessages.append(.retrieve)
   }
 }
