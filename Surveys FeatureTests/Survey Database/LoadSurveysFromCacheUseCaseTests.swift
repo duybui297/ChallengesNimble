@@ -73,6 +73,24 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
       store.completeRetrieval(with: surveys.local, timestamp: moreThanSevenDaysOldTimestamp)
     })
   }
+  
+  func test_load_deletesCacheOnRetrievalError() {
+    let (sut, store) = makeSUT()
+
+    sut.load { _ in }
+    store.completeRetrieval(with: anyNSError())
+
+    XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
+  }
+  
+  func test_load_doesNotDeleteCacheOnEmptyCache() {
+    let (sut, store) = makeSUT()
+
+    sut.load { _ in }
+    store.completeRetrievalWithEmptyCache()
+
+    XCTAssertEqual(store.receivedMessages, [.retrieve])
+  }
 }
 
 // MARK: - Important helper functions
