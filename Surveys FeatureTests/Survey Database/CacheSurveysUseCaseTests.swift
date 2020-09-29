@@ -29,44 +29,12 @@ class LocalSurveysLoader {
   }
 }
 
-class SurveyStore {
+protocol SurveyStore {
   typealias DeletionCompletion = (Error?) -> Void
   typealias InsertionCompletion = (Error?) -> Void
 
-  enum ReceivedMessage: Equatable {
-    case deleteCachedFeed
-    case insert([SurveyItem], Date)
-  }
-
-  private(set) var receivedMessages = [ReceivedMessage]()
-  private var deletionCompletions = [DeletionCompletion]()
-  private var insertionCompletions = [InsertionCompletion]()
-  
-  func deleteCachedSurveys(completion: @escaping DeletionCompletion) {
-    deletionCompletions.append(completion)
-    receivedMessages.append(.deleteCachedFeed)
-  }
-  
-  func completeDeletion(with error: Error, at index: Int = 0) {
-    deletionCompletions[index](error)
-  }
-  
-  func completeDeletionSuccessfully(at index: Int = 0) {
-    deletionCompletions[index](nil)
-  }
-  
-  func completeInsertion(with error: Error, at index: Int = 0) {
-    insertionCompletions[index](error)
-  }
-  
-  func completeInsertionSuccessfully(at index: Int = 0) {
-    insertionCompletions[index](nil)
-  }
-
-  func insert(_ items: [SurveyItem], timestamp: Date, completion: @escaping InsertionCompletion) {
-    insertionCompletions.append(completion)
-    receivedMessages.append(.insert(items, timestamp))
-  }
+  func deleteCachedSurveys(completion: @escaping DeletionCompletion)
+  func insert(_ items: [SurveyItem], timestamp: Date, completion: @escaping InsertionCompletion)
 }
 
 class CacheSurveysUseCaseTests: XCTestCase {
@@ -138,8 +106,8 @@ class CacheSurveysUseCaseTests: XCTestCase {
 extension CacheSurveysUseCaseTests {
   private func makeSUT(currentDate: @escaping () -> Date = Date.init,
                        file: StaticString = #file,
-                       line: UInt = #line) -> (sut: LocalSurveysLoader, store: SurveyStore) {
-    let store = SurveyStore()
+                       line: UInt = #line) -> (sut: LocalSurveysLoader, store: SurveyStoreSpy) {
+    let store = SurveyStoreSpy()
     let sut = LocalSurveysLoader(store: store, currentDate: currentDate)
     trackForMemoryLeaks(store, file: file, line: line)
     trackForMemoryLeaks(sut, file: file, line: line)
@@ -159,6 +127,49 @@ extension CacheSurveysUseCaseTests {
     wait(for: [exp], timeout: 1.0)
 
     XCTAssertEqual(receivedError as NSError?, expectedError, file: file, line: line)
+  }
+}
+
+// MARK: - Spy - Stub classes
+extension CacheSurveysUseCaseTests {
+  private class SurveyStoreSpy: SurveyStore {
+    typealias DeletionCompletion = (Error?) -> Void
+    typealias InsertionCompletion = (Error?) -> Void
+
+    enum ReceivedMessage: Equatable {
+      case deleteCachedFeed
+      case insert([SurveyItem], Date)
+    }
+
+    private(set) var receivedMessages = [ReceivedMessage]()
+    private var deletionCompletions = [DeletionCompletion]()
+    private var insertionCompletions = [InsertionCompletion]()
+    
+    func deleteCachedSurveys(completion: @escaping DeletionCompletion) {
+      deletionCompletions.append(completion)
+      receivedMessages.append(.deleteCachedFeed)
+    }
+    
+    func completeDeletion(with error: Error, at index: Int = 0) {
+      deletionCompletions[index](error)
+    }
+    
+    func completeDeletionSuccessfully(at index: Int = 0) {
+      deletionCompletions[index](nil)
+    }
+    
+    func completeInsertion(with error: Error, at index: Int = 0) {
+      insertionCompletions[index](error)
+    }
+    
+    func completeInsertionSuccessfully(at index: Int = 0) {
+      insertionCompletions[index](nil)
+    }
+
+    func insert(_ items: [SurveyItem], timestamp: Date, completion: @escaping InsertionCompletion) {
+      insertionCompletions.append(completion)
+      receivedMessages.append(.insert(items, timestamp))
+    }
   }
 }
 
