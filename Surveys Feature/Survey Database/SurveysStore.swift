@@ -11,8 +11,9 @@ import Foundation
 public protocol SurveysStore {
   typealias DeletionCompletion = (Error?) -> Void
   typealias InsertionCompletion = (Error?) -> Void
-
+  typealias RetrievalCompletion = (Error?) -> Void
+  
   func deleteCachedSurveys(completion: @escaping DeletionCompletion)
   func insert(_ surveys: [LocalSurvey], timestamp: Date, completion: @escaping InsertionCompletion)
-  func retrieve()
+  func retrieve(completion: @escaping RetrievalCompletion)
 }

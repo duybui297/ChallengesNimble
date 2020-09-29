@@ -13,6 +13,7 @@ public final class LocalSurveysLoader {
   private let currentDate: () -> Date
   
   public typealias SaveResult = Error?
+  public typealias LoadResult = SurveyLoaderResult
   
   public init(store: SurveysStore, currentDate: @escaping () -> Date) {
     self.store = store
@@ -37,8 +38,12 @@ public final class LocalSurveysLoader {
     }
   }
   
-  public func load() {
-    store.retrieve()
+  public func load(completion: @escaping (LoadResult) -> Void) {
+    store.retrieve { error in
+      if let error = error {
+        completion(.failure(error))
+      }
+    }
   }
 }
 
