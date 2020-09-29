@@ -23,7 +23,7 @@ class CacheSurveysUseCaseTests: XCTestCase {
 
     sut.save(items) { _ in }
 
-    XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
+    XCTAssertEqual(store.receivedMessages, [.deleteCachedSurvey])
   }
   
   func test_save_doesNotRequestCacheInsertionOnDeletionError() {
@@ -34,7 +34,7 @@ class CacheSurveysUseCaseTests: XCTestCase {
     sut.save(items) { _ in }
     store.completeDeletion(with: deletionError)
 
-    XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
+    XCTAssertEqual(store.receivedMessages, [.deleteCachedSurvey])
   }
   
   func test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion() {
@@ -45,7 +45,7 @@ class CacheSurveysUseCaseTests: XCTestCase {
     sut.save(items) { _ in }
     store.completeDeletionSuccessfully()
 
-    XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .insert(localItems, timestamp)])
+    XCTAssertEqual(store.receivedMessages, [.deleteCachedSurvey, .insert(localItems, timestamp)])
   }
   
   func test_save_failsOnDeletionError() {
@@ -136,7 +136,7 @@ extension CacheSurveysUseCaseTests {
     typealias InsertionCompletion = (Error?) -> Void
 
     enum ReceivedMessage: Equatable {
-      case deleteCachedFeed
+      case deleteCachedSurvey
       case insert([LocalSurveyItem], Date)
     }
 
@@ -146,7 +146,7 @@ extension CacheSurveysUseCaseTests {
     
     func deleteCachedSurveys(completion: @escaping DeletionCompletion) {
       deletionCompletions.append(completion)
-      receivedMessages.append(.deleteCachedFeed)
+      receivedMessages.append(.deleteCachedSurvey)
     }
     
     func completeDeletion(with error: Error, at index: Int = 0) {
