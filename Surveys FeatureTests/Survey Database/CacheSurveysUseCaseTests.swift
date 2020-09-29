@@ -18,8 +18,9 @@ class LocalSurveysLoader {
     self.currentDate = currentDate
   }
   
-  func saveWith(_ items: [SurveyItem]) {
+  func saveWith(_ items: [SurveyItem], completion: @escaping (Error?) -> Void) {
     store.deleteCachedSurveys { [unowned self] error in
+      completion(error)
       if error == nil {
         self.store.insert(items, timestamp: self.currentDate())
       }
@@ -44,7 +45,7 @@ class SurveyStore {
   }
   
   func completeDeletion(with error: Error, at index: Int = 0) {
-
+    deletionCompletions[index](error)
   }
   
   func completeDeletionSuccessfully(at index: Int = 0) {
@@ -68,7 +69,7 @@ class CacheSurveysUseCaseTests: XCTestCase {
     let (sut, store) = makeSUT()
     let items = [uniqueItem(), uniqueItem()]
 
-    sut.saveWith(items)
+    sut.saveWith(items) { _ in }
 
     XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
   }
@@ -78,7 +79,7 @@ class CacheSurveysUseCaseTests: XCTestCase {
     let (sut, store) = makeSUT()
     let deletionError = anyNSError()
 
-    sut.saveWith(items)
+    sut.saveWith(items) { _ in }
     store.completeDeletion(with: deletionError)
 
     XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
@@ -89,10 +90,28 @@ class CacheSurveysUseCaseTests: XCTestCase {
     let items = [uniqueItem(), uniqueItem()]
     let (sut, store) = makeSUT(currentDate: { timestamp })
 
-    sut.saveWith(items)
+    sut.saveWith(items) { _ in }
     store.completeDeletionSuccessfully()
 
     XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .insert(items, timestamp)])
+  }
+  
+  func test_save_failsOnDeletionError() {
+    let items = [uniqueItem(), uniqueItem()]
+    let (sut, store) = makeSUT()
+    let deletionError = anyNSError()
+    let exp = expectation(description: "Wait for save completion")
+
+    var receivedError: Error?
+    sut.saveWith(items) { error in
+      receivedError = error
+      exp.fulfill()
+    }
+
+    store.completeDeletion(with: deletionError)
+    wait(for: [exp], timeout: 1.0)
+
+    XCTAssertEqual(receivedError as NSError?, deletionError)
   }
 }
 
