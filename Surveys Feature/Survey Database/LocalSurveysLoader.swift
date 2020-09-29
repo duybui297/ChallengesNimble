@@ -51,7 +51,10 @@ public final class LocalSurveysLoader {
         completion(.failure(error))
       case let .found(surveys, timestamp) where self.validate(timestamp):
         completion(.success(surveys.toModels()))
-      case .found, .empty:
+      case .found:
+        self.store.deleteCachedSurveys { _ in }
+        completion(.success([]))
+      case .empty:
         completion(.success([]))
       }
     }

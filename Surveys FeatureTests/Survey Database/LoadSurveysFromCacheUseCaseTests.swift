@@ -103,6 +103,18 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
 
     XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
+  
+  func test_load_deletesCacheOnSevenDaysOldCache() {
+    let surveys = uniqueSurveyItem()
+    let fixedCurrentDate = Date()
+    let sevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7)
+    let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
+
+    sut.load { _ in }
+    store.completeRetrieval(with: surveys.local, timestamp: sevenDaysOldTimestamp)
+
+    XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
+  }
 }
 
 // MARK: - Important helper functions
