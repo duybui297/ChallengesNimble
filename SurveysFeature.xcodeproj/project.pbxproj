@@ -13,6 +13,7 @@
 		3019A0AB251F2988003351C7 /* LoadSurveysFromRemoteUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019A0AA251F2988003351C7 /* LoadSurveysFromRemoteUseCaseTests.swift */; };
 		3019A0AE251F39C0003351C7 /* RemoteSurveyLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019A0AD251F39C0003351C7 /* RemoteSurveyLoader.swift */; };
 		3019A0B0251F39D4003351C7 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3019A0AF251F39D4003351C7 /* HTTPClient.swift */; };
+		305A4CED2522BBB60061FD61 /* CacheSurveysUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305A4CEC2522BBB60061FD61 /* CacheSurveysUseCaseTests.swift */; };
 		307EDF4F25202DA200F9D788 /* RemoteSurveyMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307EDF4E25202DA200F9D788 /* RemoteSurveyMapper.swift */; };
 		307EDF55252079F600F9D788 /* URLSessionHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307EDF54252079F600F9D788 /* URLSessionHTTPClientTests.swift */; };
 		307EDF58252153E800F9D788 /* XCTestcase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307EDF57252153E800F9D788 /* XCTestcase+MemoryLeakTracking.swift */; };
@@ -50,6 +51,7 @@
 		3019A0AC251F2ADA003351C7 /* Surveys FeatureTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Surveys FeatureTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		3019A0AD251F39C0003351C7 /* RemoteSurveyLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSurveyLoader.swift; sourceTree = "<group>"; };
 		3019A0AF251F39D4003351C7 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		305A4CEC2522BBB60061FD61 /* CacheSurveysUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheSurveysUseCaseTests.swift; sourceTree = "<group>"; };
 		307EDF4E25202DA200F9D788 /* RemoteSurveyMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSurveyMapper.swift; sourceTree = "<group>"; };
 		307EDF54252079F600F9D788 /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
 		307EDF57252153E800F9D788 /* XCTestcase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestcase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
@@ -119,7 +121,8 @@
 		3019A095251F21B2003351C7 /* Surveys FeatureTests */ = {
 			isa = PBXGroup;
 			children = (
-				307EDF5125203D4200F9D788 /* SurveyNetworkTests */,
+				305A4CEB2522BB250061FD61 /* Survey Database */,
+				307EDF5125203D4200F9D788 /* Survey Network */,
 				3019A098251F21B2003351C7 /* Info.plist */,
 				3019A0AC251F2ADA003351C7 /* Surveys FeatureTests-Bridging-Header.h */,
 			);
@@ -135,6 +138,14 @@
 			path = "Survey Feature";
 			sourceTree = "<group>";
 		};
+		305A4CEB2522BB250061FD61 /* Survey Database */ = {
+			isa = PBXGroup;
+			children = (
+				305A4CEC2522BBB60061FD61 /* CacheSurveysUseCaseTests.swift */,
+			);
+			path = "Survey Database";
+			sourceTree = "<group>";
+		};
 		307EDF5025203D2000F9D788 /* Survey Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,14 +157,14 @@
 			path = "Survey Network";
 			sourceTree = "<group>";
 		};
-		307EDF5125203D4200F9D788 /* SurveyNetworkTests */ = {
+		307EDF5125203D4200F9D788 /* Survey Network */ = {
 			isa = PBXGroup;
 			children = (
 				307EDF56252153BC00F9D788 /* Helpers */,
 				3019A0AA251F2988003351C7 /* LoadSurveysFromRemoteUseCaseTests.swift */,
 				307EDF54252079F600F9D788 /* URLSessionHTTPClientTests.swift */,
 			);
-			path = SurveyNetworkTests;
+			path = "Survey Network";
 			sourceTree = "<group>";
 		};
 		307EDF56252153BC00F9D788 /* Helpers */ = {
@@ -327,6 +338,7 @@
 			files = (
 				3019A0AB251F2988003351C7 /* LoadSurveysFromRemoteUseCaseTests.swift in Sources */,
 				307EDF55252079F600F9D788 /* URLSessionHTTPClientTests.swift in Sources */,
+				305A4CED2522BBB60061FD61 /* CacheSurveysUseCaseTests.swift in Sources */,
 				307EDF58252153E800F9D788 /* XCTestcase+MemoryLeakTracking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
