@@ -1,5 +1,5 @@
 //
-//  SurveyItem.swift
+//  Survey.swift
 //  Surveys Feature
 //
 //  Created by Duy Bui on 9/26/20.
@@ -43,7 +43,7 @@ public struct SurveyAttribute: Equatable {
   }
 }
 
-public struct SurveyItem: Equatable {
+public struct Survey: Equatable {
   public let id: String
   public let type: String
   public let attributes: SurveyAttribute

@@ -87,7 +87,7 @@ class LoadSurveysFromRemoteUseCaseTests: XCTestCase {
     })
   }
   
-  func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
+  func test_load_deliversNoSurveysOn200HTTPResponseWithEmptyJSONList() {
     let (sut, client) = makeSUT()
     
     expect(sut, toCompleteWith: .success([]), when: {
@@ -96,7 +96,7 @@ class LoadSurveysFromRemoteUseCaseTests: XCTestCase {
     })
   }
   
-  func test_load_deliversSurveyItemsOn200HTTPResponseWithJSONItems() {
+  func test_load_deliversSurveysOn200HTTPResponseWithJSONItems() {
     let (sut, client) = makeSUT()
     
     let firstItem = makeSurveyItem(id: UUID(),
@@ -174,8 +174,8 @@ extension LoadSurveysFromRemoteUseCaseTests {
 
     sut.load { receivedResult in
       switch (receivedResult, expectedResult) {
-      case let (.success(receivedItems), .success(expectedItems)):
-        XCTAssertEqual(receivedItems, expectedItems, file: file, line: line)
+      case let (.success(receivedSurveys), .success(expectedSurveys)):
+        XCTAssertEqual(receivedSurveys, expectedSurveys, file: file, line: line)
 
       case let (.failure(receivedError as RemoteSurveyLoader.Error), .failure(expectedError as RemoteSurveyLoader.Error)):
         XCTAssertEqual(receivedError, expectedError, file: file, line: line)
@@ -246,7 +246,7 @@ extension LoadSurveysFromRemoteUseCaseTests {
                               createdAt: String,
                               activeAt: String,
                               inactiveAt: String? = nil,
-                              surveyType: String) -> (model: SurveyItem, json: [String: Any]) {
+                              surveyType: String) -> (model: Survey, json: [String: Any]) {
     let surveyAttributes = SurveyAttribute(title: title,
                                            description: description,
                                            thankEmailAboveThreshold: thankEmailAboveThreshold,
@@ -271,7 +271,7 @@ extension LoadSurveysFromRemoteUseCaseTests {
       ].compactMapValues { $0 }
     
     let uuidString = id.uuidString
-    let surveyItem = SurveyItem(id: uuidString,
+    let surveyItem = Survey(id: uuidString,
                                 type: type,
                                 attributes: surveyAttributes)
     

@@ -9,71 +9,43 @@
 import XCTest
 import SurveysFeature
 
-class LocalSurveysLoader {
-  private let store: SurveyStore
-  private let currentDate: () -> Date
-  
-  init(store: SurveyStore, currentDate: @escaping () -> Date) {
-    self.store = store
-    self.currentDate = currentDate
-  }
-  
-  func saveWith(_ items: [SurveyItem], completion: @escaping (Error?) -> Void) {
-    store.deleteCachedSurveys { [unowned self] error in
-      if error == nil {
-        self.store.insert(items, timestamp: self.currentDate(), completion: completion)
-      } else {
-        completion(error)
-      }
-    }
-  }
-}
-
-protocol SurveyStore {
-  typealias DeletionCompletion = (Error?) -> Void
-  typealias InsertionCompletion = (Error?) -> Void
-
-  func deleteCachedSurveys(completion: @escaping DeletionCompletion)
-  func insert(_ items: [SurveyItem], timestamp: Date, completion: @escaping InsertionCompletion)
-}
-
 class CacheSurveysUseCaseTests: XCTestCase {
-
+  
   func test_init_doesNotPerformAnythingWithStoreUponCreation() {
     let (_, store) = makeSUT()
-
+    
     XCTAssertEqual(store.receivedMessages, [])
   }
-
+  
   func test_save_requestsCacheDeletion() {
     let (sut, store) = makeSUT()
-    let items = [uniqueItem(), uniqueItem()]
-
-    sut.saveWith(items) { _ in }
-
-    XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
+    let surveys = [uniqueItem(), uniqueItem()]
+    
+    sut.save(surveys) { _ in }
+    
+    XCTAssertEqual(store.receivedMessages, [.deleteCachedSurvey])
   }
   
   func test_save_doesNotRequestCacheInsertionOnDeletionError() {
-    let items = [uniqueItem(), uniqueItem()]
+    let surveys = [uniqueItem(), uniqueItem()]
     let (sut, store) = makeSUT()
     let deletionError = anyNSError()
-
-    sut.saveWith(items) { _ in }
+    
+    sut.save(surveys) { _ in }
     store.completeDeletion(with: deletionError)
-
-    XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
+    
+    XCTAssertEqual(store.receivedMessages, [.deleteCachedSurvey])
   }
   
   func test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion() {
     let timestamp = Date()
-    let items = [uniqueItem(), uniqueItem()]
+    let surveys = [uniqueItem(), uniqueItem()]
     let (sut, store) = makeSUT(currentDate: { timestamp })
-
-    sut.saveWith(items) { _ in }
+    let localSurveys = surveys.map { convertLocalSurvey(from: $0) }
+    sut.save(surveys) { _ in }
     store.completeDeletionSuccessfully()
-
-    XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .insert(items, timestamp)])
+    
+    XCTAssertEqual(store.receivedMessages, [.deleteCachedSurvey, .insert(localSurveys, timestamp)])
   }
   
   func test_save_failsOnDeletionError() {
@@ -100,6 +72,33 @@ class CacheSurveysUseCaseTests: XCTestCase {
       store.completeInsertionSuccessfully()
     })
   }
+  
+  func test_save_doesNotDeliverDeletionErrorAfterSUTInstanceHasBeenDeallocated() {
+    let store = SurveyStoreSpy()
+    var sut: LocalSurveysLoader? = LocalSurveysLoader(store: store, currentDate: Date.init)
+    
+    var receivedResults = [LocalSurveysLoader.SaveResult]()
+    sut?.save([uniqueItem()]) { receivedResults.append($0) }
+    
+    sut = nil
+    store.completeDeletion(with: anyNSError())
+    
+    XCTAssertTrue(receivedResults.isEmpty)
+  }
+  
+  func test_save_doesNotDeliverInsertionErrorAfterSUTInstanceHasBeenDeallocated() {
+    let store = SurveyStoreSpy()
+    var sut: LocalSurveysLoader? = LocalSurveysLoader(store: store, currentDate: Date.init)
+    
+    var receivedResults = [LocalSurveysLoader.SaveResult]()
+    sut?.save([uniqueItem()]) { receivedResults.append($0) }
+    
+    store.completeDeletionSuccessfully()
+    sut = nil
+    store.completeInsertion(with: anyNSError())
+    
+    XCTAssertTrue(receivedResults.isEmpty)
+  }
 }
 
 // MARK: - Important helper functions
@@ -116,38 +115,38 @@ extension CacheSurveysUseCaseTests {
   
   private func expect(_ sut: LocalSurveysLoader, toCompleteWithError expectedError: NSError?, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
     let exp = expectation(description: "Wait for save completion")
-
+    
     var receivedError: Error?
-    sut.saveWith([uniqueItem()]) { error in
+    sut.save([uniqueItem()]) { error in
       receivedError = error
       exp.fulfill()
     }
-
+    
     action()
     wait(for: [exp], timeout: 1.0)
-
+    
     XCTAssertEqual(receivedError as NSError?, expectedError, file: file, line: line)
   }
 }
 
 // MARK: - Spy - Stub classes
 extension CacheSurveysUseCaseTests {
-  private class SurveyStoreSpy: SurveyStore {
+  private class SurveyStoreSpy: SurveysStore {
     typealias DeletionCompletion = (Error?) -> Void
     typealias InsertionCompletion = (Error?) -> Void
-
+    
     enum ReceivedMessage: Equatable {
-      case deleteCachedFeed
-      case insert([SurveyItem], Date)
+      case deleteCachedSurvey
+      case insert([LocalSurvey], Date)
     }
-
+    
     private(set) var receivedMessages = [ReceivedMessage]()
     private var deletionCompletions = [DeletionCompletion]()
     private var insertionCompletions = [InsertionCompletion]()
     
     func deleteCachedSurveys(completion: @escaping DeletionCompletion) {
       deletionCompletions.append(completion)
-      receivedMessages.append(.deleteCachedFeed)
+      receivedMessages.append(.deleteCachedSurvey)
     }
     
     func completeDeletion(with error: Error, at index: Int = 0) {
@@ -165,17 +164,17 @@ extension CacheSurveysUseCaseTests {
     func completeInsertionSuccessfully(at index: Int = 0) {
       insertionCompletions[index](nil)
     }
-
-    func insert(_ items: [SurveyItem], timestamp: Date, completion: @escaping InsertionCompletion) {
+    
+    func insert(_ surveys: [LocalSurvey], timestamp: Date, completion: @escaping InsertionCompletion) {
       insertionCompletions.append(completion)
-      receivedMessages.append(.insert(items, timestamp))
+      receivedMessages.append(.insert(surveys, timestamp))
     }
   }
 }
 
 // MARK: - Generating mocking helper functions
 extension CacheSurveysUseCaseTests {
-  private func uniqueItem() -> SurveyItem {
+  private func uniqueItem() -> Survey {
     let surveyAttribute = SurveyAttribute(title: "any title",
                                           description: "any description",
                                           thankEmailAboveThreshold: "any thank email above",
@@ -186,9 +185,9 @@ extension CacheSurveysUseCaseTests {
                                           activeAt: "any activation date",
                                           inactiveAt: nil,
                                           surveyType: "any survey type")
-    return SurveyItem(id: UUID().uuidString,
-                      type: "any survey",
-                      attributes: surveyAttribute)
+    return Survey(id: UUID().uuidString,
+                  type: "any survey",
+                  attributes: surveyAttribute)
   }
   
   private func anyURL() -> URL {
@@ -197,5 +196,22 @@ extension CacheSurveysUseCaseTests {
   
   private func anyNSError() -> NSError {
     return NSError(domain: "any error", code: 0)
+  }
+  
+  private func convertLocalSurvey(from survey: Survey) -> LocalSurvey {
+    let attributes = survey.attributes
+    let localAttributes = LocalSurveyAttribute(title: attributes.title,
+                                               description: attributes.description,
+                                               thankEmailAboveThreshold: attributes.thankEmailAboveThreshold,
+                                               thankEmailBelowThreshold: attributes.thankEmailBelowThreshold,
+                                               isActive: attributes.isActive,
+                                               coverImageURL: attributes.coverImageURL,
+                                               createdAt: attributes.createdAt,
+                                               activeAt: attributes.activeAt,
+                                               inactiveAt: attributes.inactiveAt,
+                                               surveyType: attributes.surveyType)
+    return LocalSurvey(id: survey.id,
+                       type: survey.type,
+                       attributes: localAttributes)
   }
 }

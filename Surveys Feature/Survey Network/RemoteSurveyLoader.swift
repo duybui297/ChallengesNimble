@@ -43,8 +43,8 @@ public class RemoteSurveyLoader: SurveyLoader {
                       completion(.failure(Error.connectivity))
                     case let .success(data, response):
                       do {
-                        let items = try RemoteSurveyMapper.map(data, response)
-                        completion(.success(items))
+                        let surveys = try RemoteSurveyMapper.map(data, response)
+                        completion(.success(surveys))
                       } catch {
                         completion(.failure(error))
                       }
