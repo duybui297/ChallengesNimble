@@ -39,10 +39,14 @@ public final class LocalSurveysLoader {
   }
   
   public func load(completion: @escaping (LoadResult) -> Void) {
-    store.retrieve { error in
-      if let error = error {
+    store.retrieve { result in
+      switch result {
+      case let .failure(error):
         completion(.failure(error))
-      } else {
+      case let .found(feed, _):
+        completion(.success(feed.toModels()))
+        
+      case .empty:
         completion(.success([]))
       }
     }
@@ -66,6 +70,27 @@ private extension Array where Element == Survey {
       return LocalSurvey(id: survey.id,
                          type: survey.type,
                          attributes: localAttributes)
+    }
+  }
+}
+
+private extension Array where Element == LocalSurvey {
+  func toModels() -> [Survey] {
+    return map { localSurvey in
+      let localSurveyAttributes = localSurvey.attributes
+      let attributes = SurveyAttribute(title: localSurveyAttributes.title,
+                                       description: localSurveyAttributes.description,
+                                       thankEmailAboveThreshold: localSurveyAttributes.thankEmailAboveThreshold,
+                                       thankEmailBelowThreshold: localSurveyAttributes.thankEmailBelowThreshold,
+                                       isActive: localSurveyAttributes.isActive,
+                                       coverImageURL: localSurveyAttributes.coverImageURL,
+                                       createdAt: localSurveyAttributes.createdAt,
+                                       activeAt: localSurveyAttributes.activeAt,
+                                       inactiveAt: localSurveyAttributes.inactiveAt,
+                                       surveyType: localSurveyAttributes.surveyType)
+      return Survey(id: localSurvey.id,
+                    type: localSurvey.type,
+                    attributes: attributes)
     }
   }
 }
