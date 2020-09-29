@@ -41,11 +41,11 @@ class CacheSurveysUseCaseTests: XCTestCase {
     let timestamp = Date()
     let items = [uniqueItem(), uniqueItem()]
     let (sut, store) = makeSUT(currentDate: { timestamp })
-
+    let localItems = items.map { convertLocalItems(from: $0) }
     sut.save(items) { _ in }
     store.completeDeletionSuccessfully()
 
-    XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .insert(items, timestamp)])
+    XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .insert(localItems, timestamp)])
   }
   
   func test_save_failsOnDeletionError() {
@@ -137,7 +137,7 @@ extension CacheSurveysUseCaseTests {
 
     enum ReceivedMessage: Equatable {
       case deleteCachedFeed
-      case insert([SurveyItem], Date)
+      case insert([LocalSurveyItem], Date)
     }
 
     private(set) var receivedMessages = [ReceivedMessage]()
@@ -165,7 +165,7 @@ extension CacheSurveysUseCaseTests {
       insertionCompletions[index](nil)
     }
 
-    func insert(_ items: [SurveyItem], timestamp: Date, completion: @escaping InsertionCompletion) {
+    func insert(_ items: [LocalSurveyItem], timestamp: Date, completion: @escaping InsertionCompletion) {
       insertionCompletions.append(completion)
       receivedMessages.append(.insert(items, timestamp))
     }
@@ -196,5 +196,22 @@ extension CacheSurveysUseCaseTests {
   
   private func anyNSError() -> NSError {
     return NSError(domain: "any error", code: 0)
+  }
+  
+  private func convertLocalItems(from surveyItem: SurveyItem) -> LocalSurveyItem {
+    let attributes = surveyItem.attributes
+    let localAttributes = LocalSurveyAttribute(title: attributes.title,
+                                               description: attributes.description,
+                                               thankEmailAboveThreshold: attributes.thankEmailAboveThreshold,
+                                               thankEmailBelowThreshold: attributes.thankEmailBelowThreshold,
+                                               isActive: attributes.isActive,
+                                               coverImageURL: attributes.coverImageURL,
+                                               createdAt: attributes.createdAt,
+                                               activeAt: attributes.activeAt,
+                                               inactiveAt: attributes.inactiveAt,
+                                               surveyType: attributes.surveyType)
+    return LocalSurveyItem(id: surveyItem.id,
+                               type: surveyItem.type,
+                               attributes: localAttributes)
   }
 }

@@ -31,9 +31,30 @@ public final class LocalSurveysLoader {
   }
   
   private func cache(_ items: [SurveyItem], with completion: @escaping (SaveResult) -> Void) {
-    store.insert(items, timestamp: currentDate()) { [weak self] error in
+    store.insert(items.toLocal(), timestamp: currentDate()) { [weak self] error in
       guard self != nil else { return }
       completion(error)
+    }
+  }
+}
+
+private extension Array where Element == SurveyItem {
+  func toLocal() -> [LocalSurveyItem] {
+    return map { surveyItem in
+      let attributes = surveyItem.attributes
+      let localAttributes = LocalSurveyAttribute(title: attributes.title,
+                                                 description: attributes.description,
+                                                 thankEmailAboveThreshold: attributes.thankEmailAboveThreshold,
+                                                 thankEmailBelowThreshold: attributes.thankEmailBelowThreshold,
+                                                 isActive: attributes.isActive,
+                                                 coverImageURL: attributes.coverImageURL,
+                                                 createdAt: attributes.createdAt,
+                                                 activeAt: attributes.activeAt,
+                                                 inactiveAt: attributes.inactiveAt,
+                                                 surveyType: attributes.surveyType)
+      return LocalSurveyItem(id: surveyItem.id,
+                                 type: surveyItem.type,
+                                 attributes: localAttributes)
     }
   }
 }
