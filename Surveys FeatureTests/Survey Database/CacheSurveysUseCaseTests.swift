@@ -18,7 +18,7 @@ class LocalSurveysLoader {
     self.currentDate = currentDate
   }
   
-  func saveWith(_ items: [SurveyItem], completion: @escaping (Error?) -> Void) {
+  func save(_ items: [SurveyItem], completion: @escaping (Error?) -> Void) {
     store.deleteCachedSurveys { [weak self] error in
       guard let self = self else { return }
       if error == nil {
@@ -57,7 +57,7 @@ class CacheSurveysUseCaseTests: XCTestCase {
     let (sut, store) = makeSUT()
     let items = [uniqueItem(), uniqueItem()]
 
-    sut.saveWith(items) { _ in }
+    sut.save(items) { _ in }
 
     XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
   }
@@ -67,7 +67,7 @@ class CacheSurveysUseCaseTests: XCTestCase {
     let (sut, store) = makeSUT()
     let deletionError = anyNSError()
 
-    sut.saveWith(items) { _ in }
+    sut.save(items) { _ in }
     store.completeDeletion(with: deletionError)
 
     XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
@@ -78,7 +78,7 @@ class CacheSurveysUseCaseTests: XCTestCase {
     let items = [uniqueItem(), uniqueItem()]
     let (sut, store) = makeSUT(currentDate: { timestamp })
 
-    sut.saveWith(items) { _ in }
+    sut.save(items) { _ in }
     store.completeDeletionSuccessfully()
 
     XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .insert(items, timestamp)])
@@ -114,7 +114,7 @@ class CacheSurveysUseCaseTests: XCTestCase {
     var sut: LocalSurveysLoader? = LocalSurveysLoader(store: store, currentDate: Date.init)
 
     var receivedResults = [Error?]()
-    sut?.saveWith([uniqueItem()]) { receivedResults.append($0) }
+    sut?.save([uniqueItem()]) { receivedResults.append($0) }
 
     sut = nil
     store.completeDeletion(with: anyNSError())
@@ -127,7 +127,7 @@ class CacheSurveysUseCaseTests: XCTestCase {
     var sut: LocalSurveysLoader? = LocalSurveysLoader(store: store, currentDate: Date.init)
 
     var receivedResults = [Error?]()
-    sut?.saveWith([uniqueItem()]) { receivedResults.append($0) }
+    sut?.save([uniqueItem()]) { receivedResults.append($0) }
 
     store.completeDeletionSuccessfully()
     sut = nil
@@ -153,7 +153,7 @@ extension CacheSurveysUseCaseTests {
     let exp = expectation(description: "Wait for save completion")
 
     var receivedError: Error?
-    sut.saveWith([uniqueItem()]) { error in
+    sut.save([uniqueItem()]) { error in
       receivedError = error
       exp.fulfill()
     }
