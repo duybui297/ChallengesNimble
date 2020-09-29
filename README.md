@@ -3,7 +3,6 @@
 ## Results Report
 [![Build Status](https://travis-ci.com/duybui297/ChallengesNimble.svg?token=QzcjDAqo3sQ5rputamyD&branch=master)](https://travis-ci.com/github/duybui297/ChallengesNimble)
 
-
 ## BDD Specs
 
 ### Story: Users want to see the survey
@@ -21,7 +20,7 @@ So I can read and understand the app more
 ```
 Given the user logs to the app the first time
 Then the app should display the latest surveys from remote
-And save the cache with the new surveys
+ And save the cache with the new surveys
 ```
 
 ### Narrative #2
@@ -36,14 +35,21 @@ So I can always see surveys even when I haven't needed them from remote yet
 
 ```
 Given the user doesn't need them from remote
-And there’s a cached version of the surveys
+ And there’s a cached version of the surveys
+ And the cache is less than seven days old
 When the user to see the surveys
 Then the app should display the latest surveys saved
 
 Given the user doesn't need them from remote
-And the user is empty
+ And there’s a cached version of the surveys
+ And the cache is seven days old or more
 When the customer requests to see the surveys
 Then the app should display a friendly error message
+
+Given the customer doesn't have connectivity
+ And the cache is empty
+When the customer requests to see the surveys
+Then the app should display an error message
 ```
 
 ## Use Cases
@@ -99,10 +105,12 @@ Then the app should display a friendly error message
 #### Primary course:
 1. Execute "Load Surveys" command with above data.
 2. System retrieves surveys from cache.
-3. System delivers surveys from cached data.
+3. System validates cache is less than seven days old.
+4. System delivers surveys from cached data.
 
 #### Retrieval error course (sad path):
-1. System delivers error.
+1. System deletes cache.
+2. System delivers no survey items.
 
 #### Expired cache course (sad path): 
 1. System delivers no surveys.
@@ -167,3 +175,6 @@ Then the app should display a friendly error message
 1. System delivers error.
 
 ---
+
+## Flow chart
+![Surveys Feature](Flow-chart.png)
