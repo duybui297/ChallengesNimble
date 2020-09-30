@@ -75,9 +75,9 @@ class CodableSurveysStore {
       return surveys.map { $0.local }
     }
   }
-
+  
   private let storeURL: URL
-
+  
   init(storeURL: URL) {
     self.storeURL = storeURL
   }
@@ -86,10 +86,14 @@ class CodableSurveysStore {
     guard let data = try? Data(contentsOf: storeURL) else {
       return completion(.empty)
     }
-
-    let decoder = JSONDecoder()
-    let cache = try! decoder.decode(Cache.self, from: data)
-    completion(.found(surveys: cache.localSurveys, timestamp: cache.timestamp))
+    
+    do {
+      let decoder = JSONDecoder()
+      let cache = try decoder.decode(Cache.self, from: data)
+      completion(.found(surveys: cache.localSurveys, timestamp: cache.timestamp))
+    } catch {
+      completion(.failure(error))
+    }
   }
   
   func insert(_ surveys: [LocalSurvey],
@@ -103,16 +107,16 @@ class CodableSurveysStore {
 }
 
 class CodableSurveysStoreTests: XCTestCase {
-
+  
   override func setUp() {
     super.setUp()
-
+    
     setupEmptyStoreState()
   }
-
+  
   override func tearDown() {
     super.tearDown()
-
+    
     undoStoreSideEffects()
   }
   
@@ -142,6 +146,14 @@ class CodableSurveysStoreTests: XCTestCase {
     
     insert((surveys, timestamp), to: sut)
     expect(sut, toRetrieveTwice: .found(surveys: surveys, timestamp: timestamp))
+  }
+  
+  func test_retrieve_deliversFailureOnRetrievalError() {
+    let sut = makeSUT()
+    
+    try! "invalid data".write(to: testSpecificStoreURL(), atomically: false, encoding: .utf8)
+    
+    expect(sut, toRetrieve: .failure(anyNSError()))
   }
 }
 
@@ -178,9 +190,8 @@ extension CodableSurveysStoreTests {
     
     sut.retrieve { retrievedResult in
       switch (expectedResult, retrievedResult) {
-      case (.empty, .empty):
+      case (.empty, .empty), (.failure, .failure):
         break
-        
       case let (.found(expected), .found(retrieved)):
         XCTAssertEqual(retrieved.surveys, expected.surveys, file: file, line: line)
         XCTAssertEqual(retrieved.timestamp, expected.timestamp, file: file, line: line)
@@ -205,11 +216,11 @@ extension CodableSurveysStoreTests {
   private func setupEmptyStoreState() {
     deleteStoreArtifacts()
   }
-
+  
   private func undoStoreSideEffects() {
     deleteStoreArtifacts()
   }
-
+  
   private func deleteStoreArtifacts() {
     try? FileManager.default.removeItem(at: testSpecificStoreURL())
   }
