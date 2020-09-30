@@ -115,7 +115,7 @@ class CodableSurveysStoreTests: XCTestCase {
   }
   
   func test_retrieve_deliversEmptyOnEmptyCache() {
-    let sut = CodableSurveysStore()
+    let sut = makeSUT()
     let exp = expectation(description: "Wait for cache retrieval")
 
     sut.retrieve { result in
@@ -134,7 +134,7 @@ class CodableSurveysStoreTests: XCTestCase {
   }
   
   func test_retrieve_hasNoSideEffectsOnEmptyCache() {
-    let sut = CodableSurveysStore()
+    let sut = makeSUT()
     let exp = expectation(description: "Wait for cache retrieval")
 
     sut.retrieve { firstResult in
@@ -155,7 +155,7 @@ class CodableSurveysStoreTests: XCTestCase {
   }
   
   func test_retrieveAfterInsertingToEmptyCache_deliversInsertedValues() {
-    let sut = CodableSurveysStore()
+    let sut = makeSUT()
     let surveys = uniqueSurveyItem().local
     let timestamp = Date()
     let exp = expectation(description: "Wait for cache retrieval")
@@ -179,5 +179,13 @@ class CodableSurveysStoreTests: XCTestCase {
 
     wait(for: [exp], timeout: 1.0)
   }
+}
 
+// MARK: - Important helper functions
+extension CodableSurveysStoreTests {
+  private func makeSUT(file: StaticString = #file, line: UInt = #line) -> CodableSurveysStore {
+    let sut = CodableSurveysStore()
+    trackForMemoryLeaks(sut, file: file, line: line)
+    return sut
+  }
 }
