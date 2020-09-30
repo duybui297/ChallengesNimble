@@ -36,7 +36,7 @@ class Surveys_FeatureAPIEndToEndTests: XCTestCase {
     let loader = RemoteSurveyLoader(httpClient: client,
                                     url: testServerURL,
                                     userTokenType: "Bearer",
-                                    userAccessToken: "Dm6J2RmzOMjmJINaRfup3-bcnltQbN3w2Qh7k8CkayY")
+                                    userAccessToken: "C6apAntlKPqCWB9zyEWLjxAOUNBdLPdBJ4lFO6fHHEw")
     trackForMemoryLeaks(client, file: file, line: line)
     trackForMemoryLeaks(loader, file: file, line: line)
     
