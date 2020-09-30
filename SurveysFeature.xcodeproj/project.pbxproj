@@ -27,6 +27,7 @@
 		307EDF622522249500F9D788 /* Surveys_FeatureAPIEndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307EDF612522249500F9D788 /* Surveys_FeatureAPIEndToEndTests.swift */; };
 		307EDF642522249500F9D788 /* SurveysFeature.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3019A088251F21B2003351C7 /* SurveysFeature.framework */; };
 		307EDF6A2522315000F9D788 /* XCTestcase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307EDF57252153E800F9D788 /* XCTestcase+MemoryLeakTracking.swift */; };
+		30A2FF85252404FE005739CB /* ValidateSurveysCacheUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF84252404FE005739CB /* ValidateSurveysCacheUseCaseTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		307EDF5F2522249500F9D788 /* Surveys_FeatureAPIEndToEndTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Surveys_FeatureAPIEndToEndTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		307EDF612522249500F9D788 /* Surveys_FeatureAPIEndToEndTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surveys_FeatureAPIEndToEndTests.swift; sourceTree = "<group>"; };
 		307EDF632522249500F9D788 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		30A2FF84252404FE005739CB /* ValidateSurveysCacheUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateSurveysCacheUseCaseTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +170,7 @@
 				305A4CEC2522BBB60061FD61 /* CacheSurveysUseCaseTests.swift */,
 				3035D5C2252383480033E2B5 /* SurveysStoreSpy.swift */,
 				3035D5C4252383DE0033E2B5 /* LoadSurveysFromCacheUseCaseTests.swift */,
+				30A2FF84252404FE005739CB /* ValidateSurveysCacheUseCaseTests.swift */,
 			);
 			path = "Survey Database";
 			sourceTree = "<group>";
@@ -371,6 +374,7 @@
 				3035D5C3252383480033E2B5 /* SurveysStoreSpy.swift in Sources */,
 				305A4CED2522BBB60061FD61 /* CacheSurveysUseCaseTests.swift in Sources */,
 				3035D5C5252383DE0033E2B5 /* LoadSurveysFromCacheUseCaseTests.swift in Sources */,
+				30A2FF85252404FE005739CB /* ValidateSurveysCacheUseCaseTests.swift in Sources */,
 				307EDF58252153E800F9D788 /* XCTestcase+MemoryLeakTracking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
