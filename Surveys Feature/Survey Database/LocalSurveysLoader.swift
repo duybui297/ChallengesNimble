@@ -25,6 +25,16 @@ public final class LocalSurveysLoader {
     self.currentDate = currentDate
   }
   
+  private func validate(_ timestamp: Date) -> Bool {
+    let calendar = Calendar(identifier: .gregorian)
+    guard let maxCacheAge = calendar.date(byAdding: .day, value: maxCacheAgeInDays, to: timestamp) else {
+      return false
+    }
+    return currentDate() < maxCacheAge
+  }
+}
+
+extension LocalSurveysLoader {
   public func save(_ surveys: [Survey], completion: @escaping (SaveResult) -> Void) {
     store.deleteCachedSurveys { [weak self] error in
       guard let self = self else { return }
@@ -42,7 +52,9 @@ public final class LocalSurveysLoader {
       completion(error)
     }
   }
-  
+}
+
+extension LocalSurveysLoader {
   public func load(completion: @escaping (LoadResult) -> Void) {
     store.retrieve { [weak self] result in
       guard let self = self else { return }
@@ -56,15 +68,9 @@ public final class LocalSurveysLoader {
       }
     }
   }
-  
-  private func validate(_ timestamp: Date) -> Bool {
-    let calendar = Calendar(identifier: .gregorian)
-    guard let maxCacheAge = calendar.date(byAdding: .day, value: maxCacheAgeInDays, to: timestamp) else {
-      return false
-    }
-    return currentDate() < maxCacheAge
-  }
-  
+}
+
+extension LocalSurveysLoader {
   public func validateCache() {
     store.retrieve { [weak self] result in
       guard let self = self else { return }
