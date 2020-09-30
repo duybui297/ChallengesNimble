@@ -99,10 +99,15 @@ class CodableSurveysStore {
   func insert(_ surveys: [LocalSurvey],
               timestamp: Date,
               completion: @escaping SurveysStore.InsertionCompletion) {
-    let encoder = JSONEncoder()
-    let encoded = try! encoder.encode(Cache(surveys: surveys.map(CodableSurveys.init), timestamp: timestamp))
-    try! encoded.write(to: storeURL)
-    completion(nil)
+    do {
+      let encoder = JSONEncoder()
+      let cache = Cache(surveys: surveys.map(CodableSurveys.init), timestamp: timestamp)
+      let encoded = try encoder.encode(cache)
+      try encoded.write(to: storeURL)
+      completion(nil)
+    } catch {
+      completion(error)
+    }
   }
 }
 
@@ -177,6 +182,18 @@ class CodableSurveysStoreTests: XCTestCase {
 
     XCTAssertNil(latestInsertionError, "Expected to override cache successfully")
     expect(sut, toRetrieve: .found(surveys: latestSurveys, timestamp: latestTimestamp))
+  }
+  
+  func test_insert_deliversErrorOnInsertionError() {
+    let invalidStoreURL = URL(string: "invalid://store-url")!
+    let sut = makeSUT(storeURL: invalidStoreURL)
+    let surveys = uniqueSurveyItem().local
+    let timestamp = Date()
+
+    let insertionError = insert((surveys, timestamp), to: sut)
+
+    XCTAssertNotNil(insertionError, "Expected cache insertion to fail with an error")
+    expect(sut, toRetrieve: .empty)
   }
 }
 
