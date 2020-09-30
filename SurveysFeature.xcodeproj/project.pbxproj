@@ -31,6 +31,7 @@
 		30A2FF872524085B005739CB /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF862524085B005739CB /* SharedTestHelpers.swift */; };
 		30A2FF8A252408C8005739CB /* SurveysCacheTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF89252408C8005739CB /* SurveysCacheTestHelpers.swift */; };
 		30A2FF8C25241F1E005739CB /* SurveysCachePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF8B25241F1E005739CB /* SurveysCachePolicy.swift */; };
+		30A2FF8E25242B5A005739CB /* CodableSurveysStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF8D25242B5A005739CB /* CodableSurveysStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		30A2FF862524085B005739CB /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
 		30A2FF89252408C8005739CB /* SurveysCacheTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveysCacheTestHelpers.swift; sourceTree = "<group>"; };
 		30A2FF8B25241F1E005739CB /* SurveysCachePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveysCachePolicy.swift; sourceTree = "<group>"; };
+		30A2FF8D25242B5A005739CB /* CodableSurveysStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableSurveysStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +181,7 @@
 				3035D5C2252383480033E2B5 /* SurveysStoreSpy.swift */,
 				3035D5C4252383DE0033E2B5 /* LoadSurveysFromCacheUseCaseTests.swift */,
 				30A2FF84252404FE005739CB /* ValidateSurveysCacheUseCaseTests.swift */,
+				30A2FF8D25242B5A005739CB /* CodableSurveysStore.swift */,
 			);
 			path = "Survey Database";
 			sourceTree = "<group>";
@@ -387,6 +390,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30A2FF8E25242B5A005739CB /* CodableSurveysStore.swift in Sources */,
 				3019A0AB251F2988003351C7 /* LoadSurveysFromRemoteUseCaseTests.swift in Sources */,
 				307EDF55252079F600F9D788 /* URLSessionHTTPClientTests.swift in Sources */,
 				3035D5C3252383480033E2B5 /* SurveysStoreSpy.swift in Sources */,
