@@ -164,6 +164,20 @@ class CodableSurveysStoreTests: XCTestCase {
 
     expect(sut, toRetrieveTwice: .failure(anyNSError()))
   }
+  
+  func test_insert_overridesPreviouslyInsertedCacheValues() {
+    let sut = makeSUT()
+
+    let firstInsertionError = insert((uniqueSurveyItem().local, Date()), to: sut)
+    XCTAssertNil(firstInsertionError, "Expected to insert cache successfully")
+
+    let latestSurveys = uniqueSurveyItem().local
+    let latestTimestamp = Date()
+    let latestInsertionError = insert((latestSurveys, latestTimestamp), to: sut)
+
+    XCTAssertNil(latestInsertionError, "Expected to override cache successfully")
+    expect(sut, toRetrieve: .found(surveys: latestSurveys, timestamp: latestTimestamp))
+  }
 }
 
 // MARK: - Important helper functions
@@ -176,13 +190,16 @@ extension CodableSurveysStoreTests {
     return sut
   }
   
-  private func insert(_ cache: (surveys: [LocalSurvey], timestamp: Date), to sut: CodableSurveysStore) {
+  @discardableResult
+  private func insert(_ cache: (surveys: [LocalSurvey], timestamp: Date), to sut: CodableSurveysStore) -> Error? {
     let exp = expectation(description: "Wait for cache insertion")
-    sut.insert(cache.surveys, timestamp: cache.timestamp) { insertionError in
-      XCTAssertNil(insertionError, "Expected surveys to be inserted successfully")
+    var insertionError: Error?
+    sut.insert(cache.surveys, timestamp: cache.timestamp) { receivedInsertionError in
+      insertionError = receivedInsertionError
       exp.fulfill()
     }
     wait(for: [exp], timeout: 1.0)
+    return insertionError
   }
   
   private func expect(_ sut: CodableSurveysStore,
