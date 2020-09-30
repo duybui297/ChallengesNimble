@@ -123,23 +123,7 @@ class CodableSurveysStoreTests: XCTestCase {
   
   func test_retrieve_hasNoSideEffectsOnEmptyCache() {
     let sut = makeSUT()
-    let exp = expectation(description: "Wait for cache retrieval")
-
-    sut.retrieve { firstResult in
-      sut.retrieve { secondResult in
-        switch (firstResult, secondResult) {
-        case (.empty, .empty):
-          break
-
-        default:
-          XCTFail("Expected retrieving twice from empty cache to deliver same empty result, got \(firstResult) and \(secondResult) instead")
-        }
-
-        exp.fulfill()
-      }
-    }
-
-    wait(for: [exp], timeout: 1.0)
+    expect(sut, toRetrieveTwice: .empty)
   }
   
   func test_retrieveAfterInsertingToEmptyCache_deliversInsertedValues() {
@@ -165,27 +149,11 @@ class CodableSurveysStoreTests: XCTestCase {
 
     sut.insert(surveys, timestamp: timestamp) { insertionError in
       XCTAssertNil(insertionError, "Expected surveys to be inserted successfully")
-
-      sut.retrieve { firstResult in
-        sut.retrieve { secondResult in
-          switch (firstResult, secondResult) {
-          case let (.found(firstFound), .found(secondFound)):
-            XCTAssertEqual(firstFound.surveys, surveys)
-            XCTAssertEqual(firstFound.timestamp, timestamp)
-
-            XCTAssertEqual(secondFound.surveys, surveys)
-            XCTAssertEqual(secondFound.timestamp, timestamp)
-
-          default:
-            XCTFail("Expected retrieving twice from non empty cache to deliver same found result with surveys \(surveys) and timestamp \(timestamp), got \(firstResult) and \(secondResult) instead")
-          }
-
-          exp.fulfill()
-        }
-      }
+      exp.fulfill()
     }
-
+    
     wait(for: [exp], timeout: 1.0)
+    expect(sut, toRetrieveTwice: .found(surveys: surveys, timestamp: timestamp))
   }
 }
 
@@ -195,6 +163,14 @@ extension CodableSurveysStoreTests {
     let sut = CodableSurveysStore(storeURL: testSpecificStoreURL())
     trackForMemoryLeaks(sut, file: file, line: line)
     return sut
+  }
+  
+  private func expect(_ sut: CodableSurveysStore,
+                      toRetrieveTwice expectedResult: RetrieveCachedSurveysResult,
+                      file: StaticString = #file,
+                      line: UInt = #line) {
+    expect(sut, toRetrieve: expectedResult, file: file, line: line)
+    expect(sut, toRetrieve: expectedResult, file: file, line: line)
   }
   
   private func expect(_ sut: CodableSurveysStore,
