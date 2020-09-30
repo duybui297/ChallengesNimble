@@ -107,13 +107,13 @@ class CodableSurveysStoreTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    try? FileManager.default.removeItem(at: storeURL())
+    setupEmptyStoreState()
   }
 
   override func tearDown() {
     super.tearDown()
 
-    try? FileManager.default.removeItem(at: storeURL())
+    undoStoreSideEffects()
   }
   
   func test_retrieve_deliversEmptyOnEmptyCache() {
@@ -186,13 +186,27 @@ class CodableSurveysStoreTests: XCTestCase {
 // MARK: - Important helper functions
 extension CodableSurveysStoreTests {
   private func makeSUT(file: StaticString = #file, line: UInt = #line) -> CodableSurveysStore {
-    let storeURL = storeURL()
-    let sut = CodableSurveysStore(storeURL: storeURL)
+    let sut = CodableSurveysStore(storeURL: testSpecificStoreURL())
     trackForMemoryLeaks(sut, file: file, line: line)
     return sut
   }
   
-  private func storeURL() -> URL {
-    return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("surveys.store")
+  private func testSpecificStoreURL() -> URL {
+    return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.appendingPathComponent("\(type(of: self)).store")
+  }
+}
+
+// MARK: - Self-documentation for functions in setup and teardown
+extension CodableSurveysStoreTests {
+  private func setupEmptyStoreState() {
+    deleteStoreArtifacts()
+  }
+
+  private func undoStoreSideEffects() {
+    deleteStoreArtifacts()
+  }
+
+  private func deleteStoreArtifacts() {
+    try? FileManager.default.removeItem(at: testSpecificStoreURL())
   }
 }
