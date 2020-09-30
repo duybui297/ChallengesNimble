@@ -48,7 +48,6 @@ public final class LocalSurveysLoader {
       guard let self = self else { return }
       switch result {
       case let .failure(error):
-        self.store.deleteCachedSurveys { _ in }
         completion(.failure(error))
       case let .found(surveys, timestamp) where self.validate(timestamp):
         completion(.success(surveys.toModels()))
@@ -67,6 +66,16 @@ public final class LocalSurveysLoader {
       return false
     }
     return currentDate() < maxCacheAge
+  }
+  
+  public func validateCache() {
+    store.retrieve { [unowned self] result in
+      switch result {
+      case .failure:
+        self.store.deleteCachedSurveys { _ in }
+      default: break
+      }
+    }
   }
 }
 

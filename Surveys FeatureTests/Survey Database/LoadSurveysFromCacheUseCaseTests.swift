@@ -74,16 +74,16 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
     })
   }
   
-  func test_load_deletesCacheOnRetrievalError() {
+  func test_load_hasNoSideEffectsOnRetrievalError() {
     let (sut, store) = makeSUT()
 
     sut.load { _ in }
     store.completeRetrieval(with: anyNSError())
 
-    XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
+    XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
-  func test_load_doesNotDeleteCacheOnEmptyCache() {
+  func test_load_hasNoSideEffectsOnEmptyCache() {
     let (sut, store) = makeSUT()
 
     sut.load { _ in }
