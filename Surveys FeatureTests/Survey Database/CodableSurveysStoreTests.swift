@@ -130,14 +130,8 @@ class CodableSurveysStoreTests: XCTestCase {
     let sut = makeSUT()
     let surveys = uniqueSurveyItem().local
     let timestamp = Date()
-    let exp = expectation(description: "Wait for cache retrieval")
     
-    sut.insert(surveys, timestamp: timestamp) { insertionError in
-      XCTAssertNil(insertionError, "Expected surveys to be inserted successfully")
-      exp.fulfill()
-    }
-    
-    wait(for: [exp], timeout: 1.0)
+    insert((surveys, timestamp), to: sut)
     expect(sut, toRetrieve: .found(surveys: surveys, timestamp: timestamp))
   }
   
@@ -145,14 +139,8 @@ class CodableSurveysStoreTests: XCTestCase {
     let sut = makeSUT()
     let surveys = uniqueSurveyItem().local
     let timestamp = Date()
-    let exp = expectation(description: "Wait for cache retrieval")
-
-    sut.insert(surveys, timestamp: timestamp) { insertionError in
-      XCTAssertNil(insertionError, "Expected surveys to be inserted successfully")
-      exp.fulfill()
-    }
     
-    wait(for: [exp], timeout: 1.0)
+    insert((surveys, timestamp), to: sut)
     expect(sut, toRetrieveTwice: .found(surveys: surveys, timestamp: timestamp))
   }
 }
@@ -163,6 +151,15 @@ extension CodableSurveysStoreTests {
     let sut = CodableSurveysStore(storeURL: testSpecificStoreURL())
     trackForMemoryLeaks(sut, file: file, line: line)
     return sut
+  }
+  
+  private func insert(_ cache: (feed: [LocalSurvey], timestamp: Date), to sut: CodableSurveysStore) {
+    let exp = expectation(description: "Wait for cache insertion")
+    sut.insert(cache.feed, timestamp: cache.timestamp) { insertionError in
+      XCTAssertNil(insertionError, "Expected feed to be inserted successfully")
+      exp.fulfill()
+    }
+    wait(for: [exp], timeout: 1.0)
   }
   
   private func expect(_ sut: CodableSurveysStore,
