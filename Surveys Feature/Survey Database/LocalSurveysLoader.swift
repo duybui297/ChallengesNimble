@@ -8,25 +8,21 @@
 
 import Foundation
 private final class SurveysCachePolicy {
-  private let currentDate: () -> Date
   private let calendar = Calendar(identifier: .gregorian)
   
   private var maxCacheAgeInDays: Int {
     return 7
   }
   
-  init(currentDate: @escaping () -> Date) {
-    self.currentDate = currentDate
-  }
-  
-  func validate(_ timestamp: Date) -> Bool {
+  func validate(_ timestamp: Date, against date: Date) -> Bool {
     let calendar = Calendar(identifier: .gregorian)
     guard let maxCacheAge = calendar.date(byAdding: .day, value: maxCacheAgeInDays, to: timestamp) else {
       return false
     }
-    return currentDate() < maxCacheAge
+    return date < maxCacheAge
   }
 }
+
 public final class LocalSurveysLoader {
   private let store: SurveysStore
   private let currentDate: () -> Date
@@ -35,7 +31,7 @@ public final class LocalSurveysLoader {
   public init(store: SurveysStore, currentDate: @escaping () -> Date) {
     self.store = store
     self.currentDate = currentDate
-    self.cachePolicy = SurveysCachePolicy(currentDate: currentDate)
+    self.cachePolicy = SurveysCachePolicy()
   }
 }
 
@@ -70,7 +66,7 @@ extension LocalSurveysLoader: SurveyLoader {
       switch result {
       case let .failure(error):
         completion(.failure(error))
-      case let .found(surveys, timestamp) where self.cachePolicy.validate(timestamp):
+      case let .found(surveys, timestamp) where self.cachePolicy.validate(timestamp, against: self.currentDate()):
         completion(.success(surveys.toModels()))
       case .found, .empty:
         completion(.success([]))
@@ -87,7 +83,7 @@ extension LocalSurveysLoader {
       case .failure:
         self.store.deleteCachedSurveys { _ in }
         
-      case let .found(_, timestamp) where !self.cachePolicy.validate(timestamp):
+      case let .found(_, timestamp) where !self.cachePolicy.validate(timestamp,  against: self.currentDate()):
         self.store.deleteCachedSurveys { _ in }
         
       case .empty, .found: break
