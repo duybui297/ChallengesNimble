@@ -13,9 +13,6 @@ public final class LocalSurveysLoader {
   private let currentDate: () -> Date
   private let calendar = Calendar(identifier: .gregorian)
   
-  public typealias SaveResult = Error?
-  public typealias LoadResult = SurveyLoaderResult
-  
   private var maxCacheAgeInDays: Int {
     return 7
   }
@@ -24,6 +21,18 @@ public final class LocalSurveysLoader {
     self.store = store
     self.currentDate = currentDate
   }
+  
+  private func validate(_ timestamp: Date) -> Bool {
+    let calendar = Calendar(identifier: .gregorian)
+    guard let maxCacheAge = calendar.date(byAdding: .day, value: maxCacheAgeInDays, to: timestamp) else {
+      return false
+    }
+    return currentDate() < maxCacheAge
+  }
+}
+
+extension LocalSurveysLoader {
+  public typealias SaveResult = Error?
   
   public func save(_ surveys: [Survey], completion: @escaping (SaveResult) -> Void) {
     store.deleteCachedSurveys { [weak self] error in
@@ -42,31 +51,40 @@ public final class LocalSurveysLoader {
       completion(error)
     }
   }
+}
+
+extension LocalSurveysLoader: SurveyLoader {
+  public typealias LoadResult = SurveyLoaderResult
   
   public func load(completion: @escaping (LoadResult) -> Void) {
     store.retrieve { [weak self] result in
       guard let self = self else { return }
       switch result {
       case let .failure(error):
-        self.store.deleteCachedSurveys { _ in }
         completion(.failure(error))
       case let .found(surveys, timestamp) where self.validate(timestamp):
         completion(.success(surveys.toModels()))
-      case .found:
-        self.store.deleteCachedSurveys { _ in }
-        completion(.success([]))
-      case .empty:
+      case .found, .empty:
         completion(.success([]))
       }
     }
   }
-  
-  private func validate(_ timestamp: Date) -> Bool {
-    let calendar = Calendar(identifier: .gregorian)
-    guard let maxCacheAge = calendar.date(byAdding: .day, value: maxCacheAgeInDays, to: timestamp) else {
-      return false
+}
+
+extension LocalSurveysLoader {
+  public func validateCache() {
+    store.retrieve { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .failure:
+        self.store.deleteCachedSurveys { _ in }
+        
+      case let .found(_, timestamp) where !self.validate(timestamp):
+        self.store.deleteCachedSurveys { _ in }
+        
+      case .empty, .found: break
+      }
     }
-    return currentDate() < maxCacheAge
   }
 }
 

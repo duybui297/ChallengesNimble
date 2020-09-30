@@ -74,16 +74,16 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
     })
   }
   
-  func test_load_deletesCacheOnRetrievalError() {
+  func test_load_hasNoSideEffectsOnRetrievalError() {
     let (sut, store) = makeSUT()
 
     sut.load { _ in }
     store.completeRetrieval(with: anyNSError())
 
-    XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
+    XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
-  func test_load_doesNotDeleteCacheOnEmptyCache() {
+  func test_load_hasNoSideEffectsOnEmptyCache() {
     let (sut, store) = makeSUT()
 
     sut.load { _ in }
@@ -92,7 +92,19 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
     XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
-  func test_load_doesNotDeleteCacheOnLessThanSevenDaysOldCache() {
+  func test_load_hasNoSideEffectsOnMoreThanSevenDaysOldCache() {
+    let surveys = uniqueSurveyItem()
+    let fixedCurrentDate = Date()
+    let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: -1)
+    let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
+
+    sut.load { _ in }
+    store.completeRetrieval(with: surveys.local, timestamp: lessThanSevenDaysOldTimestamp)
+
+    XCTAssertEqual(store.receivedMessages, [.retrieve])
+  }
+  
+  func test_load_hasNoSideEffectsOnLessThanSevenDaysOldCache() {
     let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
     let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: 1)
@@ -104,7 +116,7 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
     XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
-  func test_load_deletesCacheOnSevenDaysOldCache() {
+  func test_load_hasNoSideEffectsOnSevenDaysOldCache() {
     let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
     let sevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7)
@@ -113,7 +125,7 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
     sut.load { _ in }
     store.completeRetrieval(with: surveys.local, timestamp: sevenDaysOldTimestamp)
 
-    XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
+    XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
   func test_load_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
@@ -167,65 +179,5 @@ extension LoadSurveysFromCacheUseCaseTests {
 
     action()
     wait(for: [exp], timeout: 1.0)
-  }
-}
-
-// MARK: - Generating mocking helper functions
-extension LoadSurveysFromCacheUseCaseTests {
-  private func anyNSError() -> NSError {
-    return NSError(domain: "any error", code: 0)
-  }
-  
-  private func uniqueSurvey() -> Survey {
-    let surveyAttribute = SurveyAttribute(title: "any title",
-                                          description: "any description",
-                                          thankEmailAboveThreshold: "any thank email above",
-                                          thankEmailBelowThreshold: "any thank email below",
-                                          isActive: true,
-                                          coverImageURL: anyURL(),
-                                          createdAt: "any creation date",
-                                          activeAt: "any activation date",
-                                          inactiveAt: nil,
-                                          surveyType: "any survey type")
-    return Survey(id: UUID().uuidString,
-                  type: "any survey",
-                  attributes: surveyAttribute)
-  }
-
-  private func uniqueSurveyItem() -> (models: [Survey], local: [LocalSurvey]) {
-    let models = [uniqueSurvey(), uniqueSurvey()]
-    let local = models.map { convertLocalSurvey(from: $0) }
-    return (models, local)
-  }
-
-  private func anyURL() -> URL {
-    return URL(string: "http://any-url.com")!
-  }
-  
-  private func convertLocalSurvey(from survey: Survey) -> LocalSurvey {
-    let attributes = survey.attributes
-    let localAttributes = LocalSurveyAttribute(title: attributes.title,
-                                               description: attributes.description,
-                                               thankEmailAboveThreshold: attributes.thankEmailAboveThreshold,
-                                               thankEmailBelowThreshold: attributes.thankEmailBelowThreshold,
-                                               isActive: attributes.isActive,
-                                               coverImageURL: attributes.coverImageURL,
-                                               createdAt: attributes.createdAt,
-                                               activeAt: attributes.activeAt,
-                                               inactiveAt: attributes.inactiveAt,
-                                               surveyType: attributes.surveyType)
-    return LocalSurvey(id: survey.id,
-                       type: survey.type,
-                       attributes: localAttributes)
-  }
-}
-
-private extension Date {
-  func adding(days: Int) -> Date {
-    return Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
-  }
-
-  func adding(seconds: TimeInterval) -> Date {
-    return self + seconds
   }
 }
