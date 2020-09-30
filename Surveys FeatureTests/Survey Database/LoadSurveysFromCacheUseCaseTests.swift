@@ -73,6 +73,62 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
       store.completeRetrieval(with: surveys.local, timestamp: moreThanSevenDaysOldTimestamp)
     })
   }
+  
+  func test_load_deletesCacheOnRetrievalError() {
+    let (sut, store) = makeSUT()
+
+    sut.load { _ in }
+    store.completeRetrieval(with: anyNSError())
+
+    XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
+  }
+  
+  func test_load_doesNotDeleteCacheOnEmptyCache() {
+    let (sut, store) = makeSUT()
+
+    sut.load { _ in }
+    store.completeRetrievalWithEmptyCache()
+
+    XCTAssertEqual(store.receivedMessages, [.retrieve])
+  }
+  
+  func test_load_doesNotDeleteCacheOnLessThanSevenDaysOldCache() {
+    let surveys = uniqueSurveyItem()
+    let fixedCurrentDate = Date()
+    let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: 1)
+    let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
+
+    sut.load { _ in }
+    store.completeRetrieval(with: surveys.local, timestamp: lessThanSevenDaysOldTimestamp)
+
+    XCTAssertEqual(store.receivedMessages, [.retrieve])
+  }
+  
+  func test_load_deletesCacheOnSevenDaysOldCache() {
+    let surveys = uniqueSurveyItem()
+    let fixedCurrentDate = Date()
+    let sevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7)
+    let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
+
+    sut.load { _ in }
+    store.completeRetrieval(with: surveys.local, timestamp: sevenDaysOldTimestamp)
+
+    XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
+  }
+  
+  func test_load_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
+    let store = SurveyStoreSpy()
+    var sut: LocalSurveysLoader? = LocalSurveysLoader(store: store, currentDate: Date.init)
+
+    var receivedResults = [LocalSurveysLoader.LoadResult]()
+    sut?.load { receivedResults.append($0) }
+
+    sut = nil
+    store.completeRetrievalWithEmptyCache()
+
+    XCTAssertTrue(receivedResults.isEmpty)
+  }
+
 }
 
 // MARK: - Important helper functions
