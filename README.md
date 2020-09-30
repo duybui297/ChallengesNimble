@@ -78,13 +78,13 @@ Then the app should display an error message
 1. System delivers connectivity error.
 ---
 
-### Load Survey Image Data From Remote Use Case
+### Load Surveys Image Data From Remote Use Case
 
 #### Data:
 - URL
 
 #### Primary course (happy path):
-1. Execute "Load Survey Image Data" command with above data.
+1. Execute "Load Surveys Image Data" command with above data.
 2. System downloads data from the URL.
 3. System validates downloaded data.
 4. System delivers image data.
@@ -110,7 +110,7 @@ Then the app should display an error message
 
 #### Retrieval error course (sad path):
 1. System deletes cache.
-2. System delivers no survey items.
+2. System delivers no survey.
 
 #### Expired cache course (sad path): 
 1. System delivers no surveys.
@@ -120,18 +120,18 @@ Then the app should display an error message
 
 ---
 
-### Load Image Survey Data From Cache Use Case
+### Load Image Surveys Data From Cache Use Case
 
 #### Data:
 - URL
 
 #### Primary course (happy path):
-1. Execute "Load Image Survey" command with above data.
+1. Execute "Load Surveys" command with above data.
 2. System retrieves data from the cache.
 3. System delivers cached image data.
 
 #### Cancel course:
-1. System does not deliver image data nor error.
+1. System does not deliver data nor error.
 
 #### Retrieval error course (sad path):
 1. System delivers error.
@@ -147,7 +147,7 @@ Then the app should display an error message
 - Survey
 
 #### Primary course (happy path):
-1. Execute "Save Survey" command with above data.
+1. Execute "Save Surveys" command with above data.
 2. System deletes old cache data.
 3. System encodes image survey.
 4. System saves new cache data.
@@ -161,18 +161,33 @@ Then the app should display an error message
 
 ---
 
-### Cache Survey Image Data Use Case
+### Cache Surveys Image Data Use Case
 
 #### Data:
 - Image Data
 
 #### Primary course (happy path):
-1. Execute "Save Survey Image Data" command with above data.
-2. System caches image data.
+1. Execute "Save Surveys Image Data" command with above data.
+2. System caches surveys data.
 3. System delivers success message.
 
 #### Saving error course (sad path):
 1. System delivers error.
+
+---
+
+### Validate Surveys Cache Use Case
+
+#### Primary course:
+1. Execute "Validate Surveys" command with above data.
+2. System retrieves surveys data from cache.
+3. System validates cache is less than seven days old.
+
+#### Retrieval error course (sad path):
+1. System deletes cache.
+
+#### Expired cache course (sad path): 
+1. System deletes cache.
 
 ---
 
