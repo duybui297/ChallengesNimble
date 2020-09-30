@@ -164,15 +164,11 @@ extension URLSessionHTTPClientTests {
   }
   
   private func anyURLRequestInfo() -> (url: URL, userTokenType: String, userAccessToken: String) {
-    return (URL(string: "http://any-url.com")!, "Any User Token Type", "Any User Access Token")
+    return (anyURL(), "Any User Token Type", "Any User Access Token")
   }
   
   private func anyData() -> Data {
     return Data("any data".utf8)
-  }
-  
-  private func anyNSError() -> NSError {
-    return NSError(domain: "any error", code: 0)
   }
   
   private func anyHTTPURLResponse() -> HTTPURLResponse {

@@ -25,6 +25,15 @@ class ValidateSurveysCacheUseCaseTests: XCTestCase {
     
     XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
   }
+  
+  func test_validateCache_doesNotDeleteCacheOnEmptyCache() {
+    let (sut, store) = makeSUT()
+
+    sut.validateCache()
+    store.completeRetrievalWithEmptyCache()
+
+    XCTAssertEqual(store.receivedMessages, [.retrieve])
+  }
 }
 
 // MARK: - Important helper functions
