@@ -7,9 +7,7 @@
 //
 
 import Foundation
-
-public final class LocalSurveysLoader {
-  private let store: SurveysStore
+private final class SurveysCachePolicy {
   private let currentDate: () -> Date
   private let calendar = Calendar(identifier: .gregorian)
   
@@ -17,17 +15,27 @@ public final class LocalSurveysLoader {
     return 7
   }
   
-  public init(store: SurveysStore, currentDate: @escaping () -> Date) {
-    self.store = store
+  init(currentDate: @escaping () -> Date) {
     self.currentDate = currentDate
   }
   
-  private func validate(_ timestamp: Date) -> Bool {
+  func validate(_ timestamp: Date) -> Bool {
     let calendar = Calendar(identifier: .gregorian)
     guard let maxCacheAge = calendar.date(byAdding: .day, value: maxCacheAgeInDays, to: timestamp) else {
       return false
     }
     return currentDate() < maxCacheAge
+  }
+}
+public final class LocalSurveysLoader {
+  private let store: SurveysStore
+  private let currentDate: () -> Date
+  private let cachePolicy: SurveysCachePolicy
+
+  public init(store: SurveysStore, currentDate: @escaping () -> Date) {
+    self.store = store
+    self.currentDate = currentDate
+    self.cachePolicy = SurveysCachePolicy(currentDate: currentDate)
   }
 }
 
@@ -62,7 +70,7 @@ extension LocalSurveysLoader: SurveyLoader {
       switch result {
       case let .failure(error):
         completion(.failure(error))
-      case let .found(surveys, timestamp) where self.validate(timestamp):
+      case let .found(surveys, timestamp) where self.cachePolicy.validate(timestamp):
         completion(.success(surveys.toModels()))
       case .found, .empty:
         completion(.success([]))
@@ -79,7 +87,7 @@ extension LocalSurveysLoader {
       case .failure:
         self.store.deleteCachedSurveys { _ in }
         
-      case let .found(_, timestamp) where !self.validate(timestamp):
+      case let .found(_, timestamp) where !self.cachePolicy.validate(timestamp):
         self.store.deleteCachedSurveys { _ in }
         
       case .empty, .found: break
