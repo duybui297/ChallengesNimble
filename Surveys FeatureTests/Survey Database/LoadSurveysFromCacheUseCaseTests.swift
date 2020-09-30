@@ -41,36 +41,36 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
     })
   }
   
-  func test_load_deliversCachedSurveysOnLessThanSevenDaysOldCache() {
+  func test_load_deliversCachedSurveysOnNonExpiredCache() {
     let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
-    let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: 1)
+    let nonExpiredTimestamp = fixedCurrentDate.minusSurveysCacheMaxAge().adding(seconds: 1)
     let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
 
     expect(sut, toCompleteWith: .success(surveys.models), when: {
-      store.completeRetrieval(with: surveys.local, timestamp: lessThanSevenDaysOldTimestamp)
+      store.completeRetrieval(with: surveys.local, timestamp: nonExpiredTimestamp)
     })
   }
   
-  func test_load_deliversNoSurveysOnSevenDaysOldCache() {
+  func test_load_deliversNoSurveysOnCacheExpiration() {
     let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
-    let sevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7)
+    let expirationTimestamp = fixedCurrentDate.minusSurveysCacheMaxAge()
     let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
 
     expect(sut, toCompleteWith: .success([]), when: {
-      store.completeRetrieval(with: surveys.local, timestamp: sevenDaysOldTimestamp)
+      store.completeRetrieval(with: surveys.local, timestamp: expirationTimestamp)
     })
   }
   
-  func test_load_deliversNoImagesOnMoreThanSevenDaysOldCache() {
+  func test_load_deliversNoImagesOnExpiredCache() {
     let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
-    let moreThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: -1)
+    let expiredTimestamp = fixedCurrentDate.minusSurveysCacheMaxAge().adding(seconds: -1)
     let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
 
     expect(sut, toCompleteWith: .success([]), when: {
-      store.completeRetrieval(with: surveys.local, timestamp: moreThanSevenDaysOldTimestamp)
+      store.completeRetrieval(with: surveys.local, timestamp: expiredTimestamp)
     })
   }
   
@@ -92,38 +92,38 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
     XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
-  func test_load_hasNoSideEffectsOnMoreThanSevenDaysOldCache() {
+  func test_load_hasNoSideEffectsOnExpiredCache() {
     let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
-    let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: -1)
+    let expiredTimestamp = fixedCurrentDate.minusSurveysCacheMaxAge().adding(seconds: -1)
     let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
 
     sut.load { _ in }
-    store.completeRetrieval(with: surveys.local, timestamp: lessThanSevenDaysOldTimestamp)
+    store.completeRetrieval(with: surveys.local, timestamp: expiredTimestamp)
 
     XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
-  func test_load_hasNoSideEffectsOnLessThanSevenDaysOldCache() {
+  func test_load_hasNoSideEffectsOnNonExpiredCache() {
     let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
-    let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: 1)
+    let nonExpiredTimestamp = fixedCurrentDate.minusSurveysCacheMaxAge().adding(seconds: 1)
     let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
 
     sut.load { _ in }
-    store.completeRetrieval(with: surveys.local, timestamp: lessThanSevenDaysOldTimestamp)
+    store.completeRetrieval(with: surveys.local, timestamp: nonExpiredTimestamp)
 
     XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
-  func test_load_hasNoSideEffectsOnSevenDaysOldCache() {
+  func test_load_hasNoSideEffectsOnCacheExpiration() {
     let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
-    let sevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7)
+    let expirationTimestamp = fixedCurrentDate.minusSurveysCacheMaxAge()
     let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
 
     sut.load { _ in }
-    store.completeRetrieval(with: surveys.local, timestamp: sevenDaysOldTimestamp)
+    store.completeRetrieval(with: surveys.local, timestamp: expirationTimestamp)
 
     XCTAssertEqual(store.receivedMessages, [.retrieve])
   }

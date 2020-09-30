@@ -49,10 +49,20 @@ func convertLocalSurvey(from survey: Survey) -> LocalSurvey {
 }
 
 extension Date {
-  func adding(days: Int) -> Date {
-    return Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
+  func minusSurveysCacheMaxAge() -> Date {
+    return adding(days: -surveysCacheMaxAgeInDays)
   }
   
+  private var surveysCacheMaxAgeInDays: Int {
+    return 7
+  }
+  
+  private func adding(days: Int) -> Date {
+    return Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
+  }
+}
+
+extension Date {
   func adding(seconds: TimeInterval) -> Date {
     return self + seconds
   }
