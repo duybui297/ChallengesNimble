@@ -34,6 +34,18 @@ class ValidateSurveysCacheUseCaseTests: XCTestCase {
 
     XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
+  
+  func test_validateCache_doesNotDeleteLessThanSevenDaysOldCache() {
+    let feed = uniqueSurveyItem()
+    let fixedCurrentDate = Date()
+    let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: 1)
+    let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
+
+    sut.validateCache()
+    store.completeRetrieval(with: feed.local, timestamp: lessThanSevenDaysOldTimestamp)
+
+    XCTAssertEqual(store.receivedMessages, [.retrieve])
+  }
 }
 
 // MARK: - Important helper functions
