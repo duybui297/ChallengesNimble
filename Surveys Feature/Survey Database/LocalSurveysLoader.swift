@@ -13,9 +13,6 @@ public final class LocalSurveysLoader {
   private let currentDate: () -> Date
   private let calendar = Calendar(identifier: .gregorian)
   
-  public typealias SaveResult = Error?
-  public typealias LoadResult = SurveyLoaderResult
-  
   private var maxCacheAgeInDays: Int {
     return 7
   }
@@ -35,6 +32,8 @@ public final class LocalSurveysLoader {
 }
 
 extension LocalSurveysLoader {
+  public typealias SaveResult = Error?
+  
   public func save(_ surveys: [Survey], completion: @escaping (SaveResult) -> Void) {
     store.deleteCachedSurveys { [weak self] error in
       guard let self = self else { return }
@@ -55,6 +54,8 @@ extension LocalSurveysLoader {
 }
 
 extension LocalSurveysLoader: SurveyLoader {
+  public typealias LoadResult = SurveyLoaderResult
+  
   public func load(completion: @escaping (LoadResult) -> Void) {
     store.retrieve { [weak self] result in
       guard let self = self else { return }
