@@ -9,10 +9,71 @@
 import XCTest
 import SurveysFeature
 
+struct CodableSurveysAttribute: Codable {
+  let title: String
+  let description: String
+  let thankEmailAboveThreshold: String?
+  let thankEmailBelowThreshold: String?
+  let isActive: Bool
+  let coverImageURL: URL
+  let createdAt: String
+  let activeAt: String
+  let inactiveAt: String?
+  let surveyType: String
+  
+  init(_ localSurverAttribute: LocalSurveyAttribute) {
+    self.title = localSurverAttribute.title
+    self.description = localSurverAttribute.description
+    self.thankEmailAboveThreshold = localSurverAttribute.thankEmailAboveThreshold
+    self.thankEmailBelowThreshold = localSurverAttribute.thankEmailBelowThreshold
+    self.isActive = localSurverAttribute.isActive
+    self.coverImageURL = localSurverAttribute.coverImageURL
+    self.createdAt = localSurverAttribute.createdAt
+    self.activeAt = localSurverAttribute.activeAt
+    self.inactiveAt = localSurverAttribute.inactiveAt
+    self.surveyType = localSurverAttribute.surveyType
+  }
+  
+  var local: LocalSurveyAttribute {
+    return LocalSurveyAttribute(title: title,
+                                description: description,
+                                thankEmailAboveThreshold: thankEmailAboveThreshold,
+                                thankEmailBelowThreshold: thankEmailBelowThreshold,
+                                isActive: isActive,
+                                coverImageURL: coverImageURL,
+                                createdAt: createdAt,
+                                activeAt: activeAt,
+                                inactiveAt: inactiveAt,
+                                surveyType: surveyType)
+  }
+}
+
+struct CodableSurveys: Codable {
+  let id: String
+  let type: String
+  let attributes: CodableSurveysAttribute
+  
+  init(_ localSurvey: LocalSurvey) {
+    self.id = localSurvey.id
+    self.type = localSurvey.type
+    self.attributes = CodableSurveysAttribute(localSurvey.attributes)
+  }
+  
+  var local: LocalSurvey {
+    return LocalSurvey(id: id,
+                       type: type,
+                       attributes: attributes.local)
+  }
+}
+
 class CodableSurveysStore {
   private struct Cache: Codable {
-    let surveys: [LocalSurvey]
+    let surveys: [CodableSurveys]
     let timestamp: Date
+    
+    var localSurveys: [LocalSurvey] {
+      return surveys.map { $0.local }
+    }
   }
 
   private let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("surveys.store")
@@ -24,14 +85,14 @@ class CodableSurveysStore {
 
     let decoder = JSONDecoder()
     let cache = try! decoder.decode(Cache.self, from: data)
-    completion(.found(surveys: cache.surveys, timestamp: cache.timestamp))
+    completion(.found(surveys: cache.localSurveys, timestamp: cache.timestamp))
   }
   
   func insert(_ surveys: [LocalSurvey],
               timestamp: Date,
               completion: @escaping SurveysStore.InsertionCompletion) {
     let encoder = JSONEncoder()
-    let encoded = try! encoder.encode(Cache(surveys: surveys, timestamp: timestamp))
+    let encoded = try! encoder.encode(Cache(surveys: surveys.map(CodableSurveys.init), timestamp: timestamp))
     try! encoded.write(to: storeURL)
     completion(nil)
   }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct LocalSurveyAttribute: Equatable, Codable {
+public struct LocalSurveyAttribute: Equatable {
   public let title: String
   public let description: String
   public let thankEmailAboveThreshold: String?
@@ -43,7 +43,7 @@ public struct LocalSurveyAttribute: Equatable, Codable {
   }
 }
 
-public struct LocalSurvey: Equatable, Codable {
+public struct LocalSurvey: Equatable {
   public let id: String
   public let type: String
   public let attributes: LocalSurveyAttribute
