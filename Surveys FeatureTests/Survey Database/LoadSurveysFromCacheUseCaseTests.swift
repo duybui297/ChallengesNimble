@@ -92,6 +92,18 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
     XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
+  func test_load_hasNoSideEffectsOnMoreThanSevenDaysOldCache() {
+    let surveys = uniqueSurveyItem()
+    let fixedCurrentDate = Date()
+    let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: -1)
+    let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
+
+    sut.load { _ in }
+    store.completeRetrieval(with: surveys.local, timestamp: lessThanSevenDaysOldTimestamp)
+
+    XCTAssertEqual(store.receivedMessages, [.retrieve])
+  }
+  
   func test_load_hasNoSideEffectsOnLessThanSevenDaysOldCache() {
     let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
@@ -104,7 +116,7 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
     XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
-  func test_load_deletesCacheOnSevenDaysOldCache() {
+  func test_load_hasNoSideEffectsOnSevenDaysOldCache() {
     let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
     let sevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7)
@@ -113,7 +125,7 @@ class LoadSurveysFromCacheUseCaseTests: XCTestCase {
     sut.load { _ in }
     store.completeRetrieval(with: surveys.local, timestamp: sevenDaysOldTimestamp)
 
-    XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
+    XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
   func test_load_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
