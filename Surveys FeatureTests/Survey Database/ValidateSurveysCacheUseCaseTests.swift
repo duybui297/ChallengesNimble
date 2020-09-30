@@ -35,38 +35,38 @@ class ValidateSurveysCacheUseCaseTests: XCTestCase {
     XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
-  func test_validateCache_doesNotDeleteLessThanSevenDaysOldCache() {
-    let feed = uniqueSurveyItem()
+  func test_validateCache_doesNotDeleteLessThanExpiredDateOldCache() {
+    let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
-    let lessThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: 1)
+    let lessThanExpiredDateTimestamp = fixedCurrentDate.minusSurveysCacheMaxAge().adding(seconds: 1)
     let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
 
     sut.validateCache()
-    store.completeRetrieval(with: feed.local, timestamp: lessThanSevenDaysOldTimestamp)
+    store.completeRetrieval(with: surveys.local, timestamp: lessThanExpiredDateTimestamp)
 
     XCTAssertEqual(store.receivedMessages, [.retrieve])
   }
   
-  func test_validateCache_deletesSevenDaysOldCache() {
-    let feed = uniqueSurveyItem()
+  func test_validateCache_deletesExpiredDateOldCache() {
+    let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
-    let sevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7)
+    let sevenDaysOldTimestamp = fixedCurrentDate.minusSurveysCacheMaxAge()
     let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
 
     sut.validateCache()
-    store.completeRetrieval(with: feed.local, timestamp: sevenDaysOldTimestamp)
+    store.completeRetrieval(with: surveys.local, timestamp: sevenDaysOldTimestamp)
 
     XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
   }
 
-  func test_validateCache_deletesMoreThanSevenDaysOldCache() {
-    let feed = uniqueSurveyItem()
+  func test_validateCache_deletesMoreThanExpiredDateOldCache() {
+    let surveys = uniqueSurveyItem()
     let fixedCurrentDate = Date()
-    let moreThanSevenDaysOldTimestamp = fixedCurrentDate.adding(days: -7).adding(seconds: -1)
+    let moreThanExpiredDateTimestamp = fixedCurrentDate.minusSurveysCacheMaxAge().adding(seconds: -1)
     let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
 
     sut.validateCache()
-    store.completeRetrieval(with: feed.local, timestamp: moreThanSevenDaysOldTimestamp)
+    store.completeRetrieval(with: surveys.local, timestamp: moreThanExpiredDateTimestamp)
 
     XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedSurvey])
   }

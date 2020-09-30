@@ -30,6 +30,7 @@
 		30A2FF85252404FE005739CB /* ValidateSurveysCacheUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF84252404FE005739CB /* ValidateSurveysCacheUseCaseTests.swift */; };
 		30A2FF872524085B005739CB /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF862524085B005739CB /* SharedTestHelpers.swift */; };
 		30A2FF8A252408C8005739CB /* SurveysCacheTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF89252408C8005739CB /* SurveysCacheTestHelpers.swift */; };
+		30A2FF8C25241F1E005739CB /* SurveysCachePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF8B25241F1E005739CB /* SurveysCachePolicy.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		30A2FF84252404FE005739CB /* ValidateSurveysCacheUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateSurveysCacheUseCaseTests.swift; sourceTree = "<group>"; };
 		30A2FF862524085B005739CB /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
 		30A2FF89252408C8005739CB /* SurveysCacheTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveysCacheTestHelpers.swift; sourceTree = "<group>"; };
+		30A2FF8B25241F1E005739CB /* SurveysCachePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveysCachePolicy.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +166,7 @@
 				3035D5B7252358110033E2B5 /* LocalSurveysLoader.swift */,
 				3035D5B92523588E0033E2B5 /* SurveysStore.swift */,
 				3035D5BB252360090033E2B5 /* LocalSurvey.swift */,
+				30A2FF8B25241F1E005739CB /* SurveysCachePolicy.swift */,
 			);
 			path = "Survey Database";
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				3035D5BC252360090033E2B5 /* LocalSurvey.swift in Sources */,
 				3019A0A5251F269E003351C7 /* SurveyLoader.swift in Sources */,
 				3019A0A3251F249D003351C7 /* Survey.swift in Sources */,
+				30A2FF8C25241F1E005739CB /* SurveysCachePolicy.swift in Sources */,
 				3019A0B0251F39D4003351C7 /* HTTPClient.swift in Sources */,
 				3035D5BA2523588E0033E2B5 /* SurveysStore.swift in Sources */,
 				307EDF4F25202DA200F9D788 /* RemoteSurveyMapper.swift in Sources */,
