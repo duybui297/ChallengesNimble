@@ -126,7 +126,7 @@ class CodableSurveysStoreTests: XCTestCase {
     expect(sut, toRetrieveTwice: .empty)
   }
   
-  func test_retrieveAfterInsertingToEmptyCache_deliversInsertedValues() {
+  func test_retrieve_deliversFoundValuesOnNonEmptyCache() {
     let sut = makeSUT()
     let surveys = uniqueSurveyItem().local
     let timestamp = Date()
@@ -153,10 +153,10 @@ extension CodableSurveysStoreTests {
     return sut
   }
   
-  private func insert(_ cache: (feed: [LocalSurvey], timestamp: Date), to sut: CodableSurveysStore) {
+  private func insert(_ cache: (surveys: [LocalSurvey], timestamp: Date), to sut: CodableSurveysStore) {
     let exp = expectation(description: "Wait for cache insertion")
-    sut.insert(cache.feed, timestamp: cache.timestamp) { insertionError in
-      XCTAssertNil(insertionError, "Expected feed to be inserted successfully")
+    sut.insert(cache.surveys, timestamp: cache.timestamp) { insertionError in
+      XCTAssertNil(insertionError, "Expected surveys to be inserted successfully")
       exp.fulfill()
     }
     wait(for: [exp], timeout: 1.0)
