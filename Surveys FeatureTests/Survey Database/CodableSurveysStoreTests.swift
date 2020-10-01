@@ -25,12 +25,12 @@ class CodableSurveysStoreTests: XCTestCase {
   
   func test_retrieve_deliversEmptyOnEmptyCache() {
     let sut = makeSUT()
-    expect(sut, toRetrieve: .empty)
+    expect(sut, toRetrieve: .success(.empty))
   }
   
   func test_retrieve_hasNoSideEffectsOnEmptyCache() {
     let sut = makeSUT()
-    expect(sut, toRetrieveTwice: .empty)
+    expect(sut, toRetrieveTwice: .success(.empty))
   }
   
   func test_retrieve_deliversFoundValuesOnNonEmptyCache() {
@@ -39,7 +39,7 @@ class CodableSurveysStoreTests: XCTestCase {
     let timestamp = Date()
     
     insert((surveys, timestamp), to: sut)
-    expect(sut, toRetrieve: .found(surveys: surveys, timestamp: timestamp))
+    expect(sut, toRetrieve: .success(.found(surveys: surveys, timestamp: timestamp)))
   }
   
   func test_retrieve_hasNoSideEffectsOnNonEmptyCache() {
@@ -48,7 +48,7 @@ class CodableSurveysStoreTests: XCTestCase {
     let timestamp = Date()
     
     insert((surveys, timestamp), to: sut)
-    expect(sut, toRetrieveTwice: .found(surveys: surveys, timestamp: timestamp))
+    expect(sut, toRetrieveTwice: .success(.found(surveys: surveys, timestamp: timestamp)))
   }
   
   func test_retrieve_deliversFailureOnRetrievalError() {
@@ -79,7 +79,7 @@ class CodableSurveysStoreTests: XCTestCase {
     let latestInsertionError = insert((latestSurveys, latestTimestamp), to: sut)
 
     XCTAssertNil(latestInsertionError, "Expected to override cache successfully")
-    expect(sut, toRetrieve: .found(surveys: latestSurveys, timestamp: latestTimestamp))
+    expect(sut, toRetrieve: .success(.found(surveys: latestSurveys, timestamp: latestTimestamp)))
   }
   
   func test_insert_deliversErrorOnInsertionError() {
@@ -91,7 +91,7 @@ class CodableSurveysStoreTests: XCTestCase {
     let insertionError = insert((surveys, timestamp), to: sut)
 
     XCTAssertNotNil(insertionError, "Expected cache insertion to fail with an error")
-    expect(sut, toRetrieve: .empty)
+    expect(sut, toRetrieve: .success(.empty))
   }
   
   func test_delete_hasNoSideEffectsOnEmptyCache() {
@@ -100,7 +100,7 @@ class CodableSurveysStoreTests: XCTestCase {
     let deletionError = deleteCache(from: sut)
     XCTAssertNil(deletionError, "Expected empty cache deletion to succeed")
     
-    expect(sut, toRetrieve: .empty)
+    expect(sut, toRetrieve: .success(.empty))
   }
   
   func test_delete_emptiesPreviouslyInsertedCache() {
@@ -110,7 +110,7 @@ class CodableSurveysStoreTests: XCTestCase {
     let deletionError = deleteCache(from: sut)
     XCTAssertNil(deletionError, "Expected non-empty cache deletion to succeed")
     
-    expect(sut, toRetrieve: .empty)
+    expect(sut, toRetrieve: .success(.empty))
   }
   
   func test_delete_deliversErrorOnDeletionError() {
@@ -120,7 +120,7 @@ class CodableSurveysStoreTests: XCTestCase {
     let deletionError = deleteCache(from: sut)
 
     XCTAssertNotNil(deletionError, "Expected cache deletion to fail")
-    expect(sut, toRetrieve: .empty)
+    expect(sut, toRetrieve: .success(.empty))
   }
   
   func test_storeSideEffects_runSerially() {
@@ -186,7 +186,7 @@ extension CodableSurveysStoreTests {
   }
   
   private func expect(_ sut: SurveysStore,
-                      toRetrieveTwice expectedResult: RetrieveCachedSurveysResult,
+                      toRetrieveTwice expectedResult: SurveysStore.RetrievalResult,
                       file: StaticString = #file,
                       line: UInt = #line) {
     expect(sut, toRetrieve: expectedResult, file: file, line: line)
@@ -194,16 +194,16 @@ extension CodableSurveysStoreTests {
   }
   
   private func expect(_ sut: SurveysStore,
-                      toRetrieve expectedResult: RetrieveCachedSurveysResult,
+                      toRetrieve expectedResult: SurveysStore.RetrievalResult,
                       file: StaticString = #file,
                       line: UInt = #line) {
     let exp = expectation(description: "Wait for cache retrieval")
     
     sut.retrieve { retrievedResult in
       switch (expectedResult, retrievedResult) {
-      case (.empty, .empty), (.failure, .failure):
+      case (.success(.empty), .success(.empty)), (.failure, .failure):
         break
-      case let (.found(expected), .found(retrieved)):
+      case let (.success(.found(expected)), .success(.found(retrieved))):
         XCTAssertEqual(retrieved.surveys, expected.surveys, file: file, line: line)
         XCTAssertEqual(retrieved.timestamp, expected.timestamp, file: file, line: line)
         

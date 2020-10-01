@@ -57,10 +57,10 @@ class SurveyStoreSpy: SurveysStore {
   }
   
   func completeRetrievalWithEmptyCache(at index: Int = 0) {
-    retrievalCompletions[index](.empty)
+    retrievalCompletions[index](.success(.empty))
   }
   
   func completeRetrieval(with surveys: [LocalSurvey], timestamp: Date, at index: Int = 0) {
-    retrievalCompletions[index](.found(surveys: surveys, timestamp: timestamp))
+    retrievalCompletions[index](.success(.found(surveys: surveys, timestamp: timestamp)))
   }
 }
