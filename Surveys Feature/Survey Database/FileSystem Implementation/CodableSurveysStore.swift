@@ -19,7 +19,9 @@ public class CodableSurveysStore: SurveysStore {
   }
   
   private let storeURL: URL
-  private let queue = DispatchQueue(label: "\(CodableSurveysStore.self)Queue", qos: .userInitiated)
+  private let queue = DispatchQueue(label: "\(CodableSurveysStore.self)Queue",
+                                    qos: .userInitiated,
+                                    attributes: .concurrent)
   
   public init(storeURL: URL) {
     self.storeURL = storeURL
@@ -46,7 +48,7 @@ public class CodableSurveysStore: SurveysStore {
               timestamp: Date,
               completion: @escaping InsertionCompletion) {
     let storeURL = self.storeURL
-    queue.async {
+    queue.async(flags: .barrier) {
       do {
         let encoder = JSONEncoder()
         let cache = Cache(surveys: surveys.map(CodableSurvey.init), timestamp: timestamp)
@@ -61,7 +63,7 @@ public class CodableSurveysStore: SurveysStore {
   
   public func deleteCachedSurveys(completion: @escaping DeletionCompletion) {
     let storeURL = self.storeURL
-    queue.async {
+    queue.async(flags: .barrier) {
       guard FileManager.default.fileExists(atPath: storeURL.path) else {
         return completion(nil)
       }
