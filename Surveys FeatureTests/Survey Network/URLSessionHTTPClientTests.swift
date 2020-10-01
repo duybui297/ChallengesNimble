@@ -144,14 +144,14 @@ extension URLSessionHTTPClientTests {
                                   response: URLResponse?,
                                   error: Error?,
                                   file: StaticString = #file,
-                                  line: UInt = #line) -> HTTPClientResult {
+                                  line: UInt = #line) -> HTTPClient.Result {
     URLProtocolStub.stub(data: data, response: response, error: error)
     let sut = makeSUT(file: file, line: line)
     let urlRequestInfo = anyURLRequestInfo()
     
     let exp = expectation(description: "Wait for completion")
     
-    var receivedResult: HTTPClientResult!
+    var receivedResult: HTTPClient.Result!
     sut.get(from: urlRequestInfo.url,
          userTokenType: urlRequestInfo.userTokenType,
          userAccessToken: urlRequestInfo.userAccessToken) { result in

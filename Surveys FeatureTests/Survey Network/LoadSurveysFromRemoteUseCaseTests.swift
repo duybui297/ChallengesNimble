@@ -203,7 +203,7 @@ extension LoadSurveysFromRemoteUseCaseTests {
       var userAccessToken: String
     }
     
-    var messages = [(requestedInfo: RequestContext, completion: ((HTTPClientResult) -> Void))]()
+    var messages = [(requestedInfo: RequestContext, completion: ((HTTPClient.Result) -> Void))]()
     
     var requestedInfo: [RequestContext] {
       messages.map(\.requestedInfo)
@@ -212,7 +212,7 @@ extension LoadSurveysFromRemoteUseCaseTests {
     func get(from url: URL,
              userTokenType: String,
              userAccessToken: String,
-             completion: @escaping (HTTPClientResult) -> Void) {
+             completion: @escaping (HTTPClient.Result) -> Void) {
       let requestedInfo = RequestContext(requestedURL: url,
                                          userTokenType: userTokenType,
                                          userAccessToken: userAccessToken)
@@ -228,7 +228,7 @@ extension LoadSurveysFromRemoteUseCaseTests {
                                      statusCode: statusCode,
                                      httpVersion: nil,
                                      headerFields: nil)!
-      self.messages[index].completion(.success(data, response))
+      self.messages[index].completion(.success((data, response)))
     }
   }
 }

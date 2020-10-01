@@ -41,7 +41,7 @@ extension LocalSurveysLoader {
 }
 
 extension LocalSurveysLoader: SurveyLoader {
-  public typealias LoadResult = SurveyLoaderResult
+  public typealias LoadResult = SurveyLoader.Result
   
   public func load(completion: @escaping (LoadResult) -> Void) {
     store.retrieve { [weak self] result in
@@ -49,9 +49,9 @@ extension LocalSurveysLoader: SurveyLoader {
       switch result {
       case let .failure(error):
         completion(.failure(error))
-      case let .found(surveys, timestamp) where SurveysCachePolicy.validate(timestamp, against: self.currentDate()):
-        completion(.success(surveys.toModels()))
-      case .found, .empty:
+      case let .success(.some(cache)) where SurveysCachePolicy.validate(cache.timestamp, against: self.currentDate()):
+        completion(.success(cache.surveys.toModels()))
+      case .success:
         completion(.success([]))
       }
     }
@@ -66,10 +66,10 @@ extension LocalSurveysLoader {
       case .failure:
         self.store.deleteCachedSurveys { _ in }
         
-      case let .found(_, timestamp) where !SurveysCachePolicy.validate(timestamp, against: self.currentDate()):
+      case let .success(.some(cache)) where !SurveysCachePolicy.validate(cache.timestamp, against: self.currentDate()):
         self.store.deleteCachedSurveys { _ in }
         
-      case .empty, .found: break
+      case .success: break
       }
     }
   }

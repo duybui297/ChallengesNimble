@@ -30,7 +30,7 @@ class Surveys_FeatureAPIEndToEndTests: XCTestCase {
   }
   
   // MARK: - Helpers
-  private func getSurveyResult(file: StaticString = #file, line: UInt = #line) -> SurveyLoaderResult? {
+  private func getSurveyResult(file: StaticString = #file, line: UInt = #line) -> SurveyLoader.Result? {
     let testServerURL = URL(string: "https://nimble-survey-web-staging.herokuapp.com/api/v1/surveys")!
     let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
     let loader = RemoteSurveyLoader(httpClient: client,
@@ -42,7 +42,7 @@ class Surveys_FeatureAPIEndToEndTests: XCTestCase {
     
     let exp = expectation(description: "Wait for load completion")
 
-    var receivedResult: SurveyLoaderResult?
+    var receivedResult: SurveyLoader.Result?
     loader.load { result in
       receivedResult = result
       exp.fulfill()

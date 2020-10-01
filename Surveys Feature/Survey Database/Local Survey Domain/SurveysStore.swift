@@ -8,16 +8,17 @@
 
 import Foundation
 
-public enum RetrieveCachedSurveysResult {
-  case empty
-  case found(surveys: [LocalSurvey], timestamp: Date)
-  case failure(Error)
-}
+public typealias CachedSurveys = (surveys: [LocalSurvey], timestamp: Date)
 
 public protocol SurveysStore {
-  typealias DeletionCompletion = (Error?) -> Void
-  typealias InsertionCompletion = (Error?) -> Void
-  typealias RetrievalCompletion = (RetrieveCachedSurveysResult) -> Void
+  typealias DeletionResult = Error?
+  typealias DeletionCompletion = (DeletionResult) -> Void
+
+  typealias InsertionResult = Error?
+  typealias InsertionCompletion = (InsertionResult) -> Void
+  
+  typealias RetrievalResult = Result<CachedSurveys?, Error>
+  typealias RetrievalCompletion = (RetrievalResult) -> Void
   
   /// The completion handler can be invoked in any thread.
   /// Clients are responsible to dispatch to appropriate threads, if needed.

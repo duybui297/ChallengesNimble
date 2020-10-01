@@ -20,7 +20,7 @@ public class URLSessionHTTPClient: HTTPClient {
   public func get(from url: URL,
            userTokenType: String,
            userAccessToken: String,
-           completion: @escaping (HTTPClientResult) -> Void) {
+           completion: @escaping (HTTPClient.Result) -> Void) {
     let urlRequest = makeURLRequestFrom(from: url,
                                         userTokenType: userTokenType,
                                         userAccessToken: userAccessToken)
@@ -28,7 +28,7 @@ public class URLSessionHTTPClient: HTTPClient {
       if let error = error {
         completion(.failure(error))
       } else if let data = data, let response = response as? HTTPURLResponse {
-        completion(.success(data, response))
+        completion(.success((data, response)))
       } else {
         completion(.failure(UnexpectedValuesRepresentation()))
       }
