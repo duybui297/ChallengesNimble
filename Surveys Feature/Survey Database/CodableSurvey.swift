@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct CodableSurveysAttribute: Codable {
+public struct CodableSurveyAttribute: Codable {
   let title: String
   let description: String
   let thankEmailAboveThreshold: String?
@@ -47,15 +47,15 @@ public struct CodableSurveysAttribute: Codable {
   }
 }
 
-public struct CodableSurveys: Codable {
+public struct CodableSurvey: Codable {
   let id: String
   let type: String
-  let attributes: CodableSurveysAttribute
+  let attributes: CodableSurveyAttribute
   
   public init(_ localSurvey: LocalSurvey) {
     self.id = localSurvey.id
     self.type = localSurvey.type
-    self.attributes = CodableSurveysAttribute(localSurvey.attributes)
+    self.attributes = CodableSurveyAttribute(localSurvey.attributes)
   }
   
   public var local: LocalSurvey {

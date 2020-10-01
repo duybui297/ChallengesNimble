@@ -10,7 +10,7 @@ import Foundation
 
 public class CodableSurveysStore: SurveysStore {
   private struct Cache: Codable {
-    let surveys: [CodableSurveys]
+    let surveys: [CodableSurvey]
     let timestamp: Date
     
     var localSurveys: [LocalSurvey] {
@@ -43,7 +43,7 @@ public class CodableSurveysStore: SurveysStore {
               completion: @escaping InsertionCompletion) {
     do {
       let encoder = JSONEncoder()
-      let cache = Cache(surveys: surveys.map(CodableSurveys.init), timestamp: timestamp)
+      let cache = Cache(surveys: surveys.map(CodableSurvey.init), timestamp: timestamp)
       let encoded = try encoder.encode(cache)
       try encoded.write(to: storeURL)
       completion(nil)
