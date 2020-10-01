@@ -31,7 +31,9 @@
 		30A2FF872524085B005739CB /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF862524085B005739CB /* SharedTestHelpers.swift */; };
 		30A2FF8A252408C8005739CB /* SurveysCacheTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF89252408C8005739CB /* SurveysCacheTestHelpers.swift */; };
 		30A2FF8C25241F1E005739CB /* SurveysCachePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF8B25241F1E005739CB /* SurveysCachePolicy.swift */; };
-		30A2FF8E25242B5A005739CB /* CodableSurveysStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF8D25242B5A005739CB /* CodableSurveysStore.swift */; };
+		30A2FF8E25242B5A005739CB /* CodableSurveysStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A2FF8D25242B5A005739CB /* CodableSurveysStoreTests.swift */; };
+		30FEF73C25255AEB0014D156 /* CodableSurveysStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEF73B25255AEB0014D156 /* CodableSurveysStore.swift */; };
+		30FEF73E25255BAF0014D156 /* CodableSurvey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEF73D25255BAF0014D156 /* CodableSurvey.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,7 +82,9 @@
 		30A2FF862524085B005739CB /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
 		30A2FF89252408C8005739CB /* SurveysCacheTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveysCacheTestHelpers.swift; sourceTree = "<group>"; };
 		30A2FF8B25241F1E005739CB /* SurveysCachePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveysCachePolicy.swift; sourceTree = "<group>"; };
-		30A2FF8D25242B5A005739CB /* CodableSurveysStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableSurveysStore.swift; sourceTree = "<group>"; };
+		30A2FF8D25242B5A005739CB /* CodableSurveysStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableSurveysStoreTests.swift; sourceTree = "<group>"; };
+		30FEF73B25255AEB0014D156 /* CodableSurveysStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableSurveysStore.swift; sourceTree = "<group>"; };
+		30FEF73D25255BAF0014D156 /* CodableSurvey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableSurvey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,10 +169,8 @@
 		3035D5B6252357DF0033E2B5 /* Survey Database */ = {
 			isa = PBXGroup;
 			children = (
-				3035D5B7252358110033E2B5 /* LocalSurveysLoader.swift */,
-				3035D5B92523588E0033E2B5 /* SurveysStore.swift */,
-				3035D5BB252360090033E2B5 /* LocalSurvey.swift */,
-				30A2FF8B25241F1E005739CB /* SurveysCachePolicy.swift */,
+				30FEF74025255E810014D156 /* Local Survey Domain */,
+				30FEF73F25255DEE0014D156 /* FileSystem Implementation */,
 			);
 			path = "Survey Database";
 			sourceTree = "<group>";
@@ -181,7 +183,7 @@
 				3035D5C2252383480033E2B5 /* SurveysStoreSpy.swift */,
 				3035D5C4252383DE0033E2B5 /* LoadSurveysFromCacheUseCaseTests.swift */,
 				30A2FF84252404FE005739CB /* ValidateSurveysCacheUseCaseTests.swift */,
-				30A2FF8D25242B5A005739CB /* CodableSurveysStore.swift */,
+				30A2FF8D25242B5A005739CB /* CodableSurveysStoreTests.swift */,
 			);
 			path = "Survey Database";
 			sourceTree = "<group>";
@@ -189,11 +191,8 @@
 		307EDF5025203D2000F9D788 /* Survey Network */ = {
 			isa = PBXGroup;
 			children = (
-				3019A0AD251F39C0003351C7 /* RemoteSurveyLoader.swift */,
-				3019A0AF251F39D4003351C7 /* HTTPClient.swift */,
-				307EDF4E25202DA200F9D788 /* RemoteSurveyMapper.swift */,
-				307EDF592521687200F9D788 /* URLSessionHTTPClient.swift */,
-				3035D5BD252379620033E2B5 /* RemoteSurvey.swift */,
+				30FEF74225255EC70014D156 /* URLSession Implementation */,
+				30FEF74125255EAD0014D156 /* Remote Survey Domain */,
 			);
 			path = "Survey Network";
 			sourceTree = "<group>";
@@ -231,6 +230,45 @@
 				30A2FF89252408C8005739CB /* SurveysCacheTestHelpers.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		30FEF73F25255DEE0014D156 /* FileSystem Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				30FEF73B25255AEB0014D156 /* CodableSurveysStore.swift */,
+				30FEF73D25255BAF0014D156 /* CodableSurvey.swift */,
+			);
+			path = "FileSystem Implementation";
+			sourceTree = "<group>";
+		};
+		30FEF74025255E810014D156 /* Local Survey Domain */ = {
+			isa = PBXGroup;
+			children = (
+				3035D5B7252358110033E2B5 /* LocalSurveysLoader.swift */,
+				3035D5B92523588E0033E2B5 /* SurveysStore.swift */,
+				3035D5BB252360090033E2B5 /* LocalSurvey.swift */,
+				30A2FF8B25241F1E005739CB /* SurveysCachePolicy.swift */,
+			);
+			path = "Local Survey Domain";
+			sourceTree = "<group>";
+		};
+		30FEF74125255EAD0014D156 /* Remote Survey Domain */ = {
+			isa = PBXGroup;
+			children = (
+				3035D5BD252379620033E2B5 /* RemoteSurvey.swift */,
+				3019A0AD251F39C0003351C7 /* RemoteSurveyLoader.swift */,
+				3019A0AF251F39D4003351C7 /* HTTPClient.swift */,
+				307EDF4E25202DA200F9D788 /* RemoteSurveyMapper.swift */,
+			);
+			path = "Remote Survey Domain";
+			sourceTree = "<group>";
+		};
+		30FEF74225255EC70014D156 /* URLSession Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				307EDF592521687200F9D788 /* URLSessionHTTPClient.swift */,
+			);
+			path = "URLSession Implementation";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -376,8 +414,10 @@
 				3019A0A5251F269E003351C7 /* SurveyLoader.swift in Sources */,
 				3019A0A3251F249D003351C7 /* Survey.swift in Sources */,
 				30A2FF8C25241F1E005739CB /* SurveysCachePolicy.swift in Sources */,
+				30FEF73C25255AEB0014D156 /* CodableSurveysStore.swift in Sources */,
 				3019A0B0251F39D4003351C7 /* HTTPClient.swift in Sources */,
 				3035D5BA2523588E0033E2B5 /* SurveysStore.swift in Sources */,
+				30FEF73E25255BAF0014D156 /* CodableSurvey.swift in Sources */,
 				307EDF4F25202DA200F9D788 /* RemoteSurveyMapper.swift in Sources */,
 				3035D5B8252358110033E2B5 /* LocalSurveysLoader.swift in Sources */,
 				3019A0AE251F39C0003351C7 /* RemoteSurveyLoader.swift in Sources */,
@@ -390,7 +430,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30A2FF8E25242B5A005739CB /* CodableSurveysStore.swift in Sources */,
+				30A2FF8E25242B5A005739CB /* CodableSurveysStoreTests.swift in Sources */,
 				3019A0AB251F2988003351C7 /* LoadSurveysFromRemoteUseCaseTests.swift in Sources */,
 				307EDF55252079F600F9D788 /* URLSessionHTTPClientTests.swift in Sources */,
 				3035D5C3252383480033E2B5 /* SurveysStoreSpy.swift in Sources */,
