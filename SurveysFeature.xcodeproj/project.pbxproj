@@ -169,12 +169,8 @@
 		3035D5B6252357DF0033E2B5 /* Survey Database */ = {
 			isa = PBXGroup;
 			children = (
-				3035D5B7252358110033E2B5 /* LocalSurveysLoader.swift */,
-				3035D5B92523588E0033E2B5 /* SurveysStore.swift */,
-				3035D5BB252360090033E2B5 /* LocalSurvey.swift */,
-				30A2FF8B25241F1E005739CB /* SurveysCachePolicy.swift */,
-				30FEF73B25255AEB0014D156 /* CodableSurveysStore.swift */,
-				30FEF73D25255BAF0014D156 /* CodableSurvey.swift */,
+				30FEF74025255E810014D156 /* Local Survey Domain */,
+				30FEF73F25255DEE0014D156 /* FileSystem Implementation */,
 			);
 			path = "Survey Database";
 			sourceTree = "<group>";
@@ -195,11 +191,8 @@
 		307EDF5025203D2000F9D788 /* Survey Network */ = {
 			isa = PBXGroup;
 			children = (
-				3019A0AD251F39C0003351C7 /* RemoteSurveyLoader.swift */,
-				3019A0AF251F39D4003351C7 /* HTTPClient.swift */,
-				307EDF4E25202DA200F9D788 /* RemoteSurveyMapper.swift */,
-				307EDF592521687200F9D788 /* URLSessionHTTPClient.swift */,
-				3035D5BD252379620033E2B5 /* RemoteSurvey.swift */,
+				30FEF74225255EC70014D156 /* URLSession Implementation */,
+				30FEF74125255EAD0014D156 /* Remote Survey Domain */,
 			);
 			path = "Survey Network";
 			sourceTree = "<group>";
@@ -237,6 +230,45 @@
 				30A2FF89252408C8005739CB /* SurveysCacheTestHelpers.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		30FEF73F25255DEE0014D156 /* FileSystem Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				30FEF73B25255AEB0014D156 /* CodableSurveysStore.swift */,
+				30FEF73D25255BAF0014D156 /* CodableSurvey.swift */,
+			);
+			path = "FileSystem Implementation";
+			sourceTree = "<group>";
+		};
+		30FEF74025255E810014D156 /* Local Survey Domain */ = {
+			isa = PBXGroup;
+			children = (
+				3035D5B7252358110033E2B5 /* LocalSurveysLoader.swift */,
+				3035D5B92523588E0033E2B5 /* SurveysStore.swift */,
+				3035D5BB252360090033E2B5 /* LocalSurvey.swift */,
+				30A2FF8B25241F1E005739CB /* SurveysCachePolicy.swift */,
+			);
+			path = "Local Survey Domain";
+			sourceTree = "<group>";
+		};
+		30FEF74125255EAD0014D156 /* Remote Survey Domain */ = {
+			isa = PBXGroup;
+			children = (
+				3035D5BD252379620033E2B5 /* RemoteSurvey.swift */,
+				3019A0AD251F39C0003351C7 /* RemoteSurveyLoader.swift */,
+				3019A0AF251F39D4003351C7 /* HTTPClient.swift */,
+				307EDF4E25202DA200F9D788 /* RemoteSurveyMapper.swift */,
+			);
+			path = "Remote Survey Domain";
+			sourceTree = "<group>";
+		};
+		30FEF74225255EC70014D156 /* URLSession Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				307EDF592521687200F9D788 /* URLSessionHTTPClient.swift */,
+			);
+			path = "URLSession Implementation";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
