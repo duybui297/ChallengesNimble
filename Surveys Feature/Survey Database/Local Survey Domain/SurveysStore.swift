@@ -19,7 +19,15 @@ public protocol SurveysStore {
   typealias InsertionCompletion = (Error?) -> Void
   typealias RetrievalCompletion = (RetrieveCachedSurveysResult) -> Void
   
+  /// The completion handler can be invoked in any thread.
+  /// Clients are responsible to dispatch to appropriate threads, if needed.
   func deleteCachedSurveys(completion: @escaping DeletionCompletion)
+  
+  /// The completion handler can be invoked in any thread.
+  /// Clients are responsible to dispatch to appropriate threads, if needed.
   func insert(_ surveys: [LocalSurvey], timestamp: Date, completion: @escaping InsertionCompletion)
+  
+  /// The completion handler can be invoked in any thread.
+  /// Clients are responsible to dispatch to appropriate threads, if needed.
   func retrieve(completion: @escaping RetrievalCompletion)
 }
