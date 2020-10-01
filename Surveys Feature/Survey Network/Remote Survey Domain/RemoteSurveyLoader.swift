@@ -21,7 +21,7 @@ public class RemoteSurveyLoader: SurveyLoader {
     case unauthorized
   }
   
-  public typealias Result = SurveyLoaderResult
+  public typealias Result = SurveyLoader.Result
   
   public init(httpClient: HTTPClient,
               url: URL,

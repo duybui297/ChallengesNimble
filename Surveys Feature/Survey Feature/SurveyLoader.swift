@@ -8,11 +8,7 @@
 
 import Foundation
 
-public enum SurveyLoaderResult {
-  case success([Survey])
-  case failure(Error)
-}
-
-protocol SurveyLoader {
-  func load(completion: @escaping (SurveyLoaderResult) -> Void)
+public protocol SurveyLoader {
+  typealias Result = Swift.Result<[Survey], Error>
+  func load(completion: @escaping (Result) -> Void)
 }

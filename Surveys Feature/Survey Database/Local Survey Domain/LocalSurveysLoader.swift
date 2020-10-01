@@ -41,7 +41,7 @@ extension LocalSurveysLoader {
 }
 
 extension LocalSurveysLoader: SurveyLoader {
-  public typealias LoadResult = SurveyLoaderResult
+  public typealias LoadResult = SurveyLoader.Result
   
   public func load(completion: @escaping (LoadResult) -> Void) {
     store.retrieve { [weak self] result in
