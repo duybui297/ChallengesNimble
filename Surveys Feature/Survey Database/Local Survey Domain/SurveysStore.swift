@@ -11,8 +11,11 @@ import Foundation
 public typealias CachedSurveys = (surveys: [LocalSurvey], timestamp: Date)
 
 public protocol SurveysStore {
-  typealias DeletionCompletion = (Error?) -> Void
-  typealias InsertionCompletion = (Error?) -> Void
+  typealias DeletionResult = Error?
+  typealias DeletionCompletion = (DeletionResult) -> Void
+
+  typealias InsertionResult = Error?
+  typealias InsertionCompletion = (InsertionResult) -> Void
   
   typealias RetrievalResult = Result<CachedSurveys?, Error>
   typealias RetrievalCompletion = (RetrievalResult) -> Void
