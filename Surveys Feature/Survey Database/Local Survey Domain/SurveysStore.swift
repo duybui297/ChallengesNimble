@@ -8,16 +8,13 @@
 
 import Foundation
 
-public enum CachedSurveys {
-  case empty
-  case found(surveys: [LocalSurvey], timestamp: Date)
-}
+public typealias CachedSurveys = (surveys: [LocalSurvey], timestamp: Date)
 
 public protocol SurveysStore {
   typealias DeletionCompletion = (Error?) -> Void
   typealias InsertionCompletion = (Error?) -> Void
   
-  typealias RetrievalResult = Result<CachedSurveys, Error>
+  typealias RetrievalResult = Result<CachedSurveys?, Error>
   typealias RetrievalCompletion = (RetrievalResult) -> Void
   
   /// The completion handler can be invoked in any thread.
