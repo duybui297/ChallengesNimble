@@ -243,7 +243,7 @@ class CodableSurveysStoreTests: XCTestCase {
 extension CodableSurveysStoreTests {
   private func makeSUT(storeURL: URL? = nil,
                        file: StaticString = #file,
-                       line: UInt = #line) -> CodableSurveysStore {
+                       line: UInt = #line) -> SurveysStore {
     let sut = CodableSurveysStore(storeURL: storeURL ?? testSpecificStoreURL())
     trackForMemoryLeaks(sut, file: file, line: line)
     return sut
@@ -251,7 +251,7 @@ extension CodableSurveysStoreTests {
   
   @discardableResult
   private func insert(_ cache: (surveys: [LocalSurvey], timestamp: Date),
-                      to sut: CodableSurveysStore) -> Error? {
+                      to sut: SurveysStore) -> Error? {
     let exp = expectation(description: "Wait for cache insertion")
     var insertionError: Error?
     sut.insert(cache.surveys, timestamp: cache.timestamp) { receivedInsertionError in
@@ -262,7 +262,7 @@ extension CodableSurveysStoreTests {
     return insertionError
   }
   
-  private func deleteCache(from sut: CodableSurveysStore) -> Error? {
+  private func deleteCache(from sut: SurveysStore) -> Error? {
     let exp = expectation(description: "Wait for cache deletion")
     var deletionError: Error?
     sut.deleteCachedSurveys { receivedDeletionError in
@@ -273,7 +273,7 @@ extension CodableSurveysStoreTests {
     return deletionError
   }
   
-  private func expect(_ sut: CodableSurveysStore,
+  private func expect(_ sut: SurveysStore,
                       toRetrieveTwice expectedResult: RetrieveCachedSurveysResult,
                       file: StaticString = #file,
                       line: UInt = #line) {
@@ -281,7 +281,7 @@ extension CodableSurveysStoreTests {
     expect(sut, toRetrieve: expectedResult, file: file, line: line)
   }
   
-  private func expect(_ sut: CodableSurveysStore,
+  private func expect(_ sut: SurveysStore,
                       toRetrieve expectedResult: RetrieveCachedSurveysResult,
                       file: StaticString = #file,
                       line: UInt = #line) {
