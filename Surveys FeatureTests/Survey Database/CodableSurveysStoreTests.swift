@@ -66,7 +66,7 @@ struct CodableSurveys: Codable {
   }
 }
 
-class CodableSurveysStore {
+class CodableSurveysStore: SurveysStore {
   private struct Cache: Codable {
     let surveys: [CodableSurveys]
     let timestamp: Date
@@ -82,7 +82,7 @@ class CodableSurveysStore {
     self.storeURL = storeURL
   }
   
-  func retrieve(completion: @escaping SurveysStore.RetrievalCompletion) {
+  func retrieve(completion: @escaping RetrievalCompletion) {
     guard let data = try? Data(contentsOf: storeURL) else {
       return completion(.empty)
     }
@@ -98,7 +98,7 @@ class CodableSurveysStore {
   
   func insert(_ surveys: [LocalSurvey],
               timestamp: Date,
-              completion: @escaping SurveysStore.InsertionCompletion) {
+              completion: @escaping InsertionCompletion) {
     do {
       let encoder = JSONEncoder()
       let cache = Cache(surveys: surveys.map(CodableSurveys.init), timestamp: timestamp)
@@ -110,7 +110,7 @@ class CodableSurveysStore {
     }
   }
   
-  func deleteCachedSurveys(completion: @escaping SurveysStore.DeletionCompletion) {
+  func deleteCachedSurveys(completion: @escaping DeletionCompletion) {
     guard FileManager.default.fileExists(atPath: storeURL.path) else {
       return completion(nil)
     }
