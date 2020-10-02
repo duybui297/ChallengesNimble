@@ -1,8 +1,5 @@
 # Challenges – Nimble
 
-## Results Report
-[![Build Status](https://travis-ci.com/duybui297/ChallengesNimble.svg?token=QzcjDAqo3sQ5rputamyD&branch=master)](https://travis-ci.com/github/duybui297/ChallengesNimble)
-
 ## BDD Specs
 
 ### Story: Users want to see the survey
