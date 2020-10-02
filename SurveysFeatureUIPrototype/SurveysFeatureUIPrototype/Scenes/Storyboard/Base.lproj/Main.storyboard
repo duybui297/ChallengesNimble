@@ -10,7 +10,7 @@
         <!--Login View Controller-->
         <scene sceneID="pZx-Pb-ysT">
             <objects>
-                <viewController storyboardIdentifier="ViewController" id="SKL-HL-NZG" customClass="LoginViewController" customModule="SurveysFeatureUIPrototype" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="SKL-HL-NZG" customClass="LoginViewController" customModule="SurveysFeatureUIPrototype" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sKy-LO-8O2">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -120,7 +120,7 @@
         <!--Forgot Password View Controller-->
         <scene sceneID="gqW-Dl-eTx">
             <objects>
-                <viewController storyboardIdentifier="ViewController2" id="lv2-t6-LxN" customClass="ForgotPasswordViewController" customModule="SurveysFeatureUIPrototype" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ForgotPasswordViewController" id="lv2-t6-LxN" customClass="ForgotPasswordViewController" customModule="SurveysFeatureUIPrototype" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ffa-2L-8E9">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -195,7 +195,7 @@
         <!--Home View Controller-->
         <scene sceneID="ELv-UH-3YL">
             <objects>
-                <viewController storyboardIdentifier="ViewController3" id="TGb-d9-KaP" customClass="HomeViewController" customModule="SurveysFeatureUIPrototype" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" id="TGb-d9-KaP" customClass="HomeViewController" customModule="SurveysFeatureUIPrototype" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="r6e-wo-qyi">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
