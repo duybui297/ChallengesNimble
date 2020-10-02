@@ -24,6 +24,7 @@
 		30FEF7782526B2820014D156 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEF7772526B2820014D156 /* ForgotPasswordViewController.swift */; };
 		30FEF77B2526B4D70014D156 /* SurveyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEF7792526B4D70014D156 /* SurveyCollectionViewCell.swift */; };
 		30FEF77C2526B4D70014D156 /* SurveyCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30FEF77A2526B4D70014D156 /* SurveyCollectionViewCell.xib */; };
+		30FEF77E2526B5C10014D156 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEF77D2526B5C10014D156 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		30FEF7772526B2820014D156 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		30FEF7792526B4D70014D156 /* SurveyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyCollectionViewCell.swift; sourceTree = "<group>"; };
 		30FEF77A2526B4D70014D156 /* SurveyCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SurveyCollectionViewCell.xib; sourceTree = "<group>"; };
+		30FEF77D2526B5C10014D156 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 				30FEF7532526A8280014D156 /* LoginViewController.swift */,
 				30FEF7552526A8280014D156 /* Main.storyboard */,
 				30FEF7772526B2820014D156 /* ForgotPasswordViewController.swift */,
+				30FEF77D2526B5C10014D156 /* HomeViewController.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -214,6 +217,7 @@
 				30FEF7762526AFB90014D156 /* CustomTextField.swift in Sources */,
 				30FEF7782526B2820014D156 /* ForgotPasswordViewController.swift in Sources */,
 				30FEF76D2526ACCD0014D156 /* CustomBackgroundView.swift in Sources */,
+				30FEF77E2526B5C10014D156 /* HomeViewController.swift in Sources */,
 				30FEF7672526A9E60014D156 /* UICollectionViewCell+Extension.swift in Sources */,
 				30FEF77B2526B4D70014D156 /* SurveyCollectionViewCell.swift in Sources */,
 				30FEF7522526A8280014D156 /* SceneDelegate.swift in Sources */,
