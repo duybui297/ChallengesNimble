@@ -34,6 +34,7 @@ class HomeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.navigationController?.isNavigationBarHidden = true
     collectionView.delegate = self
     collectionView.dataSource = self
     collectionView.registerWithNib(SurveyCollectionViewCell.self)

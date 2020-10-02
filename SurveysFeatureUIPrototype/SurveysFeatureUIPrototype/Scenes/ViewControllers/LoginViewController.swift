@@ -15,6 +15,8 @@ class LoginViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    passwordTextField.delegate = self
   }
 
   @IBAction func didTapOnLoginButton(_ sender: Any) {
@@ -26,4 +28,18 @@ class LoginViewController: UIViewController {
 
     self.navigationController?.pushViewController(homeVC, animated: true)
   }
+}
+
+extension LoginViewController: CustomTextFieldDelegate {
+  func didTapOnTrailingText() {
+    let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+    guard let homeVC = storyboard.instantiateViewController(withIdentifier: "ForgotPasswordViewController") as? ForgotPasswordViewController else {
+      print("Instantiate ForgotPasswordViewController Failed at Main Storyboard")
+      return
+    }
+
+    self.navigationController?.pushViewController(homeVC, animated: true)
+  }
+  
+  
 }

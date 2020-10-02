@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol CustomTextFieldDelegate: class {
+  func didTapOnTrailingText()
+}
+
 @IBDesignable
 class CustomTextField: UIView {
 
@@ -15,6 +19,8 @@ class CustomTextField: UIView {
   @IBOutlet weak var transparentView: UIView!
   @IBOutlet weak var forgotButton: UIButton!
 
+  weak var delegate: CustomTextFieldDelegate?
+  
   @IBInspectable
   var placeholderText: String? {
     get {
@@ -52,7 +58,7 @@ class CustomTextField: UIView {
   }
 
   @IBAction func didTapOnForgotButton(_ sender: Any) {
-
+    delegate?.didTapOnTrailingText()
   }
 
   // MARK: - View Methods
