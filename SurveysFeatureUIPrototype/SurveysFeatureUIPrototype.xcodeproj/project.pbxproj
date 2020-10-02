@@ -17,6 +17,8 @@
 		30FEF7672526A9E60014D156 /* UICollectionViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEF7662526A9E60014D156 /* UICollectionViewCell+Extension.swift */; };
 		30FEF76B2526AC790014D156 /* CustomBackgroundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30FEF76A2526AC790014D156 /* CustomBackgroundView.xib */; };
 		30FEF76D2526ACCD0014D156 /* CustomBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEF76C2526ACCD0014D156 /* CustomBackgroundView.swift */; };
+		30FEF76F2526AD890014D156 /* CustomLogoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30FEF76E2526AD890014D156 /* CustomLogoView.xib */; };
+		30FEF7712526ADB90014D156 /* CustomLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEF7702526ADB90014D156 /* CustomLogoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		30FEF7662526A9E60014D156 /* UICollectionViewCell+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Extension.swift"; sourceTree = "<group>"; };
 		30FEF76A2526AC790014D156 /* CustomBackgroundView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomBackgroundView.xib; sourceTree = "<group>"; };
 		30FEF76C2526ACCD0014D156 /* CustomBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackgroundView.swift; sourceTree = "<group>"; };
+		30FEF76E2526AD890014D156 /* CustomLogoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomLogoView.xib; sourceTree = "<group>"; };
+		30FEF7702526ADB90014D156 /* CustomLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLogoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,8 @@
 			children = (
 				30FEF76A2526AC790014D156 /* CustomBackgroundView.xib */,
 				30FEF76C2526ACCD0014D156 /* CustomBackgroundView.swift */,
+				30FEF76E2526AD890014D156 /* CustomLogoView.xib */,
+				30FEF7702526ADB90014D156 /* CustomLogoView.swift */,
 			);
 			path = "Custom Components";
 			sourceTree = "<group>";
@@ -161,6 +167,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30FEF76F2526AD890014D156 /* CustomLogoView.xib in Resources */,
 				30FEF75C2526A82D0014D156 /* LaunchScreen.storyboard in Resources */,
 				30FEF7592526A82D0014D156 /* Assets.xcassets in Resources */,
 				30FEF7572526A8280014D156 /* Main.storyboard in Resources */,
@@ -176,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30FEF7542526A8280014D156 /* ViewController.swift in Sources */,
+				30FEF7712526ADB90014D156 /* CustomLogoView.swift in Sources */,
 				30FEF7502526A8280014D156 /* AppDelegate.swift in Sources */,
 				30FEF7652526A9580014D156 /* UIView+Extension.swift in Sources */,
 				30FEF76D2526ACCD0014D156 /* CustomBackgroundView.swift in Sources */,
