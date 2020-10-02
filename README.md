@@ -193,3 +193,8 @@ Then the app should display an error message
 
 ## Flow chart
 ![Surveys Feature](Flow-chart.png)
+
+---
+
+## Flow chart
+![Surveys Feature Architecture](Overview-architecture.png)
