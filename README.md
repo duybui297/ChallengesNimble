@@ -1,8 +1,5 @@
 # Challenges – Nimble
 
-## Results Report
-[![Build Status](https://travis-ci.com/duybui297/ChallengesNimble.svg?token=QzcjDAqo3sQ5rputamyD&branch=master)](https://travis-ci.com/github/duybui297/ChallengesNimble)
-
 ## BDD Specs
 
 ### Story: Users want to see the survey
@@ -193,3 +190,8 @@ Then the app should display an error message
 
 ## Flow chart
 ![Surveys Feature](Flow-chart.png)
+
+---
+
+## Flow chart
+![Surveys Feature Architecture](Overview-architecture.png)

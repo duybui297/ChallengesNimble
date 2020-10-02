@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ykT-Ug-7Z3">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="pZx-Pb-ysT">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" id="SKL-HL-NZG" customClass="LoginViewController" customModule="SurveysFeatureUIPrototype" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sKy-LO-8O2">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S6M-0x-eK8" customClass="CustomBackgroundView" customModule="SurveysFeatureUIPrototype" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="79h-bD-YFo" customClass="CustomLogoView" customModule="SurveysFeatureUIPrototype" customModuleProvider="target">
+                                <rect key="frame" x="12" y="154" width="390" height="135"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="135" id="BrR-dw-xrL"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="fTf-3x-9Lz">
+                                <rect key="frame" x="20" y="344" width="374" height="208"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7CH-PQ-7Xz" userLabel="Email TextField" customClass="CustomTextField" customModule="SurveysFeatureUIPrototype" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="56"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="q6z-hj-hJs"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholderText" value="Email"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L95-zh-BAx" userLabel="Password TextField" customClass="CustomTextField" customModule="SurveysFeatureUIPrototype" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="76" width="374" height="56"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="g89-Ai-0eK"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholderText" value="Password"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSecuredField" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="trailingText" value="Forgot?"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ol3-Iw-ajV" userLabel="Login Button">
+                                        <rect key="frame" x="0.0" y="152" width="374" height="56"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Log in">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="didTapOnLoginButton:" destination="SKL-HL-NZG" eventType="touchUpInside" id="cjz-5Y-8LN"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="fTf-3x-9Lz" firstAttribute="centerX" secondItem="sKy-LO-8O2" secondAttribute="centerX" id="AHT-ua-9jR"/>
+                            <constraint firstItem="fTf-3x-9Lz" firstAttribute="leading" secondItem="sgB-Z8-j2T" secondAttribute="leading" constant="20" id="FFY-6d-h3K"/>
+                            <constraint firstItem="S6M-0x-eK8" firstAttribute="leading" secondItem="sgB-Z8-j2T" secondAttribute="leading" id="Iid-Dj-ZoT"/>
+                            <constraint firstItem="79h-bD-YFo" firstAttribute="centerX" secondItem="sKy-LO-8O2" secondAttribute="centerX" id="U23-zG-mCZ"/>
+                            <constraint firstItem="79h-bD-YFo" firstAttribute="leading" secondItem="sgB-Z8-j2T" secondAttribute="leading" constant="12" id="bzp-ZQ-Jc8"/>
+                            <constraint firstItem="sgB-Z8-j2T" firstAttribute="trailing" secondItem="S6M-0x-eK8" secondAttribute="trailing" id="cBK-A8-ddX"/>
+                            <constraint firstItem="fTf-3x-9Lz" firstAttribute="centerY" secondItem="sKy-LO-8O2" secondAttribute="centerY" id="hdz-u4-2Kr"/>
+                            <constraint firstItem="79h-bD-YFo" firstAttribute="top" secondItem="sgB-Z8-j2T" secondAttribute="top" constant="110" id="i9t-NG-2uQ"/>
+                            <constraint firstItem="S6M-0x-eK8" firstAttribute="top" secondItem="sKy-LO-8O2" secondAttribute="top" id="nkn-Be-tQL"/>
+                            <constraint firstAttribute="bottom" secondItem="S6M-0x-eK8" secondAttribute="bottom" id="sx0-m1-cwA"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="sgB-Z8-j2T"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="93a-b9-KaL"/>
+                    <connections>
+                        <outlet property="emailTextField" destination="7CH-PQ-7Xz" id="XBV-bQ-KGN"/>
+                        <outlet property="passwordTextField" destination="L95-zh-BAx" id="uOZ-Ov-hZv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XaK-as-LbH" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="254" y="118"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="bZ8-MY-wmX">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="ykT-Ug-7Z3" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ziU-Kf-ibu">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="SKL-HL-NZG" kind="relationship" relationship="rootViewController" id="CMZ-yN-6O0"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jfw-Ah-5Ur" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-523.1884057971015" y="117.85714285714285"/>
+        </scene>
+        <!--Forgot Password View Controller-->
+        <scene sceneID="gqW-Dl-eTx">
+            <objects>
+                <viewController storyboardIdentifier="ForgotPasswordViewController" id="lv2-t6-LxN" customClass="ForgotPasswordViewController" customModule="SurveysFeatureUIPrototype" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ffa-2L-8E9">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K2F-9n-fsu" customClass="CustomBackgroundView" customModule="SurveysFeatureUIPrototype" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dN2-aN-Tko" customClass="CustomLogoView" customModule="SurveysFeatureUIPrototype" customModuleProvider="target">
+                                <rect key="frame" x="15" y="144" width="384" height="110"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="110" id="bHM-aN-Gui"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="descriptionText" value="Enter your email to receive instructions for resetting your password.  "/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="cc4-pC-b9y">
+                                <rect key="frame" x="20" y="382" width="374" height="132"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G6A-qn-miQ" customClass="CustomTextField" customModule="SurveysFeatureUIPrototype" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="56"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="Ul2-9e-EVP"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholderText" value="Email"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSecuredField" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="trailingText" value="Forgot?"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7TT-LE-XNr">
+                                        <rect key="frame" x="0.0" y="76" width="374" height="56"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Log in">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="K2F-9n-fsu" firstAttribute="leading" secondItem="t8x-ba-WEi" secondAttribute="leading" id="45t-9m-CLv"/>
+                            <constraint firstAttribute="bottom" secondItem="K2F-9n-fsu" secondAttribute="bottom" id="9ba-65-WrR"/>
+                            <constraint firstItem="K2F-9n-fsu" firstAttribute="top" secondItem="Ffa-2L-8E9" secondAttribute="top" id="K7p-kU-aCu"/>
+                            <constraint firstItem="cc4-pC-b9y" firstAttribute="leading" secondItem="t8x-ba-WEi" secondAttribute="leading" constant="20" id="NIL-c8-84K"/>
+                            <constraint firstItem="dN2-aN-Tko" firstAttribute="top" secondItem="Ffa-2L-8E9" secondAttribute="topMargin" constant="100" id="Vby-I1-45D"/>
+                            <constraint firstItem="cc4-pC-b9y" firstAttribute="centerX" secondItem="Ffa-2L-8E9" secondAttribute="centerX" id="aob-Zy-Fxr"/>
+                            <constraint firstItem="dN2-aN-Tko" firstAttribute="centerX" secondItem="Ffa-2L-8E9" secondAttribute="centerX" id="mSq-6n-tMS"/>
+                            <constraint firstItem="cc4-pC-b9y" firstAttribute="centerY" secondItem="Ffa-2L-8E9" secondAttribute="centerY" id="sUC-yf-T0R"/>
+                            <constraint firstItem="t8x-ba-WEi" firstAttribute="trailing" secondItem="K2F-9n-fsu" secondAttribute="trailing" id="u2H-NL-i51"/>
+                            <constraint firstItem="dN2-aN-Tko" firstAttribute="leading" secondItem="t8x-ba-WEi" secondAttribute="leading" constant="15" id="yo2-7m-q0w"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="t8x-ba-WEi"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ULV-C9-wG1" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1047.8260869565217" y="117.85714285714285"/>
+        </scene>
+        <!--Home View Controller-->
+        <scene sceneID="ELv-UH-3YL">
+            <objects>
+                <viewController storyboardIdentifier="HomeViewController" id="TGb-d9-KaP" customClass="HomeViewController" customModule="SurveysFeatureUIPrototype" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="r6e-wo-qyi">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="CBj-Xd-v2u" userLabel="Surveys Collection View">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="pFN-2t-mkI">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="bottom" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="JZV-vD-mPj">
+                                <rect key="frame" x="20" y="634.5" width="374" height="172.5"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="05O-nd-khD">
+                                        <rect key="frame" x="0.0" y="0.0" width="274.5" height="172.5"/>
+                                        <subviews>
+                                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="rym-vj-goF">
+                                                <rect key="frame" x="0.0" y="0.0" width="39" height="37"/>
+                                            </pageControl>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Working from home Check-In" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="51q-eY-QLz" userLabel="Title Label">
+                                                <rect key="frame" x="0.0" y="52" width="233.5" height="64.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We would like to know how you feel about our work from home..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WzE-bk-KTr" userLabel="Description Label">
+                                                <rect key="frame" x="0.0" y="131.5" width="274.5" height="41"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J5c-eO-bDI">
+                                        <rect key="frame" x="318" y="116.5" width="56" height="56"/>
+                                        <state key="normal" image="action"/>
+                                        <connections>
+                                            <action selector="didTapOnDetailedSurvey:" destination="TGb-d9-KaP" eventType="touchUpInside" id="8ef-gy-qnu"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="MaH-ia-l2g" firstAttribute="trailing" secondItem="JZV-vD-mPj" secondAttribute="trailing" constant="20" id="3BL-jO-UUS"/>
+                            <constraint firstItem="CBj-Xd-v2u" firstAttribute="top" secondItem="r6e-wo-qyi" secondAttribute="top" id="4Rr-JG-ems"/>
+                            <constraint firstItem="MaH-ia-l2g" firstAttribute="trailing" secondItem="CBj-Xd-v2u" secondAttribute="trailing" id="9f4-ER-iVa"/>
+                            <constraint firstAttribute="bottom" secondItem="CBj-Xd-v2u" secondAttribute="bottom" id="Bfn-GP-nct"/>
+                            <constraint firstItem="JZV-vD-mPj" firstAttribute="leading" secondItem="r6e-wo-qyi" secondAttribute="leading" constant="20" id="PAv-1a-fLK"/>
+                            <constraint firstItem="CBj-Xd-v2u" firstAttribute="leading" secondItem="MaH-ia-l2g" secondAttribute="leading" id="psA-de-Bhs"/>
+                            <constraint firstItem="MaH-ia-l2g" firstAttribute="bottom" secondItem="JZV-vD-mPj" secondAttribute="bottom" constant="55" id="xJa-Hc-ehR"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="MaH-ia-l2g"/>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="CBj-Xd-v2u" id="qp7-6J-gDu"/>
+                        <outlet property="descriptionLabel" destination="WzE-bk-KTr" id="32q-Tz-agO"/>
+                        <outlet property="pageControl" destination="rym-vj-goF" id="b7b-4F-yGU"/>
+                        <outlet property="titleLabel" destination="51q-eY-QLz" id="eah-Uf-Lhz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J1y-xT-EKJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1821.7391304347827" y="117.85714285714285"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="action" width="56" height="56"/>
+    </resources>
+</document>
