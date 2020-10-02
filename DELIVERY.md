@@ -1,8 +1,5 @@
 # Challenges – Nimble
 
-## Results Report
-[![Build Status](https://travis-ci.com/duybui297/ChallengesNimble.svg?token=QzcjDAqo3sQ5rputamyD&branch=master)](https://travis-ci.com/github/duybui297/ChallengesNimble)
-
 ## Estimation Time and Resouces
 - There are currently 2 main features: Login and Home page.
 - The maximum estimation time I can arrange for the test is 40 hours.
