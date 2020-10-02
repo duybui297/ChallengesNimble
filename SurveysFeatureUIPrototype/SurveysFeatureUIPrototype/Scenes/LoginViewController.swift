@@ -7,3 +7,17 @@
 //
 
 import UIKit
+
+class LoginViewController: UIViewController {
+
+  @IBOutlet weak var emailTextField: CustomTextField!
+  @IBOutlet weak var passwordTextField: CustomTextField!
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+  }
+
+  @IBAction func didTapOnLoginButton(_ sender: Any) {
+    
+  }
+}

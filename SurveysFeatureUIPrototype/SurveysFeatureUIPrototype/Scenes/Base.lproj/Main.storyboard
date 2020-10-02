@@ -29,7 +29,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="fTf-3x-9Lz">
                                 <rect key="frame" x="20" y="344" width="374" height="208"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7CH-PQ-7Xz">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7CH-PQ-7Xz" userLabel="Email TextField" customClass="CustomTextField" customModule="SurveysFeatureUIPrototype" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="56"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -42,7 +42,7 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="placeholderText" value="Email"/>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L95-zh-BAx">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L95-zh-BAx" userLabel="Password TextField" customClass="CustomTextField" customModule="SurveysFeatureUIPrototype" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="76" width="374" height="56"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -57,7 +57,7 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="trailingText" value="Forgot?"/>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ol3-Iw-ajV">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ol3-Iw-ajV" userLabel="Login Button">
                                         <rect key="frame" x="0.0" y="152" width="374" height="56"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Log in">
@@ -69,7 +69,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="didTapOnLoginButton:" destination="SKL-HL-NZG" eventType="touchUpInside" id="2gU-wa-1QG"/>
+                                            <action selector="didTapOnLoginButton:" destination="SKL-HL-NZG" eventType="touchUpInside" id="cjz-5Y-8LN"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -92,8 +92,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="93a-b9-KaL"/>
                     <connections>
-                        <outlet property="emailTf" destination="7CH-PQ-7Xz" id="fi1-oq-xfr"/>
-                        <outlet property="passwordTf" destination="L95-zh-BAx" id="hR6-3x-S9K"/>
+                        <outlet property="emailTextField" destination="7CH-PQ-7Xz" id="XBV-bQ-KGN"/>
+                        <outlet property="passwordTextField" destination="L95-zh-BAx" id="uOZ-Ov-hZv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XaK-as-LbH" sceneMemberID="firstResponder"/>
