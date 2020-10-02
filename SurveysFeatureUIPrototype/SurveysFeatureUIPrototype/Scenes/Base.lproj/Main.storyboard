@@ -117,5 +117,80 @@
             </objects>
             <point key="canvasLocation" x="-523.1884057971015" y="117.85714285714285"/>
         </scene>
+        <!--Forgot Password View Controller-->
+        <scene sceneID="gqW-Dl-eTx">
+            <objects>
+                <viewController storyboardIdentifier="ViewController2" id="lv2-t6-LxN" customClass="ForgotPasswordViewController" customModule="SurveysFeatureUIPrototype" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ffa-2L-8E9">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K2F-9n-fsu" customClass="CustomBackgroundView" customModule="SurveysFeatureUIPrototype" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dN2-aN-Tko" customClass="CustomLogoView" customModule="SurveysFeatureUIPrototype" customModuleProvider="target">
+                                <rect key="frame" x="15" y="144" width="384" height="110"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="110" id="bHM-aN-Gui"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="descriptionText" value="Enter your email to receive instructions for resetting your password.  "/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="cc4-pC-b9y">
+                                <rect key="frame" x="20" y="382" width="374" height="132"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G6A-qn-miQ" customClass="CustomTextField" customModule="SurveysFeatureUIPrototype" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="56"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="Ul2-9e-EVP"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholderText" value="Email"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSecuredField" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="trailingText" value="Forgot?"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7TT-LE-XNr">
+                                        <rect key="frame" x="0.0" y="76" width="374" height="56"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Log in">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="K2F-9n-fsu" firstAttribute="leading" secondItem="t8x-ba-WEi" secondAttribute="leading" id="45t-9m-CLv"/>
+                            <constraint firstAttribute="bottom" secondItem="K2F-9n-fsu" secondAttribute="bottom" id="9ba-65-WrR"/>
+                            <constraint firstItem="K2F-9n-fsu" firstAttribute="top" secondItem="Ffa-2L-8E9" secondAttribute="top" id="K7p-kU-aCu"/>
+                            <constraint firstItem="cc4-pC-b9y" firstAttribute="leading" secondItem="t8x-ba-WEi" secondAttribute="leading" constant="20" id="NIL-c8-84K"/>
+                            <constraint firstItem="dN2-aN-Tko" firstAttribute="top" secondItem="Ffa-2L-8E9" secondAttribute="topMargin" constant="100" id="Vby-I1-45D"/>
+                            <constraint firstItem="cc4-pC-b9y" firstAttribute="centerX" secondItem="Ffa-2L-8E9" secondAttribute="centerX" id="aob-Zy-Fxr"/>
+                            <constraint firstItem="dN2-aN-Tko" firstAttribute="centerX" secondItem="Ffa-2L-8E9" secondAttribute="centerX" id="mSq-6n-tMS"/>
+                            <constraint firstItem="cc4-pC-b9y" firstAttribute="centerY" secondItem="Ffa-2L-8E9" secondAttribute="centerY" id="sUC-yf-T0R"/>
+                            <constraint firstItem="t8x-ba-WEi" firstAttribute="trailing" secondItem="K2F-9n-fsu" secondAttribute="trailing" id="u2H-NL-i51"/>
+                            <constraint firstItem="dN2-aN-Tko" firstAttribute="leading" secondItem="t8x-ba-WEi" secondAttribute="leading" constant="15" id="yo2-7m-q0w"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="t8x-ba-WEi"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ULV-C9-wG1" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1047.8260869565217" y="117.85714285714285"/>
+        </scene>
     </scenes>
 </document>

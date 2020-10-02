@@ -21,6 +21,9 @@
 		30FEF7712526ADB90014D156 /* CustomLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEF7702526ADB90014D156 /* CustomLogoView.swift */; };
 		30FEF7742526AF810014D156 /* CustomTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30FEF7732526AF810014D156 /* CustomTextField.xib */; };
 		30FEF7762526AFB90014D156 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEF7752526AFB90014D156 /* CustomTextField.swift */; };
+		30FEF7782526B2820014D156 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEF7772526B2820014D156 /* ForgotPasswordViewController.swift */; };
+		30FEF77B2526B4D70014D156 /* SurveyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEF7792526B4D70014D156 /* SurveyCollectionViewCell.swift */; };
+		30FEF77C2526B4D70014D156 /* SurveyCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30FEF77A2526B4D70014D156 /* SurveyCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +43,9 @@
 		30FEF7702526ADB90014D156 /* CustomLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLogoView.swift; sourceTree = "<group>"; };
 		30FEF7732526AF810014D156 /* CustomTextField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTextField.xib; sourceTree = "<group>"; };
 		30FEF7752526AFB90014D156 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		30FEF7772526B2820014D156 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
+		30FEF7792526B4D70014D156 /* SurveyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyCollectionViewCell.swift; sourceTree = "<group>"; };
+		30FEF77A2526B4D70014D156 /* SurveyCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SurveyCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +116,8 @@
 				30FEF7702526ADB90014D156 /* CustomLogoView.swift */,
 				30FEF7732526AF810014D156 /* CustomTextField.xib */,
 				30FEF7752526AFB90014D156 /* CustomTextField.swift */,
+				30FEF7792526B4D70014D156 /* SurveyCollectionViewCell.swift */,
+				30FEF77A2526B4D70014D156 /* SurveyCollectionViewCell.xib */,
 			);
 			path = "Custom Components";
 			sourceTree = "<group>";
@@ -119,6 +127,7 @@
 			children = (
 				30FEF7532526A8280014D156 /* LoginViewController.swift */,
 				30FEF7552526A8280014D156 /* Main.storyboard */,
+				30FEF7772526B2820014D156 /* ForgotPasswordViewController.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -181,6 +190,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30FEF77C2526B4D70014D156 /* SurveyCollectionViewCell.xib in Resources */,
 				30FEF76F2526AD890014D156 /* CustomLogoView.xib in Resources */,
 				30FEF75C2526A82D0014D156 /* LaunchScreen.storyboard in Resources */,
 				30FEF7742526AF810014D156 /* CustomTextField.xib in Resources */,
@@ -202,8 +212,10 @@
 				30FEF7502526A8280014D156 /* AppDelegate.swift in Sources */,
 				30FEF7652526A9580014D156 /* UIView+Extension.swift in Sources */,
 				30FEF7762526AFB90014D156 /* CustomTextField.swift in Sources */,
+				30FEF7782526B2820014D156 /* ForgotPasswordViewController.swift in Sources */,
 				30FEF76D2526ACCD0014D156 /* CustomBackgroundView.swift in Sources */,
 				30FEF7672526A9E60014D156 /* UICollectionViewCell+Extension.swift in Sources */,
+				30FEF77B2526B4D70014D156 /* SurveyCollectionViewCell.swift in Sources */,
 				30FEF7522526A8280014D156 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
