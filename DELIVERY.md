@@ -19,13 +19,13 @@ Nearly everything matches my estimation time since the available time is just en
 
 ## Final decision
 
-- Implementation time after defining specific targets:
-3 hours: Read requirement, check UI and APIs - define use case
-8 hours: Network part
-8 hours: Database part
-10 hours: Prototype and implementation details
-8 hours: Composible part
-3 hours: Buffer time for fix bugs
+Implementation time after defining specific targets:
+- Read requirement, check UI and APIs - define use case: 3 hours
+- Network part: 8 hours
+- Database part: 8 hours
+- Prototype and implementation details: 10 hours
+- Composible part: 8 hours
+- Buffer time for fix bugs: 3 hours
 
 ## Delivery feature
 - The real time that I could arrange to do the test: **22**
