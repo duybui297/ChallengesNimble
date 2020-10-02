@@ -60,9 +60,8 @@
 		30FEF74E2526A8280014D156 /* SurveysFeatureUIPrototype */ = {
 			isa = PBXGroup;
 			children = (
+				30FEF7682526AA6D0014D156 /* Application */,
 				30FEF7632526A93D0014D156 /* Extensions */,
-				30FEF74F2526A8280014D156 /* AppDelegate.swift */,
-				30FEF7512526A8280014D156 /* SceneDelegate.swift */,
 				30FEF7532526A8280014D156 /* ViewController.swift */,
 				30FEF7552526A8280014D156 /* Main.storyboard */,
 				30FEF7582526A82D0014D156 /* Assets.xcassets */,
@@ -79,6 +78,15 @@
 				30FEF7662526A9E60014D156 /* UICollectionViewCell+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		30FEF7682526AA6D0014D156 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				30FEF74F2526A8280014D156 /* AppDelegate.swift */,
+				30FEF7512526A8280014D156 /* SceneDelegate.swift */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
