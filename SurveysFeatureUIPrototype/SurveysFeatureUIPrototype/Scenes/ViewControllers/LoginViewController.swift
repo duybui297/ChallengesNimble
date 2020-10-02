@@ -18,6 +18,12 @@ class LoginViewController: UIViewController {
   }
 
   @IBAction func didTapOnLoginButton(_ sender: Any) {
-    
+    let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+    guard let homeVC = storyboard.instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController else {
+      print("Instantiate HomeViewController Failed at Main Storyboard")
+      return
+    }
+
+    self.navigationController?.pushViewController(homeVC, animated: true)
   }
 }

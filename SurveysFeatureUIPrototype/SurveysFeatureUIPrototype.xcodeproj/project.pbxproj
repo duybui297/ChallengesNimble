@@ -127,12 +127,28 @@
 		30FEF7722526AE790014D156 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				30FEF7532526A8280014D156 /* LoginViewController.swift */,
+				30FEF7802526B7CC0014D156 /* ViewControllers */,
+				30FEF77F2526B7BF0014D156 /* Storyboard */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		30FEF77F2526B7BF0014D156 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
 				30FEF7552526A8280014D156 /* Main.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		30FEF7802526B7CC0014D156 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				30FEF7532526A8280014D156 /* LoginViewController.swift */,
 				30FEF7772526B2820014D156 /* ForgotPasswordViewController.swift */,
 				30FEF77D2526B5C10014D156 /* HomeViewController.swift */,
 			);
-			path = Scenes;
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
